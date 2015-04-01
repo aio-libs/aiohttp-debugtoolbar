@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>QUnit Tests for the Pyramid Debug Toolbar</title>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+	<div id="qunit"></div>
+	<script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+	<script>
+		// Mocks
+		var DEBUG_TOOLBAR_STATIC_PATH = '../',
+			define = function () {
+				// this mocked version of define will throw an error if jQuery
+				// is unpatched.
+				throw 'One of the toolbar\'s libraries are calling the wrong define!';
+			};
+
+		define.amd = {
+			jQuery: true
+		}
+	</script>
+	<script src="require.js"></script>
+	<script src="toolbar.js"></script>
+</body>
+</html>

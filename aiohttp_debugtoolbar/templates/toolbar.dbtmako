@@ -1,0 +1,125 @@
+<%namespace file="history_tab.dbtmako" import="history_tab"/>
+<%namespace file="global_tab.dbtmako" import="global_tab"/>
+<%namespace file="settings_tab.dbtmako" import="settings_tab"/>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pyramid Debug Toolbar</title>
+    <!--bootstrap version 2.3.2-->
+    <link rel="stylesheet" type="text/css" href="${static_path}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${static_path}css/toolbar.css">
+    <link rel="stylesheet" type="text/css" href="${static_path}css/dashboard.css">
+    <link rel="stylesheet" href="${static_path}css/debugger.css" type="text/css">
+
+    ## include scripts here that should be included before pageload
+    ##  this *should* only be jquery, as we only need the `$` variable defined
+    ##  in order for other javascript to be run after the document is loaded
+    <script type="text/javascript">
+      var DEBUG_TOOLBAR_STATIC_PATH = '${static_path}';
+    </script>
+    <script src="${static_path}js/jquery-1.10.2.min.js"></script>
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="${root_path}">
+            <!-- <img src="${static_path}img/pyramid.png"/> -->
+            Pyramid DebugToolbar</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#history" data-toggle="tab">History</a></li>
+            <li><a href="#global" data-toggle="tab">Global</a></li>
+            <li><a href="#settings" data-toggle="tab">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="content" class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                <div class="tab-pane active" id="history">
+                    ${history_tab()}
+                </div>
+
+                <div class="tab-pane" id="global">
+                    ${global_tab()}
+                </div>
+
+                <div class="tab-pane" id="settings">
+                    ${settings_tab()}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    ## scripts that can be included after pageload
+    <script src="${static_path}js/jquery.cookie.js"></script>
+    <script src="${static_path}js/jquery.tablesorter.min.js"></script>
+    <script src="${static_path}js/bootstrap.min.js"></script>
+    <script src="${static_path}js/toolbar.js"></script>
+	<script>
+	  $(function () {
+	    $('#myTab a:first').tab('show');
+	    $('#myTab a').click(function (e) {
+	      e.preventDefault();
+	      $(this).tab('show');
+	    });
+        var source;
+        function new_request(e) {
+            $('ul#requests li a').tooltip('hide')
+            var html = '<li><h4>Requests</strong></h4></li>';
+            var requests = $('ul#requests');
+            var data = JSON.parse(e.data);
+            data.forEach(function (item) {
+                var details = item[1];
+                var request_id = item[0];
+                var active = item[2];
+
+                html += '<li class="'+active+'"><a href="${root_path}'+request_id+'" title="'+details.path+'">';
+                html += '<span class="badge pull-right _'+details.status_code+'">'+details.status_code+'</span>';
+                html += details.method;
+                if (details.scheme == 'https'){
+                	html += '&nbsp;<span class="badge"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>';
+                }
+                html += '<br>' + details.path;
+                html += '</a></li>';
+            });
+
+            requests.html(html);
+            $('ul#requests li a').tooltip({
+                placement: 'right',
+                container: 'body'
+            });
+        }
+
+        function connectEventSource() {
+            if (source) {
+                source.close();
+            }
+
+            source = new EventSource('${root_path}sse?request_id=${request_id}');
+            source.addEventListener('new_request', new_request);
+        }
+
+        if (!!window.EventSource) {
+            connectEventSource();
+        }
+
+	  });
+	</script>
+
+      </body>
+    </html>

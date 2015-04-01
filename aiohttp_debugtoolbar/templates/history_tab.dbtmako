@@ -1,0 +1,67 @@
+<%def name="history_tab()">
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar">
+
+      <div class="pDebugRequests">
+        <ul id="requests" class="nav nav-sidebar">
+        </ul>
+      </div>
+
+
+      </div> <!-- col-md-2 -->
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="pDebugPanels">
+        <ul class="nav nav-tabs">
+          % if not panels:
+          <li class="pDebugButton">DEBUG</li>
+          % endif
+          % for panel in panels:
+          <% _css_class = 'disabled' if not panel.has_content else '' %>
+          <li class="${_css_class}" id="${panel.dom_id}">
+            % if panel.has_content:
+            <a href="${panel.url or '#'}" 
+              title="${panel.title}" 
+              id="${panel.dom_id}">
+              % else:
+              <a href="${panel.url or '#'}"
+                title="${panel.title}"
+                id="${panel.dom_id}"
+                class="contentless">
+                % endif
+
+                % if panel.nav_subtitle and panel.has_content:
+                <span class="badge pull-right">${panel.nav_subtitle}</span>
+                % endif
+
+                ${panel.nav_title}
+
+                </a>
+              </li>
+              % endfor
+
+            </ul>
+      </div>
+      <div class="pDebugPanelsContent" >
+        <div class="pDebugWindow" class="panelContent">
+          % for panel in panels:
+          % if panel.has_content:
+          <div id="${panel.dom_id}-content" class="panelContent" style="display: none;">
+            <div class="pDebugPanelTitle">
+              <h3>${panel.title}</h3>
+            </div>
+            <div class="pDebugPanelContent">
+              <div class="scroll">
+                ${panel.render_content(request)|n}
+              </div>
+            </div>
+          </div>
+          % endif
+          % endfor
+       </div>
+
+     </div>
+     </div> <!-- col-md-10 -->
+   </div> <!-- row -->
+
+</%def>

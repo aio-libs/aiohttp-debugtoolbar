@@ -1,0 +1,152 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 70px;
+}
+
+a {
+    color: #bc2131;
+}
+
+a:hover {
+    color: #96000b;
+}
+
+.navbar-collapse {
+    border-color: #bc2131;
+}
+
+.navbar-inverse {
+    background: #bc2131;
+}
+
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li.active > a,
+.navbar-inverse .navbar-nav > li.active:hover > a {
+    background-color: #96000b;
+}
+
+.navbar-brand:before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    content: url(../img/pyramid.png);
+}
+.navbar-brand {
+    padding-left: 50px;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .navbar-nav {
+    float: right!important;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: block;
+    padding: 70px 20px 20px;
+    background-color: #eee;
+    border-right: 1px solid #eee;
+    overflow-y: scroll;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-left: -20px;
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+}
+.nav-sidebar > li > h4, .nav-sidebar > li > a {
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+}
+.nav-sidebar > li > a {
+  color: #555;
+}
+.nav-sidebar > .active > a {
+  color: #fff;
+  background: #999;
+}
+.nav-sidebar > .active:hover > a {
+  background: #999;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 0px 20px 20px 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  border-radius: 50%;
+}
+ul#requests li a {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 300px;
+}
+/* override twitter bootstrap's tooltip styles */
+.tooltip, .tooltip-inner {
+    max-width: 100%;
+}
+.tooltip {
+    word-wrap: break-word;
+    word-break: break-all;
+}

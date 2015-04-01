@@ -1,0 +1,78 @@
+._200 {
+    background-color: #468847;
+}
+._500 {
+    background-color: #b94a48;
+}
+._404{
+    background-color: #3a87ad;
+}
+
+.switch {
+    font-size: 10px;
+    display: block;
+    color: white;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+
+.switch.active {
+    background-image: url(../img/tick.png);
+}
+
+.switch.inactive{
+    background-image: url(../img/tick-red.png);
+}
+
+li.nav-label {
+    position: relative;
+    display: block;
+    padding: 10px 15px 10px 0px;
+}
+
+li.nav-label strong {
+    font-size: 150%;
+}
+
+#pDebug #pDebugToolbarHandle {
+    position:fixed;
+    border:1px solid #bc2131;
+    top: 25%;
+    right:0;
+    z-index:100000000;
+}
+
+@media print {
+    #pDebug {
+        display: none;
+    }
+}
+
+#pDebug a#pShowToolBarButton {
+    display:block;
+    height:40px;
+    width:40px;
+    border-right:none;
+    border-bottom:1px solid #fff;
+    border-top:1px solid #fff;
+    border-left:1px solid #fff;
+    color:#fff;
+    font-size:10px;
+    font-weight:bold;
+    text-decoration:none;
+    text-align:center;
+    text-indent:-999999px;
+    background:#bc2131 url(../img/pdtb.png) no-repeat left center;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+}
+
+#pDebug a#pShowToolBarButton:hover {
+    background-color:#bc2131;
+    padding-right:2px;
+    border-top-color:#fff;
+    border-left-color:#fff;
+    border-bottom-color:#fff;
+    opacity:1.0;
+}

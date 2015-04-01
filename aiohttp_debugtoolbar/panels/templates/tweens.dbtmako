@@ -1,0 +1,16 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Order (from server to application)</th>
+			<th>Tween</th>
+		</tr>
+	</thead>
+	<tbody>
+		% for i, tween in enumerate(tweens):
+			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
+				<td>${str(i)}</td>
+				<td>${tween}</td>
+			</tr>
+		% endfor
+	</tbody>
+</table>
