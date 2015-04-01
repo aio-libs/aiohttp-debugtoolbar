@@ -1,6 +1,7 @@
+import asyncio
+import json
 import aiohttp_mako
-from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME, \
-    STATIC_PATH
+from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
 
 
 @aiohttp_mako.template('toolbar.dbtmako', app_key=TEMPLATE_KEY)
@@ -39,3 +40,31 @@ def request_view(request):
             'request_id': request_id,
             'request': toolbar.request if toolbar else None
             }
+from aiohttp_sse import EventSourceResponse
+
+@asyncio.coroutine
+def sse(request):
+    # looks like sse is redurant here
+    # TODO: consider move to ajax
+    response = EventSourceResponse()
+    response.start(request)
+    history = request.app[APP_KEY]['request_history']
+
+    active_request_id = str(request.match_info.get('request_id'))
+    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
+
+    max_visible_requests = 10
+    if history:
+        last_request_pair = history.last(1)[0]
+        last_request_id = last_request_pair[0]
+        if not last_request_id == client_last_request_id:
+            data = []
+            for _id, toolbar in history.last(max_visible_requests):
+                req_type = 'active' if active_request_id == _id else ''
+                data.append([_id, toolbar.json, req_type])
+
+            if data:
+                _data = json.dumps(data)
+                response.send(_data, event='new_request', id=last_request_id)
+                response.stop_streaming()
+    return response
