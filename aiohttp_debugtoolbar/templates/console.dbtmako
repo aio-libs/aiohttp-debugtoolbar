@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>${title} // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="${static_path}css/debugger.css" 
+          type="text/css">
+    <script type="text/javascript">
+      var TRACEBACK = ${str(traceback_id)},
+          CONSOLE_MODE = ${console},
+          DEBUGGER_TOKEN = "${token}",
+          EVALEX = ${evalex};
+    </script>
+    <script data-main="${static_path}js/debugger"
+            src="${static_path}js/require.js"></script>
+  </head>
+  <body>
+
+    <div class="debugger">
+
+      <h1>Interactive Console</h1>
+      <div class="explanation">
+
+        In this console you can execute Python expressions in the context of
+        the application.  The initial namespace was created by the debugger
+        automatically.
+
+      </div>
+      <div class="console">
+        <div class="inner">The Console requires JavaScript.</div>
+      </div>
+
+      <div class="footer">
+        Brought to you by <strong class="arthur">DONT PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+      </div>
+
+    </div>
+
+  </body>
+</html>

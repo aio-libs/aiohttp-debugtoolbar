@@ -52,7 +52,7 @@ class DebugToolbar(object):
         # called in host app
         settings = request.app[APP_KEY]['settings']
         response_html = response.body
-        route =  request.app.router['debugtoolbar.request']
+        route = request.app.router['debugtoolbar.request']
         toolbar_url = route.url(parts={'request_id':request['id']})
 
         button_style = settings['button_style']
