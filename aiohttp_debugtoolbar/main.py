@@ -66,8 +66,8 @@ def setup(app, **kw):
                           name=STATIC_ROUTE_NAME)
 
 
-    # app.router.add_route('GET', '/_debugtoolbar_sse', views.sse,
-    #                      name='debugtoolbar.sse')
+    app.router.add_route('GET', '/_debugtoolbarsse', views.sse,
+                         name='debugtoolbar.sse')
     # app.router.add_route('GET', '_debug_toolbar/source', views.
     #                      name='debugtoolbar.source')
     # app.router.add_route('GET', '_debug_toolbar/execute',

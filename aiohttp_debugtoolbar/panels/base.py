@@ -1,7 +1,3 @@
-# from pyramid.decorator import reify
-# from pyramid.i18n import get_localizer
-# from pyramid.renderers import render
-# from pyramid.threadlocal import get_current_request
 from ..utils import render
 
 
