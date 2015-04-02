@@ -1,4 +1,5 @@
 import os
+from aiohttp_debugtoolbar.views import ExceptionDebugView
 import aiohttp_mako
 
 from . import views
@@ -9,7 +10,7 @@ from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
 default_panel_names = {
     'HeaderDebugPanel': panels.HeaderDebugPanel,
     # 'LoggingPanel': panels.LoggingPanel,
-    # 'PerformanceDebugPanel': panels.PerformanceDebugPanel,
+    'PerformanceDebugPanel': panels.PerformanceDebugPanel,
     # 'RenderingsDebugPanel': panels.RenderingsDebugPanel,
     # 'RequestVarsDebugPanel': panels.RequestVarsDebugPanel,
     # 'SQLADebugPanel': panels.SQLADebugPanel,
@@ -45,12 +46,16 @@ default_settings = {
 
 
 def setup(app, **kw):
+    config = {}
+    config.update(default_settings)
+    config.update(kw)
+
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     app[APP_KEY] = {}
     templates_app = os.path.join(APP_ROOT, 'templates')
     templates_panels = os.path.join(APP_ROOT, 'panels/templates')
 
-    app[APP_KEY]['settings'] = default_settings
+    app[APP_KEY]['settings'] = config
 
     aiohttp_mako.setup(app, input_encoding='utf-8',
                             output_encoding='utf-8',
@@ -60,7 +65,7 @@ def setup(app, **kw):
 
     static_location = os.path.join(APP_ROOT, 'static')
 
-
+    exc_handlers = ExceptionDebugView()
 
     app.router.add_static('/_debugtoolbar/static', static_location,
                           name=STATIC_ROUTE_NAME)
@@ -68,14 +73,14 @@ def setup(app, **kw):
 
     app.router.add_route('GET', '/_debugtoolbarsse', views.sse,
                          name='debugtoolbar.sse')
-    # app.router.add_route('GET', '_debug_toolbar/source', views.
-    #                      name='debugtoolbar.source')
-    # app.router.add_route('GET', '_debug_toolbar/execute',
-    #                      name='debugtoolbar.execute')
-    # app.router.add_route('GET', '_debug_toolbar/console',
-    #                      name='debugtoolbar.console')
-    # app.router.add_route('GET', '_debug_toolbar/exception',
-    #                      name='debugtoolbar.exception')
+    app.router.add_route('GET', '_debug_toolbar/source', exc_handlers.source,
+                         name='debugtoolbar.source')
+    app.router.add_route('GET', '_debug_toolbar/execute', exc_handlers.execute,
+                         name='debugtoolbar.execute')
+    app.router.add_route('GET', '_debug_toolbar/console', exc_handlers.console,
+                         name='debugtoolbar.console')
+    app.router.add_route('GET', '_debug_toolbar/exception', exc_handlers.exception,
+                         name='debugtoolbar.exception')
     # app.router.add_route('GET', '_debug_toolbar/sqlalchemy/sql_select',
     #                      name='debugtoolbar.sql_select')
     # app.router.add_route('GET', '_debug_toolbar/sqlalchemy/sql_explain',

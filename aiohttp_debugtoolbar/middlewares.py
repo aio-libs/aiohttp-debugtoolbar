@@ -1,4 +1,6 @@
 import asyncio
+import sys
+from .tbtools.tbtools import get_traceback
 import aiohttp_mako
 from aiohttp import web
 
@@ -63,25 +65,24 @@ def toolbar_middleware_factory(app, handler):
             response = e
 
         except Exception as e:
-            import ipdb; ipdb.set_trace()
 
             if exc_history is not None:
-                # tb = get_traceback(info=sys.exc_info(),
-                #                    skip=1,
-                #                    show_hidden_frames=False,
-                #                    ignore_system_exceptions=True)
-                # for frame in tb.frames:
-                #     exc_history.frames[frame.id] = frame
-                # exc_history.tracebacks[tb.id] = tb
-                # request['pdbt_tb'] = tb
-                #
-                # token = request.app[APP_KEY]['pdtb_token']
-                # qs = {'token': token, 'tb': str(tb.id)}
-                # msg = 'Exception at %s\ntraceback url: %s'
+                tb = get_traceback(info=sys.exc_info(),
+                                   skip=1,
+                                   show_hidden_frames=False,
+                                   ignore_system_exceptions=True,
+                                   exc=e)
+                for frame in tb.frames:
+                    exc_history.frames[frame.id] = frame
+                exc_history.tracebacks[tb.id] = tb
+                request['pdbt_tb'] = tb
 
-                # exc_url = debug_toolbar_url(request, 'exception', _query=qs)
-                # exc_url = request.app.router['debugtoolbar.exception'].url(qs)
-                # exc_msg = msg % (request.url, exc_url)
+                token = request.app[APP_KEY]['pdtb_token']
+                qs = {'token': token, 'tb': str(tb.id)}
+                msg = 'Exception at %s\ntraceback url: %s'
+
+                exc_url = request.app.router['debugtoolbar.exception'].url(query=qs)
+                exc_msg = msg % (request.path, exc_url)
                 # logger.exception(exc_msg)
 
                 # subenviron = request.environ.copy()
@@ -93,7 +94,9 @@ def toolbar_middleware_factory(app, handler):
                 #     subrequest.path_info[len(request.script_name):]
                 #
                 # response = request.invoke_subrequest(subrequest)
-                response = web.Response(body=b'')
+                body = tb.render_full(request).encode('utf-8', 'replace')
+                response = web.Response(body=body, status=500)
+
                 toolbar.process_response(request, response)
 
                 request['id'] = str((id(request)))
