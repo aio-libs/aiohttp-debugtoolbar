@@ -1,0 +1,57 @@
+% if timing_rows:
+<table class="table table-striped">
+	<colgroup>
+		<col style="width:20%"/>
+		<col/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Resource</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		% for i, (key, value) in enumerate(timing_rows):
+			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
+				<td>${key|h}</td>
+				<td>${value|h}</td>
+			</tr>
+		% endfor
+	</tbody>
+</table>
+% else:
+    <p>Resource statistics have been disabled. This is because the 'resource'
+    module could not be found. This module is not supported under Windows.</p>
+% endif
+
+<h4>Profile</h4>
+% if stats:
+    <p>Times in milliseconds</p>
+    <table class="pDebugSortable table table-striped">
+        <thead>
+            <tr>
+                <th>Calls</th>
+                <th>Total</th>
+                <th>Percall</th>
+                <th>Cumu</th>
+                <th>CumuPer</th>
+                <th>Func</th>
+            </tr>
+        </thead>
+        <tbody>
+            % for i, row in enumerate(function_calls):
+                <tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
+                    <td>${str(row['ncalls'])}</td>
+                    <td>${str(row['tottime'])}</td>
+                    <td>${'%.4f' % row['percall']}</td>
+                    <td>${str(row['cumtime'])}</td>
+                    <td>${'%.4f' % row['percall_cum']}</td>
+                    <td title="${row['filename_long']}">${row['filename']|h}</td>
+                </tr>
+            % endfor
+        </tbody>
+    </table>
+% else:
+    <p>The profiler is not activated. Activate the checkbox in the toolbar to use it.</p>
+% endif
+
