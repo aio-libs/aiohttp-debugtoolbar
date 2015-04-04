@@ -1,0 +1,47 @@
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h3 id="SelectModalLabel">SELECT</h3>
+</div>
+<div class="modal-body">
+
+<div class="piDebugPanelTitle">
+	<h3>SQL Select</h3>
+</div>
+<div class="piDebugPanelContent">
+	<div class="scroll">
+		<dl>
+			<dt>Executed SQL</dt>
+			<dd>${sql|n}</dd>
+			<dt>Time</dt>
+			<dd>${'%.2f' % (duration)} ms</dd>
+		</dl>
+		% if result:
+		<table class="djSqlExplain table table-striped"
+>
+			<thead>
+				<tr>
+					% for h in headers:
+						<th>${h.upper()}</th>
+					% endfor
+				</tr>
+			</thead>
+			<tbody>
+				% for i, row in enumerate(result):
+				    <tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
+						% for column in row:
+						<td>${column}</td>
+						% endfor
+					</tr>
+				% endfor
+			</tbody>
+		</table>
+		% else:
+		<p>Empty set</p>
+		% endif
+	</div>
+</div>
+
+</div>
+<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+</div>
