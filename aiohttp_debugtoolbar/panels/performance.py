@@ -1,30 +1,29 @@
 try:
     import cProfile as profile
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     try:
         import profile
-    except ImportError: # pragma: no cover
+    except ImportError:  # pragma: no cover
         profile = None
 try:
     import resource
-except ImportError: # pragma: no cover
-    resource = None # Will fail on Win32 systems
+except ImportError:  # pragma: no cover
+    resource = None  # Will fail on Win32 systems
 try:
     import pstats
-except ImportError: # pragma: no cover
-    pstats = None # will fail on braindead Debian systems that package pstats
-                  # separately from python for god-knows-what-reason
+except ImportError:  # pragma: no cover
+    pstats = None  # will fail on braindead Debian systems that package pstats
+    # separately from python for god-knows-what-reason
+
+
 import asyncio
-# import threading
 import time
 
 from .base import DebugPanel
 from ..utils import format_fname
 
-_ = lambda x: x
 
-#  TODO: ask advice what to do with this lock
-# lock = threading.Lock()
+_ = lambda x: x
 
 
 class PerformanceDebugPanel(DebugPanel):
@@ -153,26 +152,27 @@ class PerformanceDebugPanel(DebugPanel):
                                                          name)
 
     def process_response(self, response):
-        vars = {'timing_rows':None, 'stats':None, 'function_calls':[]}
+        vars = {'timing_rows': None, 'stats': None, 'function_calls': []}
         if self.has_resource:
             utime = 1000 * self._elapsed_ru('ru_utime')
             stime = 1000 * self._elapsed_ru('ru_stime')
             vcsw = self._elapsed_ru('ru_nvcsw')
             ivcsw = self._elapsed_ru('ru_nivcsw')
-            ## minflt = self._elapsed_ru('ru_minflt')
-            ## majflt = self._elapsed_ru('ru_majflt')
+            # minflt = self._elapsed_ru('ru_minflt')
+            # majflt = self._elapsed_ru('ru_majflt')
 
-# these are documented as not meaningful under Linux.  If you're running BSD
-# feel free to enable them, and add any others that I hadn't gotten to before
-# I noticed that I was getting nothing but zeroes and that the docs agreed. :-(
-#
-#            blkin = self._elapsed_ru('ru_inblock')
-#            blkout = self._elapsed_ru('ru_oublock')
-#            swap = self._elapsed_ru('ru_nswap')
-#            rss = self._end_rusage.ru_maxrss
-#            srss = self._end_rusage.ru_ixrss
-#            urss = self._end_rusage.ru_idrss
-#            usrss = self._end_rusage.ru_isrss
+            # these are documented as not meaningful under Linux.  If you're
+            # running BSD # feel free to enable them, and add any others that
+            # I hadn't gotten to before I noticed that I was getting nothing
+            # but zeroes and that the docs agreed. :-(
+            #
+            #            blkin = self._elapsed_ru('ru_inblock')
+            #            blkout = self._elapsed_ru('ru_oublock')
+            #            swap = self._elapsed_ru('ru_nswap')
+            #            rss = self._end_rusage.ru_maxrss
+            #            srss = self._end_rusage.ru_ixrss
+            #            urss = self._end_rusage.ru_idrss
+            #            usrss = self._end_rusage.ru_isrss
 
             # TODO l10n on values
             rows = (
@@ -182,12 +182,12 @@ class PerformanceDebugPanel(DebugPanel):
                 (_('Elapsed time'), '%0.3f msec' % self.total_time),
                 (_('Context switches'), '%d voluntary, %d involuntary' % (
                     vcsw, ivcsw)),
-#                (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
-#                    rss, srss, urss + usrss)),
-#                (_('Page faults'), '%d no i/o, %d requiring i/o' % (
-#                    minflt, majflt)),
-#                (_('Disk operations'), '%d in, %d out, %d swapout' % (
-#                    blkin, blkout, swap)),
+                # (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
+                # rss, srss, urss + usrss)),
+                # (_('Page faults'), '%d no i/o, %d requiring i/o' % (
+                # minflt, majflt)),
+                # (_('Disk operations'), '%d in, %d out, %d swapout' % (
+                # blkin, blkout, swap)),
             )
             vars['timing_rows'] = rows
         if self.is_active:

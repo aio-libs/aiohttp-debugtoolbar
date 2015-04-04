@@ -7,6 +7,10 @@ from .performance import PerformanceDebugPanel
 # from .routes import RoutesDebugPanel
 from .settings import SettingsDebugPanel
 # from .sqla import SQLADebugPanel
-# from .traceback import TracebackPanel
+from .traceback import TracebackPanel
 from .tweens import TweensDebugPanel
 from .versions import VersionDebugPanel
+
+# flake8
+(HeaderDebugPanel, PerformanceDebugPanel, SettingsDebugPanel, TracebackPanel,
+ TweensDebugPanel, VersionDebugPanel)

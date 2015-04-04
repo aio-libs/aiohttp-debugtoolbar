@@ -6,7 +6,6 @@ from .base import DebugPanel
 _ = lambda x: x
 
 
-
 class SettingsDebugPanel(DebugPanel):
     """
     A panel to display Pyramid deployment settings for your application (the
