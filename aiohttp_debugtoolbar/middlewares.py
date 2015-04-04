@@ -1,15 +1,14 @@
 import asyncio
 import sys
-from .tbtools.tbtools import get_traceback
 import aiohttp_mako
 from aiohttp import web
 
 from .toolbar import DebugToolbar
+from .tbtools.tbtools import get_traceback
 from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify
-# from .utils import ToolbarStorage, ExceptionHistory
 
 
-html_types = ('text/html', 'application/xhtml+xml')
+HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 
 @asyncio.coroutine
@@ -21,7 +20,6 @@ def toolbar_middleware_factory(app, handler):
 
     if not app[APP_KEY]['settings']['enabled']:
         return handler
-
 
     @asyncio.coroutine
     def toolbar_middleware(request):
@@ -56,7 +54,6 @@ def toolbar_middleware_factory(app, handler):
         for panel in toolbar.panels:
             _handler = panel.wrap_handler(_handler)
 
-
         try:
             response = yield from _handler(request)
             toolbar.status = response.status
@@ -81,8 +78,11 @@ def toolbar_middleware_factory(app, handler):
                 qs = {'token': token, 'tb': str(tb.id)}
                 msg = 'Exception at %s\ntraceback url: %s'
 
-                exc_url = request.app.router['debugtoolbar.exception'].url(query=qs)
-                exc_msg = msg % (request.path, exc_url)
+                exc_url = request.app.router['debugtoolbar.exception']\
+                    .url(query=qs)
+                # TODO: find out how to port following code example
+                assert exc_url, msg
+                # exc_msg = msg % (request.path, exc_url)
                 # logger.exception(exc_msg)
 
                 # subenviron = request.environ.copy()
@@ -105,10 +105,9 @@ def toolbar_middleware_factory(app, handler):
                 request_history.put(request['id'], toolbar)
                 toolbar.inject(request, response)
                 return response
-            # else:
-            #     logger.exception('Exception at %s' % request.path)
+            else:
+                # logger.exception('Exception at %s' % request.path)
                 raise e
-
 
         if intercept_redirects:
             # Intercept http redirect codes and display an html page with a
@@ -131,7 +130,7 @@ def toolbar_middleware_factory(app, handler):
         if not "/favicon.ico" == request.path:
             request_history.put(request['id'], toolbar)
 
-        if not show_on_exc_only and response.content_type in html_types:
+        if not show_on_exc_only and response.content_type in HTML_TYPES:
             toolbar.inject(request, response)
 
         return response

@@ -1,11 +1,10 @@
 import binascii
-import os
-from functools import partial
-from itertools import islice
-from collections import deque
 import ipaddress
+import os
 import sys
-import aiohttp_mako
+
+from collections import deque
+from itertools import islice
 
 APP_KEY = 'aiohttp_debugtollbar'
 TEMPLATE_KEY = 'aiohttp_debugtollbar_mako'
@@ -60,17 +59,25 @@ def addr_in(addr, hosts):
 
 def replace_insensitive(string, target, replacement):
     """Similar to string.replace() but is case insensitive
-    Code borrowed from: http://forums.devshed.com/python-programming-11/case-insensitive-string-replace-490921.html
+    Code borrowed from: http://forums.devshed.com/python-programming-11/
+    case-insensitive-string-replace-490921.html
     """
     no_case = string.lower()
     index = no_case.rfind(target.lower())
     if index >= 0:
         return string[:index] + replacement + string[index + len(target):]
-    else: # no results so return the original string
+    else:  # no results so return the original string
         return string
 
-render = partial(aiohttp_mako.render_string, app_key=TEMPLATE_KEY)
 
+def render(template_name, app, context, *, app_key=TEMPLATE_KEY,  **kw):
+
+    lookup = app[app_key]
+    template = lookup.get_template(template_name)
+    c = context.copy()
+    c.update(kw)
+    txt = template.render_unicode(**c)
+    return txt
 
 
 def common_segment_count(path, value):
@@ -87,7 +94,7 @@ def common_segment_count(path, value):
 
 def format_fname(value, _sys_path=None):
     if _sys_path is None:
-        _sys_path = sys.path # dependency injection
+        _sys_path = sys.path  # dependency injection
     # If the value is not an absolute path, the it is a builtin or
     # a relative file (thus a project file).
     if not os.path.isabs(value):
@@ -132,8 +139,10 @@ def escape(s, quote=False):
     if quote:
         s = s.replace('"', "&quot;")
     return s
+
+
 # TODO: remove somehow
 def text_(s, encoding='latin-1', errors='strict'):
     if isinstance(s, bytes):
         return s.decode(encoding, errors)
-    return s # pragma: no cover
+    return s  # pragma: no cover
