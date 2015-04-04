@@ -3,12 +3,9 @@ import json
 import aiohttp_mako
 
 from aiohttp import web
-from aiohttp_sse import EventSourceResponse
 
 from .tbtools.console import _ConsoleFrame
 from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
-
-
 
 
 @aiohttp_mako.template('toolbar.dbtmako', app_key=TEMPLATE_KEY)
@@ -45,35 +42,7 @@ def request_view(request):
             'history': hist_toolbars,
             'global_panels': global_panels,
             'request_id': request_id,
-            'request': toolbar.request if toolbar else None
-            }
-
-@asyncio.coroutine
-def sse(request):
-    # looks like sse is redurant here
-    # TODO: consider move to ajax
-    response = EventSourceResponse()
-    response.start(request)
-    history = request.app[APP_KEY]['request_history']
-
-    active_request_id = str(request.match_info.get('request_id'))
-    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
-
-    max_visible_requests = 10
-    if history:
-        last_request_pair = history.last(1)[0]
-        last_request_id = last_request_pair[0]
-        if not last_request_id == client_last_request_id:
-            data = []
-            for _id, toolbar in history.last(max_visible_requests):
-                req_type = 'active' if active_request_id == _id else ''
-                data.append([_id, toolbar.json, req_type])
-
-            if data:
-                _data = json.dumps(data)
-                response.send(_data, event='new_request', id=last_request_id)
-                response.stop_streaming()
-    return response
+            'request': toolbar.request if toolbar else None}
 
 
 class ExceptionDebugView:
@@ -87,7 +56,6 @@ class ExceptionDebugView:
     #         raise HTTPBadRequest('No token in request')
     #     if not token == request.registry.parent_registry.pdtb_token:
     #         raise HTTPBadRequest('Bad token in request')
-
 
     def _exception_history(self, request):
         return request.app[APP_KEY]['exc_history']
@@ -108,29 +76,27 @@ class ExceptionDebugView:
         cmd = request.GET.get('cmd') or request.POST.get('cmd')
         return cmd
 
-    # route_name='debugtoolbar.exception',
     @asyncio.coroutine
     def exception(self, request):
         tb_id = self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
-        body = tb.render_full(request).encode('utf-8', 'replace')
-        import ipdb; ipdb.set_trace()
-        response = web.Response(body, status=500)
+        text = tb.render_full(request).encode('utf-8', 'replace')
+        response = web.Response(text=text, status=500)
         return response
 
-    @aiohttp_mako.template('debugtoolbar.source',  app_key=TEMPLATE_KEY)
+    @asyncio.coroutine
     def source(self, request):
         exc_history = self._exception_history(request)
         _frame = self._get_frame(request)
         if _frame is not None:
             frame = exc_history.frames.get(_frame)
             if frame is not None:
-                body = frame.render_source()
-                return web.Response(body=body, content_type='text/html')
+                text = frame.render_source()
+                return web.Response(text=text, content_type='text/html')
         return web.HTTPBadRequest()
 
+    @asyncio.coroutine
     def execute(self, request):
-
         _exc_history = self._exception_history(request)
         if _exc_history.eval_exc:
             exc_history = _exc_history
@@ -140,7 +106,7 @@ class ExceptionDebugView:
                 frame = exc_history.frames.get(frame)
                 if frame is not None:
                     result = frame.console.eval(cmd)
-                    return web.Response(body=result, content_type='text/html')
+                    return web.Response(text=result, content_type='text/html')
         return web.HTTPBadRequest()
 
     @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
@@ -150,17 +116,47 @@ class ExceptionDebugView:
         token = request.GET.get('token')
         tb = self._get_tb(request)
 
-
         _exc_history = self._exception_history(request)
         vars = {
-            'evalex':           _exc_history.eval_exc and 'true' or 'false',
-            'console':          'true',
-            'title':            'Console',
-            'traceback_id':     tb or -1,
-            'root_path':        root_path,
-            'static_path':      static_path,
-            'token':            token,
+            'evalex': _exc_history.eval_exc and 'true' or 'false',
+            'console': 'true',
+            'title': 'Console',
+            'traceback_id': tb or -1,
+            'root_path': root_path,
+            'static_path': static_path,
+            'token': token,
             }
         if 0 not in _exc_history.frames:
             _exc_history.frames[0] = _ConsoleFrame({})
         return vars
+
+
+U_SSE_PAYLOAD = "id:{0}\nevent: new_request\ndata:{1}\n\n"
+
+
+@asyncio.coroutine
+def sse(request):
+    response = web.Response(status=200)
+    response.content_type = 'text/event-stream'
+    history = request.app[APP_KEY]['request_history']
+    response.text = ''
+
+    active_request_id = str(request.match_info.get('request_id'))
+    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
+
+    settings = request.app[APP_KEY]['settings']
+    max_visible_requests = settings['max_visible_requests']
+
+    if history:
+        last_request_pair = history.last(1)[0]
+        last_request_id = last_request_pair[0]
+        if not last_request_id == client_last_request_id:
+            data = []
+            for _id, toolbar in history.last(max_visible_requests):
+                req_type = 'active' if active_request_id == _id else ''
+                data.append([_id, toolbar.json, req_type])
+
+            if data:
+                response.text = U_SSE_PAYLOAD.format(last_request_id,
+                                                     json.dumps(data))
+    return response
