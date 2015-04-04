@@ -14,7 +14,7 @@ default_panel_names = {
     # 'RenderingsDebugPanel': panels.RenderingsDebugPanel,
     # 'RequestVarsDebugPanel': panels.RequestVarsDebugPanel,
     # 'SQLADebugPanel': panels.SQLADebugPanel,
-    # 'TracebackPanel': panels.TracebackPanel,
+    'TracebackPanel': panels.TracebackPanel,
     }
 
 
@@ -28,13 +28,12 @@ default_global_panel_names = {
 
 
 default_settings = {
-    # name, convert, default
     'enabled': True,
-    'intercept_exc': 'debug', # display or debug
+    'intercept_exc': 'debug',  # display or debug
     'intercept_redirects': True,
-    'panels': default_panel_names,  # as_globals_list, default_panel_names),
-    'extra_panels': [],  # as_globals_list, ()),
-    'global_panels': default_global_panel_names,  # as_globals_list, default_global_panel_names),
+    'panels': default_panel_names,
+    'extra_panels': [],
+    'global_panels': default_global_panel_names,
     'extra_global_panels': [],
     'hosts': ['127.0.0.1'],
     'exclude_prefixes': [],
@@ -42,7 +41,6 @@ default_settings = {
     'max_request_history': 100,
     'max_visible_requests':  10,
 }
-
 
 
 def setup(app, **kw):
@@ -58,10 +56,10 @@ def setup(app, **kw):
     app[APP_KEY]['settings'] = config
 
     aiohttp_mako.setup(app, input_encoding='utf-8',
-                            output_encoding='utf-8',
-                            default_filters=['decode.utf8'],
-                            directories=[templates_app, templates_panels],
-                            app_key=TEMPLATE_KEY)
+                       output_encoding='utf-8',
+                       default_filters=['decode.utf8'],
+                       directories=[templates_app, templates_panels],
+                       app_key=TEMPLATE_KEY)
 
     static_location = os.path.join(APP_ROOT, 'static')
 
@@ -70,32 +68,29 @@ def setup(app, **kw):
     app.router.add_static('/_debugtoolbar/static', static_location,
                           name=STATIC_ROUTE_NAME)
 
-
-    app.router.add_route('GET', '/_debugtoolbarsse', views.sse,
-                         name='debugtoolbar.sse')
-    app.router.add_route('GET', '_debug_toolbar/source', exc_handlers.source,
+    app.router.add_route('GET', '/_debugtoolbar/source', exc_handlers.source,
                          name='debugtoolbar.source')
-    app.router.add_route('GET', '_debug_toolbar/execute', exc_handlers.execute,
+    app.router.add_route('GET', '/_debugtoolbar/execute', exc_handlers.execute,
                          name='debugtoolbar.execute')
-    app.router.add_route('GET', '_debug_toolbar/console', exc_handlers.console,
+    app.router.add_route('GET', '/_debugtoolbar/console', exc_handlers.console,
                          name='debugtoolbar.console')
-    app.router.add_route('GET', '_debug_toolbar/exception', exc_handlers.exception,
+    app.router.add_route('GET', '/_debugtoolbar/exception',
+                         exc_handlers.exception,
                          name='debugtoolbar.exception')
-    # app.router.add_route('GET', '_debug_toolbar/sqlalchemy/sql_select',
+    # TODO: fix when sql will be ported
+    # app.router.add_route('GET', '_debugtoolbar/sqlalchemy/sql_select',
     #                      name='debugtoolbar.sql_select')
-    # app.router.add_route('GET', '_debug_toolbar/sqlalchemy/sql_explain',
+    # app.router.add_route('GET', '_debugtoolbar/sqlalchemy/sql_explain',
     #                      name='debugtoolbar.sql_explain')
     app.router.add_route('GET', '/_debugtoolbar/{request_id}',
-                         views.request_view,
-                         name='debugtoolbar.request')
+                         views.request_view, name='debugtoolbar.request')
 
-    app.router.add_route('GET', '/_debugtoolbar',
-                         views.request_view,
+    app.router.add_route('GET', '/_debugtoolbar', views.request_view,
                          name='debugtoolbar.main')
-    # app.router.add_route('GET', '/_debugtoolbar',
-    #                      views.request_view,
-    #                      name='debugtoolbar')
-
+    app.router.add_route('GET', '/_debugtoolbar', views.request_view,
+                         name='debugtoolbar')
+    app.router.add_route('GET', '/_debugtoolbarsse', views.sse,
+                         name='debugtoolbar.sse')
 
     def settings_opt(name):
         return app[APP_KEY]['settings'][name]
