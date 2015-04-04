@@ -1,0 +1,21 @@
+language: python
+python:
+  - 3.3
+  - 3.4
+
+install:
+  - pip install --upgrade setuptools
+  - pip install coveralls --use-mirrors
+  - pip install git+https://github.com/jettify/aiohttp_mako.git@master
+  - pip install -r requirements-dev.txt
+  - python setup.py develop
+
+script:
+  make cov
+after_success:
+  coveralls
+
+env:
+  matrix:
+    - PYTHONASYNCIODEBUG=1
+    - PYTHONASYNCIODEBUG=0
