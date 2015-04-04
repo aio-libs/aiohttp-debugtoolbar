@@ -41,6 +41,7 @@ Requirements
 
 .. _Python: https://www.python.org
 .. _asyncio: http://docs.python.org/3.4/library/asyncio.html
+.. _aiohttp: https://github.com/KeepSafe/aiohttp
 .. _aiopg: https://github.com/aio-libs/aiopg
 .. _aiomysql: https://github.com/aio-libs/aiomysql
 .. _aiohttp_mako: https://github.com/jettify/aiohttp_mako
