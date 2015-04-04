@@ -4,6 +4,13 @@ aiohttp_debugtoolbar
 Library is dirty port of pyramid_debugtoolbar_ and still in early development
 stages. Basic functionality has been ported:
 
+* basic panels
+* intercept redirects
+* intercept and pretty print exception (still need cleanup)
+* interactive console
+* show source code
+
+
 Ported Panels
 -------------
 ``HeaderDebugPanel``, ``PerformanceDebugPanel``, ``TracebackPanel``,
