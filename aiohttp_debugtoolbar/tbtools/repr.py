@@ -78,7 +78,7 @@ class _Helper(object):
         if len(paragraphs) > 1:
             title = paragraphs[0]
             text = '\n\n'.join(paragraphs[1:])
-        else: # pragma: no cover
+        else:  # pragma: no cover
             title = 'Help'
             text = paragraphs[0]
         sys.stdout._write(HELP_HTML % {'title': title, 'text': text})
@@ -94,7 +94,9 @@ def _add_subclass_info(inner, obj, bases):
     elif type(obj) is bases:
         return inner
     module = ''
-    if obj.__class__.__module__ not in ('builtins', '__builtin__','exceptions'):
+
+    if obj.__class__.__module__ not in ('builtins', '__builtin__',
+                                        'exceptions'):
         module = '<span class="module">%s.</span>' % obj.__class__.__module__
     return '%s%s(%s)' % (module, obj.__class__.__name__, inner)
 
@@ -202,7 +204,7 @@ class DebugReprGenerator(object):
     def fallback_repr(self):
         try:
             info = ''.join(format_exception_only(*sys.exc_info()[:2]))
-        except Exception: # pragma: no cover
+        except Exception:  # pragma: no cover
             info = '?'
         return text_(
             '<span class="brokenrepr">&lt;broken repr (%s)&gt;'

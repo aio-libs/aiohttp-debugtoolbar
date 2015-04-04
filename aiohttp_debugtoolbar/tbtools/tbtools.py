@@ -21,7 +21,6 @@ from .console import Console
 
 from ..utils import render, STATIC_ROUTE_NAME, APP_KEY
 from ..utils import escape, text_
-from ..utils import STATIC_PATH
 from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
 
@@ -185,12 +184,12 @@ class Traceback(object):
             logfile = sys.stderr
         tb = self.plaintext.encode('utf-8', 'replace').rstrip() + '\n'
         logfile.write(tb)
-
-    def paste(self, lodgeit_url):
-        """Create a paste and return the paste id."""
-        from xmlrpclib import ServerProxy
-        srv = ServerProxy('%sxmlrpc/' % lodgeit_url)
-        return srv.pastes.newPaste('pytb', self.plaintext)
+    # TODO: Looks like dead code
+    # def paste(self, lodgeit_url):
+    #     """Create a paste and return the paste id."""
+    #     from xmlrpclib import ServerProxy
+    #     srv = ServerProxy('%sxmlrpc/' % lodgeit_url)
+    #     return srv.pastes.newPaste('pytb', self.plaintext)
 
     def render_summary(self, include_title=True, request=None):
         """Render the traceback for the interactive console."""
@@ -204,15 +203,16 @@ class Traceback(object):
             if self.is_syntax_error:
                 title = text_('Syntax Error')
             else:
-                title = text_('Traceback <small>(most recent call last)</small>')
+                title = text_('Traceback <small>(most recent call last)'
+                              '</small>')
 
         for frame in self.frames:
             frames.append(
                 text_('<li%s>%s') % (
-                frame.info and text_(' title="%s"' % escape(frame.info)) or
+                    frame.info and text_(' title="%s"' % escape(frame.info)) or
                     text_(''),
-                frame.render()
-            ))
+                    frame.render()
+                ))
 
         if self.is_syntax_error:
             description_wrapper = text_('<pre class=syntaxerror>%s</pre>')
@@ -220,10 +220,11 @@ class Traceback(object):
             description_wrapper = text_('<blockquote>%s</blockquote>')
 
         vars = {
-            'classes':      text_(' '.join(classes)),
-            'title':        title and text_('<h3 class="traceback">%s</h3>' % title) or text_(''),
-            'frames':       text_('\n'.join(frames)),
-            'description':  description_wrapper % escape(self.exception),
+            'classes': text_(' '.join(classes)),
+            'title': title and text_('<h3 class="traceback">%s</h3>'
+                                     % title) or text_(''),
+            'frames': text_('\n'.join(frames)),
+            'description': description_wrapper % escape(self.exception),
         }
         app = request.app
         return render('exception_summary.dbtmako', app, vars, request=request)
@@ -241,20 +242,20 @@ class Traceback(object):
         evalex = request.app[APP_KEY]['exc_history'].eval_exc
 
         vars = {
-            'evalex':           evalex and 'true' or 'false',
-            'console':          'false',
-            'lodgeit_url':      escape(lodgeit_url),
-            'title':            exc,
-            'exception':        exc,
-            'exception_type':   escape(self.exception_type),
-            'summary':          summary,
-            'plaintext':        self.plaintext,
-            'plaintext_cs':     re.sub('-{2,}', '-', self.plaintext),
-            'traceback_id':     self.id,
-            'static_path':      static_path,
-            'token':            token,
-            'root_path':        root_path,
-            'url':              url,
+            'evalex': evalex and 'true' or 'false',
+            'console': 'false',
+            'lodgeit_url': escape(lodgeit_url),
+            'title': exc,
+            'exception': exc,
+            'exception_type': escape(self.exception_type),
+            'summary': summary,
+            'plaintext': self.plaintext,
+            'plaintext_cs': re.sub('-{2,}', '-', self.plaintext),
+            'traceback_id': self.id,
+            'static_path': static_path,
+            'token': token,
+            'root_path': root_path,
+            'url': url,
         }
         return render('exception.dbtmako', request.app, vars, request=request)
 
@@ -310,11 +311,11 @@ class Frame(object):
     def render(self):
         """Render a single frame in a traceback."""
         return FRAME_HTML % {
-            'id':               self.id,
-            'filename':         escape(self.filename),
-            'lineno':           self.lineno,
-            'function_name':    escape(self.function_name),
-            'current_line':     escape(self.current_line.strip())
+            'id': self.id,
+            'filename': escape(self.filename),
+            'lineno': self.lineno,
+            'function_name': escape(self.function_name),
+            'current_line': escape(self.current_line.strip())
         }
 
     def get_annotated_lines(self):

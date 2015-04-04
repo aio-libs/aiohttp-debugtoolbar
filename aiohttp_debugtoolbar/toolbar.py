@@ -2,9 +2,7 @@ from urllib.parse import unquote as url_unquote
 from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
 
 
-html_types = ('text/html', 'application/xhtml+xml')
-
-class DebugToolbar(object):
+class DebugToolbar:
 
     def __init__(self, request, panel_classes, global_panel_classes):
         self.panels = []
@@ -53,7 +51,7 @@ class DebugToolbar(object):
         settings = request.app[APP_KEY]['settings']
         response_html = response.body
         route = request.app.router['debugtoolbar.request']
-        toolbar_url = route.url(parts={'request_id':request['id']})
+        toolbar_url = route.url(parts={'request_id': request['id']})
 
         button_style = settings['button_style']
 
@@ -68,8 +66,7 @@ class DebugToolbar(object):
         toolbar_html = toolbar_html.encode(response.charset or 'utf-8')
         response.body = replace_insensitive(
             response_html, b'</body>',
-            toolbar_html + b'</body>'
-            )
+            toolbar_html + b'</body>')
 
 toolbar_html_template = """\
 <script type="text/javascript">
@@ -83,7 +80,8 @@ toolbar_html_template = """\
 <div id="pDebug">
     <div style="display: block; %(button_style)s" id="pDebugToolbarHandle">
         <a title="Show Toolbar" id="pShowToolBarButton"
-           href="%(toolbar_url)s" target="pDebugToolbar">&#171; FIXME: Debug Toolbar</a>
+           href="%(toolbar_url)s" target="pDebugToolbar">&#171;
+           FIXME: Debug Toolbar</a>
     </div>
 </div>
 """

@@ -17,9 +17,11 @@ from types import CodeType
 from .repr import debug_repr, dump, helper
 from ..utils import escape
 
+
 _local = threading.local()
 
-class HTMLStringO(object):
+
+class HTMLStringO:
     """A StringO version that HTML escapes on write."""
 
     def __init__(self):
@@ -135,6 +137,7 @@ class _ConsoleLoader(object):
 
 def _wrap_compiler(console):
     compile = console.compile
+
     def func(source, filename, symbol):
         code = compile(source, filename, symbol)
         console.loader.register(code, source)
@@ -217,4 +220,3 @@ class _ConsoleFrame(object):
     def __init__(self, namespace):
         self.console = Console(namespace)
         self.id = 0
-
