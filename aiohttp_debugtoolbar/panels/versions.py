@@ -15,7 +15,8 @@ for distribution in pkg_resources.working_set:
                      'name': name})
 
 packages = sorted(packages, key=itemgetter('lowername'))
-pyramid_version = pkg_resources.get_distribution('pyramid').version
+# TODO: fix this, looks like aiohttp_version nerver used
+aiohttp_version = pkg_resources.get_distribution('aiohttp').version
 
 
 class VersionDebugPanel(DebugPanel):
