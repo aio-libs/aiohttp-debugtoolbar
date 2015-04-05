@@ -75,7 +75,7 @@ def test_redirect(request):
 @aiohttp_mako.template('index.mako')
 @asyncio.coroutine
 def test_page(request):
-    title = 'Pyramid Debugtoolbar'
+    title = 'Aiohttp Debugtoolbar'
     # log.info(title)
 
     return {

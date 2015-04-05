@@ -5,7 +5,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Pyramid Debug Toolbar</title>
+    <title>Aiohttp Debug Toolbar</title>
     <!--bootstrap version 2.3.2-->
     <link rel="stylesheet" type="text/css" href="${static_path}css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${static_path}css/toolbar.css">
@@ -33,7 +33,7 @@
           </button>
           <a class="navbar-brand" href="${root_path}">
             <!-- <img src="${static_path}img/pyramid.png"/> -->
-            Pyramid DebugToolbar</a>
+            Aiohttp DebugToolbar</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
