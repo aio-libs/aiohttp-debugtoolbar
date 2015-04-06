@@ -47,15 +47,16 @@ def request_view(request):
 
 class ExceptionDebugView:
 
-    # TODO: validate request
+    def _validate_token(self, request):
+        exc_history = self._exception_history(request)
+        token = request.GET.get('token')
 
-    # def __init__(self, request):
-    #     if exc_history is None:
-    #         raise HTTPBadRequest('No exception history')
-    #     if not token:
-    #         raise HTTPBadRequest('No token in request')
-    #     if not token == request.registry.parent_registry.pdtb_token:
-    #         raise HTTPBadRequest('Bad token in request')
+        if exc_history is None:
+            raise web.HTTPBadRequest(text='No exception history')
+        if not token:
+            raise web.HTTPBadRequest(text='No token in request')
+        if not (token == request.app[APP_KEY]['pdtb_token']):
+            raise web.HTTPBadRequest(text='Bad token in request')
 
     def _exception_history(self, request):
         return request.app[APP_KEY]['exc_history']
@@ -78,6 +79,7 @@ class ExceptionDebugView:
 
     @asyncio.coroutine
     def exception(self, request):
+        self._validate_token(request)
         tb_id = self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
         text = tb.render_full(request).encode('utf-8', 'replace')
@@ -86,6 +88,7 @@ class ExceptionDebugView:
 
     @asyncio.coroutine
     def source(self, request):
+        self._validate_token(request)
         exc_history = self._exception_history(request)
         _frame = self._get_frame(request)
         if _frame is not None:
@@ -97,6 +100,8 @@ class ExceptionDebugView:
 
     @asyncio.coroutine
     def execute(self, request):
+        self._validate_token(request)
+
         _exc_history = self._exception_history(request)
         if _exc_history.eval_exc:
             exc_history = _exc_history
@@ -111,6 +116,8 @@ class ExceptionDebugView:
 
     @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
     def console(self, request):
+        self._validate_token(request)
+
         static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
         root_path = request.app.router[ROOT_ROUTE_NAME].url()
         token = request.GET.get('token')
