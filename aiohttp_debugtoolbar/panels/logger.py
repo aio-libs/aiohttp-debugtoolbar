@@ -71,7 +71,7 @@ class LoggingPanel(DebugPanel):
                 'line': record.lineno,
             })
 
-        self._data = {'records': records}
+        self.data = {'records': records}
 
     @property
     def has_content(self):

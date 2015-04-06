@@ -37,7 +37,7 @@ class TracebackPanel(DebugPanel):
         url = ''  # self.request.route_url(EXC_ROUTE_NAME, _query=qs)
         evalex = self.exc_history.eval_exc
 
-        self._data = {
+        self.data = {
             'evalex': evalex and 'true' or 'false',
             'console': 'false',
             'lodgeit_url': None,

@@ -1,8 +1,8 @@
-# from aiohttp.helpers import reify
+from aiohttp.helpers import reify
 from ..utils import render
 
 
-class DebugPanel(object):
+class DebugPanel:
     """
     Base class for debug panels. A new instance of this class is created
     for every request.
@@ -64,13 +64,11 @@ class DebugPanel(object):
     #: define an arbitrary URL for the panel or do some other custom action
     #: when the user clicks on the panel's tab in the toolbar.
     url = ''
-    # TODO: do we need to port this decorator?
-
-    @property
+    @reify
     def data(self):
         """A dictionary of data, updated during the request lifecycle, and
         later used to render the panel's HTML."""
-        return self._data
+        return {}
 
     @property
     def request(self):
@@ -83,7 +81,6 @@ class DebugPanel(object):
         :param request: The instance of :class:`pyramid.request.Request` that
                         this object is wrapping.
         """
-        self._data = {}
         self._request = request
 
     def render_content(self, request):
@@ -97,7 +94,7 @@ class DebugPanel(object):
         The ``request`` here is the active request in the toolbar. Not the
         original request that this panel represents.
         """
-        context = self._data.copy()
+        context = self.data.copy()
         context.update(self.render_vars(request))
         return render(self.template, request.app, context, request=request)
 

@@ -26,7 +26,7 @@ class TweensDebugPanel(DebugPanel):
     def populate(self, request):
         # TODO: fix this works only for functions and classes
         tweens = [t.__name__ for t in request.app.middlewares]
-        self._data = {'tweens': tweens}
+        self.data = {'tweens': tweens}
 
     def render_vars(self, request):
         static_path = self._request.app.router[STATIC_ROUTE_NAME]\

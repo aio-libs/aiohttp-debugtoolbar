@@ -112,7 +112,7 @@ class SQLADebugPanel(DebugPanel):
                 'context': query['context'],
             })
 
-        self._data = {
+        self.data = {
             'queries': data,
             'text': str,
         }

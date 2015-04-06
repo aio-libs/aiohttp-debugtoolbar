@@ -22,7 +22,7 @@ class RequestVarsDebugPanel(DebugPanel):
     nav_title = title
 
     def __init__(self, request):
-        self._data = data = {}
+        self.data = data = {}
         # attr_dict = request.__dict__.copy()
         # # environ is displayed separately
         # # del attr_dict['environ']

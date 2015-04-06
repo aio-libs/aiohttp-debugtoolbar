@@ -38,4 +38,4 @@ class SettingsDebugPanel(DebugPanel):
         settings = request.app[APP_KEY]['settings']
         # filter out non-pyramid prefixed settings to avoid duplication
         reprs = [(k, repr(v)) for k, v in settings.items()]
-        self._data = {'settings': sorted(reprs, key=itemgetter(0))}
+        self.data = {'settings': sorted(reprs, key=itemgetter(0))}

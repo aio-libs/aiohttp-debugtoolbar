@@ -42,4 +42,4 @@ class RoutesDebugPanel(DebugPanel):
                 "handler": repr(route.handler)
             })
 
-        self._data = {'routes': info}
+        self.data = {'routes': info}

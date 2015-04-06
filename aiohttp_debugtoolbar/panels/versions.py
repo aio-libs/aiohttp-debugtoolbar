@@ -32,7 +32,7 @@ class VersionDebugPanel(DebugPanel):
 
     def __init__(self, request):
         super().__init__(request)
-        self._data = {'platform': self.get_platform(), 'packages': packages}
+        self.data = {'platform': self.get_platform(), 'packages': packages}
 
     def _get_platform_name(self):
         return platform.platform()

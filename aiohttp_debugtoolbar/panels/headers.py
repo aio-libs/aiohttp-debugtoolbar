@@ -22,5 +22,5 @@ class HeaderDebugPanel(DebugPanel):
     def process_response(self, response):
         response_headers = [(k, v) for k, v in
                             sorted(response.headers.items())]
-        self._data = {'request_headers': self._request_headers,
+        self.data = {'request_headers': self._request_headers,
                       'response_headers': response_headers}

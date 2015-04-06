@@ -193,4 +193,4 @@ class PerformanceDebugPanel(DebugPanel):
         if self.is_active:
             vars['stats'] = self.stats
             vars['function_calls'] = self.function_calls
-        self._data = vars
+        self.data = vars
