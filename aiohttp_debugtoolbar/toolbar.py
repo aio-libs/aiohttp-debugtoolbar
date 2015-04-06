@@ -1,3 +1,4 @@
+import asyncio
 from urllib.parse import unquote as url_unquote
 from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
 
@@ -34,14 +35,15 @@ class DebugToolbar:
                 'scheme': 'http',
                 'status_code': self.status}
 
+    @asyncio.coroutine
     def process_response(self, request, response):
         # if isinstance(response, WSGIHTTPException):
         #   # the body of a WSGIHTTPException needs to be "prepared"
             # response.prepare(request.environ)
         for panel in self.panels:
-            panel.process_response(response)
+            yield from panel.process_response(response)
         for panel in self.global_panels:
-            panel.process_response(response)
+            yield from panel.process_response(response)
 
     def inject(self, request, response):
         """

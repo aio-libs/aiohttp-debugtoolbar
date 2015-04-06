@@ -24,7 +24,7 @@ def toolbar_middleware_factory(app, handler):
     @asyncio.coroutine
     def toolbar_middleware(request):
 
-        request['exc_history'] = exc_history
+        # request['exc_history'] = exc_history
         panel_classes = settings.get('panels', {})
         global_panel_classes = settings.get('global_panels', {})
         hosts = settings.get('hosts', [])
@@ -62,7 +62,6 @@ def toolbar_middleware_factory(app, handler):
             response = e
 
         except Exception as e:
-
             if exc_history is not None:
                 tb = get_traceback(info=sys.exc_info(),
                                    skip=1,
@@ -97,7 +96,7 @@ def toolbar_middleware_factory(app, handler):
                 body = tb.render_full(request).encode('utf-8', 'replace')
                 response = web.Response(body=body, status=500)
 
-                toolbar.process_response(request, response)
+                yield from toolbar.process_response(request, response)
 
                 request['id'] = str((id(request)))
                 toolbar.status = response.status
@@ -122,7 +121,7 @@ def toolbar_middleware_factory(app, handler):
                     app_key=TEMPLATE_KEY)
                 response = _response
 
-        toolbar.process_response(request, response)
+        yield from toolbar.process_response(request, response)
         request['id'] = hexlify(id(request))
 
         # Don't store the favicon.ico request

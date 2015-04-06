@@ -1,3 +1,4 @@
+import asyncio
 import re
 
 from ..tbtools.tbtools import Traceback
@@ -25,6 +26,7 @@ class TracebackPanel(DebugPanel):
             return True
         return False
 
+    @asyncio.coroutine
     def process_response(self, response):
         if not self.has_content:
             return

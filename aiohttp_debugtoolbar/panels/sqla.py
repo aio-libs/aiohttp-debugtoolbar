@@ -1,3 +1,4 @@
+import asyncio
 import json
 
 import hashlib
@@ -83,6 +84,7 @@ class SQLADebugPanel(DebugPanel):
         if self.queries:
             return "%d" % (len(self.queries))
 
+    @asyncio.coroutine
     def process_response(self, response):
         data = []
         for query in self.queries:
