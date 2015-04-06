@@ -14,12 +14,13 @@ stages. Basic functionality has been ported:
 Ported Panels
 -------------
 ``HeaderDebugPanel``, ``PerformanceDebugPanel``, ``TracebackPanel``,
-``SettingsDebugPanel``, ``TweensDebugPanel``, ``VersionDebugPanel``
+``SettingsDebugPanel``, ``TweensDebugPanel``, ``VersionDebugPanel``,
+``RoutesDebugPanel``
 
 Panels that will be ported
 --------------------------
 ``LoggingPanel``,  ``RequestVarsDebugPanel``, ``SQLADebugPanel``,
-``RoutesDebugPanel``
+
 
 
 Help Needed
