@@ -19,8 +19,7 @@ default_panel_names = {
 
 
 default_global_panel_names = {
-    # 'IntrospectionDebugPanel': panels.IntrospectionDebugPanel,
-    # 'RoutesDebugPanel': panels.RoutesDebugPanel,
+    'RoutesDebugPanel': panels.RoutesDebugPanel,
     'SettingsDebugPanel': panels.SettingsDebugPanel,
     'TweensDebugPanel': panels.TweensDebugPanel,
     'VersionDebugPanel': panels.VersionDebugPanel,

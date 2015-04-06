@@ -4,7 +4,7 @@ from .headers import HeaderDebugPanel
 from .performance import PerformanceDebugPanel
 # from .renderings import RenderingsDebugPanel
 # from .request_vars import RequestVarsDebugPanel
-# from .routes import RoutesDebugPanel
+from .routes import RoutesDebugPanel
 from .settings import SettingsDebugPanel
 # from .sqla import SQLADebugPanel
 from .traceback import TracebackPanel
@@ -13,4 +13,4 @@ from .versions import VersionDebugPanel
 
 # flake8
 (HeaderDebugPanel, PerformanceDebugPanel, SettingsDebugPanel, TracebackPanel,
- TweensDebugPanel, VersionDebugPanel)
+ TweensDebugPanel, VersionDebugPanel, RoutesDebugPanel)
