@@ -56,8 +56,8 @@ def toolbar_middleware_factory(app, handler):
 
         try:
             response = yield from _handler(request)
-            toolbar.status = response.status
-        except (web.HTTPSuccessful, web.HTTPRedirection) as e:
+        except (web.HTTPSuccessful, web.HTTPRedirection,
+                web.HTTPClientError) as e:
             # TODO: fix dirty hack
             response = e
 
@@ -107,7 +107,7 @@ def toolbar_middleware_factory(app, handler):
             else:
                 # logger.exception('Exception at %s' % request.path)
                 raise e
-
+        toolbar.status = response.status
         if intercept_redirects:
             # Intercept http redirect codes and display an html page with a
             # link to the target.
