@@ -4,8 +4,6 @@ from pprint import saferepr
 from .base import DebugPanel
 
 
-
-
 _ = lambda x: x
 
 

@@ -1,5 +1,4 @@
 from .headers import HeaderDebugPanel
-# from .introspection import IntrospectionDebugPanel
 # from .logger import LoggingPanel
 from .performance import PerformanceDebugPanel
 # from .renderings import RenderingsDebugPanel

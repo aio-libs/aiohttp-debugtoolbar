@@ -110,7 +110,7 @@ class Line(object):
         }
 
 
-class Traceback(object):
+class Traceback:
     """Wraps a traceback."""
 
     def __init__(self, exc_type, exc_value, tb):

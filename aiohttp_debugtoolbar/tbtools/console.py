@@ -194,7 +194,7 @@ class _InteractiveConsole(code.InteractiveInterpreter):
         sys.stdout.write(data)
 
 
-class Console(object):
+class Console:
     """An interactive console."""
 
     def __init__(self, globals=None, locals=None):
@@ -213,7 +213,7 @@ class Console(object):
             sys.stdout = old_sys_stdout
 
 
-class _ConsoleFrame(object):
+class _ConsoleFrame:
     """Helper class so that we can reuse the frame console code for the
     standalone console.
     """

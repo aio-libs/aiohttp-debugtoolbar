@@ -65,6 +65,7 @@ class DebugPanel:
     #: define an arbitrary URL for the panel or do some other custom action
     #: when the user clicks on the panel's tab in the toolbar.
     url = ''
+
     @reify
     def data(self):
         """A dictionary of data, updated during the request lifecycle, and

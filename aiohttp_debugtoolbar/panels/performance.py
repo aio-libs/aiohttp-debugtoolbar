@@ -149,6 +149,7 @@ class PerformanceDebugPanel(DebugPanel):
     def _elapsed_ru(self, name):
         return getattr(self._end_rusage, name) - getattr(self._start_rusage,
                                                          name)
+
     @asyncio.coroutine
     def process_response(self, response):
         vars = {'timing_rows': None, 'stats': None, 'function_calls': []}
