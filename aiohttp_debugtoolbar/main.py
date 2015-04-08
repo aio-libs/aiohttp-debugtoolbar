@@ -12,7 +12,7 @@ default_panel_names = {
     # 'LoggingPanel': panels.LoggingPanel,
     'PerformanceDebugPanel': panels.PerformanceDebugPanel,
     # 'RenderingsDebugPanel': panels.RenderingsDebugPanel,
-    # 'RequestVarsDebugPanel': panels.RequestVarsDebugPanel,
+    'RequestVarsDebugPanel': panels.RequestVarsDebugPanel,
     # 'SQLADebugPanel': panels.SQLADebugPanel,
     'TracebackPanel': panels.TracebackPanel,
     }

@@ -3,7 +3,7 @@ from .headers import HeaderDebugPanel
 # from .logger import LoggingPanel
 from .performance import PerformanceDebugPanel
 # from .renderings import RenderingsDebugPanel
-# from .request_vars import RequestVarsDebugPanel
+from .request_vars import RequestVarsDebugPanel
 from .routes import RoutesDebugPanel
 from .settings import SettingsDebugPanel
 # from .sqla import SQLADebugPanel

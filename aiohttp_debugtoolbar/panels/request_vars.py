@@ -1,10 +1,9 @@
+import asyncio
 from pprint import saferepr
 
 from .base import DebugPanel
-# from ..utils import dictrepr
 
 
-raise NotImplementedError
 
 
 _ = lambda x: x
@@ -22,21 +21,21 @@ class RequestVarsDebugPanel(DebugPanel):
     nav_title = title
 
     def __init__(self, request):
+        super().__init__(request)
+
+    @asyncio.coroutine
+    def process_response(self, response):
         self.data = data = {}
-        # attr_dict = request.__dict__.copy()
-        # # environ is displayed separately
-        # # del attr_dict['environ']
-        # if 'response' in attr_dict:
-        #     attr_dict['response'] = repr(attr_dict['response'])
+        request = self.request
+        yield from request.post()
         data.update({
             'get': [(k, request.GET.getall(k)) for k in request.GET],
             'post': [(k, saferepr(v)) for k, v in request.POST.items()],
             'cookies': [(k, request.cookies.get(k)) for k in request.cookies],
-            # 'attrs': dictrepr(attr_dict),
-            'attrs': '',
-            # 'environ': dictrepr(request.environ),
-            'environ': '',
+            'attrs': [(k, v) for k, v in request.items()],
         })
+        # TODO: think about separate session table, is it possible to implement
+        # aiohttp_sessions support?
         # if hasattr(request, 'session'):
         #     data.update({
         #         'session': dictrepr(request.session),
