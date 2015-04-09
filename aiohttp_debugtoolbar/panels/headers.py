@@ -1,7 +1,7 @@
 import asyncio
 from .base import DebugPanel
 
-
+__all__ = ['HeaderDebugPanel']
 _ = lambda x: x
 
 

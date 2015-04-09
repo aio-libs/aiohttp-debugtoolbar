@@ -2,9 +2,7 @@ from aiohttp.web_urldispatcher import PlainRoute, DynamicRoute, StaticRoute
 from .base import DebugPanel
 
 
-__all__ = ('RoutesDebugPanel',)
-
-
+__all__ = ['RoutesDebugPanel']
 _ = lambda x: x
 
 

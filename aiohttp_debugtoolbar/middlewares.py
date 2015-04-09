@@ -7,7 +7,7 @@ from .toolbar import DebugToolbar
 from .tbtools.tbtools import get_traceback
 from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify
 
-
+__all__ = ['toolbar_middleware_factory']
 HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 

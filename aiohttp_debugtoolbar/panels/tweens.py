@@ -1,11 +1,11 @@
 from aiohttp_debugtoolbar.utils import STATIC_ROUTE_NAME
-
 from .base import DebugPanel
 
+__all__ = ['MiddlewaresDebugPanel']
 _ = lambda x: x
 
 
-class TweensDebugPanel(DebugPanel):
+class MiddlewaresDebugPanel(DebugPanel):
     """
     A panel to display the tweens used by your Pyramid application.
     """

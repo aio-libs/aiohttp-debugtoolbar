@@ -4,6 +4,7 @@ from pprint import saferepr
 from .base import DebugPanel
 
 
+__all__ = ['RequestVarsDebugPanel']
 _ = lambda x: x
 
 

@@ -3,6 +3,8 @@ from ..utils import APP_KEY
 
 from .base import DebugPanel
 
+
+__all__ = ['SettingsDebugPanel']
 _ = lambda x: x
 
 
@@ -16,18 +18,6 @@ class SettingsDebugPanel(DebugPanel):
     template = 'settings.dbtmako'
     title = _('Settings')
     nav_title = title
-
-    filter_old_settings = [
-        'debug_authorization',
-        'debug_notfound',
-        'debug_routematch',
-        'debug_templates',
-        'reload_templates',
-        'reload_resources',
-        'reload_assets',
-        'default_locale_name',
-        'prevent_http_cache',
-    ]
 
     def __init__(self, request):
         super().__init__(request)

@@ -1,12 +1,13 @@
 import asyncio
 import re
 
-from ..tbtools.tbtools import Traceback
 from .base import DebugPanel
+from ..tbtools.tbtools import Traceback
 from ..utils import escape, APP_KEY, STATIC_ROUTE_NAME
 from ..utils import ROOT_ROUTE_NAME
-# from ..utils import EXC_ROUTE_NAME
 
+
+__all__ = ['TracebackPanel']
 _ = lambda x: x
 
 

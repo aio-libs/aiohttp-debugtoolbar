@@ -23,6 +23,7 @@ from .base import DebugPanel
 from ..utils import format_fname
 
 
+__all__ = ['PerformanceDebugPanel']
 _ = lambda x: x
 
 

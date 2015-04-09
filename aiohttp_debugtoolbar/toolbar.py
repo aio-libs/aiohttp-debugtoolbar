@@ -3,6 +3,9 @@ from urllib.parse import unquote as url_unquote
 from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
 
 
+__all__ = ['DebugToolbar']
+
+
 class DebugToolbar:
 
     def __init__(self, request, panel_classes, global_panel_classes):

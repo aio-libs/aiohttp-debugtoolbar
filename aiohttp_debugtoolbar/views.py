@@ -117,7 +117,6 @@ class ExceptionDebugView:
     @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
     def console(self, request):
         self._validate_token(request)
-
         static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
         root_path = request.app.router[ROOT_ROUTE_NAME].url()
         token = request.GET.get('token')

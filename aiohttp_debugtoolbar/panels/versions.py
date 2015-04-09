@@ -5,7 +5,10 @@ from operator import itemgetter
 
 from .base import DebugPanel
 
+
+__all__ = ['VersionDebugPanel']
 _ = lambda x: x
+
 
 packages = []
 for distribution in pkg_resources.working_set:
