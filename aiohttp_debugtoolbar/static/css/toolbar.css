@@ -34,6 +34,9 @@ li.nav-label {
 li.nav-label strong {
     font-size: 150%;
 }
+a.active {
+    background: #fff;
+}
 
 #pDebug #pDebugToolbarHandle {
     position:fixed;
