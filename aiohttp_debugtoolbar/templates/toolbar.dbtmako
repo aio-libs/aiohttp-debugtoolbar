@@ -84,7 +84,6 @@
             var requests = $('ul#requests');
             var data = JSON.parse(e.data);
             data.forEach(function (item) {
-                console.log(item);
                 var details = item[1];
                 var request_id = item[0];
                 var active = item[2];
