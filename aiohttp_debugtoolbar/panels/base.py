@@ -121,14 +121,6 @@ class DebugPanel:
         Override this method to track properties of the response."""
         pass
 
-    def process_beforerender(self, event):
-        """Receives every :class:`pyramid.events.BeforeRender`
-        event invoked during the request/response lifecycle of the request.
-
-        Override this method to track properties of the rendering events.
-        """
-        pass
-
     def wrap_handler(self, handler):
         """May be overridden to monitor the entire lifecycle of the request.
 
