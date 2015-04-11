@@ -25,8 +25,8 @@ def toolbar_middleware_factory(app, handler):
     def toolbar_middleware(request):
 
         # request['exc_history'] = exc_history
-        panel_classes = settings.get('panels', {})
-        global_panel_classes = settings.get('global_panels', {})
+        panel_classes = settings.get('panels', [])
+        global_panel_classes = settings.get('global_panels', [])
         hosts = settings.get('hosts', [])
 
         show_on_exc_only = settings.get('show_on_exc_only')

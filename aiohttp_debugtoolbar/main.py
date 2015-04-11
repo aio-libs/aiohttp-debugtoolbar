@@ -1,29 +1,26 @@
 import os
-from aiohttp_debugtoolbar.views import ExceptionDebugView
 import aiohttp_mako
+from .views import ExceptionDebugView
 
 from . import views
 from . import panels
 from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
     ToolbarStorage, ExceptionHistory
 
-default_panel_names = {
-    'HeaderDebugPanel': panels.HeaderDebugPanel,
-    # 'LoggingPanel': panels.LoggingPanel,
-    'PerformanceDebugPanel': panels.PerformanceDebugPanel,
-    # 'RenderingsDebugPanel': panels.RenderingsDebugPanel,
-    'RequestVarsDebugPanel': panels.RequestVarsDebugPanel,
-    # 'SQLADebugPanel': panels.SQLADebugPanel,
-    'TracebackPanel': panels.TracebackPanel,
-    }
+default_panel_names = [
+    panels.HeaderDebugPanel,
+    panels.PerformanceDebugPanel,
+    panels.RequestVarsDebugPanel,
+    panels.TracebackPanel,
+    ]
 
 
-default_global_panel_names = {
-    'RoutesDebugPanel': panels.RoutesDebugPanel,
-    'SettingsDebugPanel': panels.SettingsDebugPanel,
-    'TweensDebugPanel': panels.TweensDebugPanel,
-    'VersionDebugPanel': panels.VersionDebugPanel,
-}
+default_global_panel_names = [
+    panels.RoutesDebugPanel,
+    panels.SettingsDebugPanel,
+    panels.MiddlewaresDebugPanel,
+    panels.VersionDebugPanel,
+]
 
 
 default_settings = {
