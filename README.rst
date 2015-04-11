@@ -15,28 +15,26 @@ Ported Panels
 -------------
 ``HeaderDebugPanel``, ``PerformanceDebugPanel``, ``TracebackPanel``,
 ``SettingsDebugPanel``, ``TweensDebugPanel``, ``VersionDebugPanel``,
-``RoutesDebugPanel``
+``RoutesDebugPanel``,  ``RequestVarsDebugPanel``
 
 Panels that will be ported
 --------------------------
-``LoggingPanel``,  ``RequestVarsDebugPanel``, ``SQLADebugPanel``,
+``LoggingPanel`` , ``SQLADebugPanel``,
 
 
 
 Help Needed
 -----------
 * write tests
-* update jquery to newer version
-* refresh html design
-* rethink UI
-* port EvenSouse to simple ajax calls or websockets
-
 * increase coverage
+* port EvenSource to simple ajax calls or websockets
 * refactor tbtools module
 * port more panels
 * port demo app
 * add events to aiopg_ and aiomysql_
-
+* update jquery to newer version
+* refresh html design
+* rethink UI
 
 Requirements
 ------------
