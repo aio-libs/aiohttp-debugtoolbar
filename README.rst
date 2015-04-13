@@ -1,5 +1,9 @@
 aiohttp_debugtoolbar
 ====================
+.. image:: https://travis-ci.org/jettify/aiohttp_debugtoolbar.svg?branch=master
+    :target: https://travis-ci.org/jettify/aiohttp_debugtoolbar
+    :alt: |Build status|
+
 **aiohttp_debugtoolbar** provides a debug toolbar your aiohttp_ web application.
 Library is dirty port of pyramid_debugtoolbar_ and still in early development
 stages. Basic functionality has been ported:
