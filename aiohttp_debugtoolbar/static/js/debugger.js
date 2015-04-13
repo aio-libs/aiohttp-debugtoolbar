@@ -15,7 +15,7 @@ pyramid_debugtoolbar_require([
     /**
      * if we are in console mode, show the console.
      */
-    if (window.CONSOLE_MODE && windoe.EVALEX) {
+    if (window.CONSOLE_MODE && window.EVALEX) {
       openShell(null, $('div.console div.inner').empty(), 0);
     }
 
