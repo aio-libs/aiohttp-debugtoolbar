@@ -4,7 +4,7 @@ import aiohttp_mako
 
 from aiohttp import web
 
-from .tbtools.console import _ConsoleFrame
+# from .tbtools.console import _ConsoleFrame
 from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
 
 
@@ -67,20 +67,24 @@ class ExceptionDebugView:
             frm = int(frm)
         return frm
 
+    @asyncio.coroutine
     def _get_tb(self, request):
+        yield from request.read()
         tb = request.GET.get('tb') or request.POST.get('tb')
         if tb is not None:
             tb = int(tb)
         return tb
 
+    @asyncio.coroutine
     def _get_cmd(self, request):
+        yield from request.read()
         cmd = request.GET.get('cmd') or request.POST.get('cmd')
         return cmd
 
     @asyncio.coroutine
     def exception(self, request):
         self._validate_token(request)
-        tb_id = self._get_tb(request)
+        tb_id = yield from self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
         text = tb.render_full(request).encode('utf-8', 'replace')
         response = web.Response(text=text, status=500)
@@ -105,7 +109,7 @@ class ExceptionDebugView:
         _exc_history = self._exception_history(request)
         if _exc_history.eval_exc:
             exc_history = _exc_history
-            cmd = self._get_cmd(request)
+            cmd = yield from self._get_cmd(request)
             frame = self._get_frame(request)
             if frame is not None and cmd is not None:
                 frame = exc_history.frames.get(frame)
@@ -114,27 +118,28 @@ class ExceptionDebugView:
                     return web.Response(text=result, content_type='text/html')
         return web.HTTPBadRequest()
 
-    @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
-    def console(self, request):
-        self._validate_token(request)
-        static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
-        root_path = request.app.router[ROOT_ROUTE_NAME].url()
-        token = request.GET.get('token')
-        tb = self._get_tb(request)
-
-        _exc_history = self._exception_history(request)
-        vars = {
-            'evalex': _exc_history.eval_exc and 'true' or 'false',
-            'console': 'true',
-            'title': 'Console',
-            'traceback_id': tb or -1,
-            'root_path': root_path,
-            'static_path': static_path,
-            'token': token,
-            }
-        if 0 not in _exc_history.frames:
-            _exc_history.frames[0] = _ConsoleFrame({})
-        return vars
+    # TODO: figure out how to enable console mode on frontend
+    # @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
+    # def console(self, request):
+    #     self._validate_token(request)
+    #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
+    #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
+    #     token = request.GET.get('token')
+    #     tb = yield from self._get_tb(request)
+    #
+    #     _exc_history = self._exception_history(request)
+    #     vars = {
+    #         'evalex': _exc_history.eval_exc and 'true' or 'false',
+    #         'console': 'true',
+    #         'title': 'Console',
+    #         'traceback_id': tb or -1,
+    #         'root_path': root_path,
+    #         'static_path': static_path,
+    #         'token': token,
+    #         }
+    #     if 0 not in _exc_history.frames:
+    #         _exc_history.frames[0] = _ConsoleFrame({})
+    #     return vars
 
 
 U_SSE_PAYLOAD = "id:{0}\nevent: new_request\ndata:{1}\n\n"
