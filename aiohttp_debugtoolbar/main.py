@@ -68,8 +68,9 @@ def setup(app, **kw):
                          name='debugtoolbar.source')
     app.router.add_route('GET', '/_debugtoolbar/execute', exc_handlers.execute,
                          name='debugtoolbar.execute')
-    app.router.add_route('GET', '/_debugtoolbar/console', exc_handlers.console,
-                         name='debugtoolbar.console')
+    # app.router.add_route('GET', '/_debugtoolbar/console',
+    # exc_handlers.console,
+    #                      name='debugtoolbar.console')
     app.router.add_route('GET', '/_debugtoolbar/exception',
                          exc_handlers.exception,
                          name='debugtoolbar.exception')
