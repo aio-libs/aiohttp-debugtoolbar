@@ -31,7 +31,7 @@ Help Needed
 -----------
 * write tests
 * increase coverage
-* port EvenSource to simple ajax calls or websockets
+* port EventSource to simple ajax calls or websockets
 * refactor tbtools module
 * port more panels
 * port demo app
