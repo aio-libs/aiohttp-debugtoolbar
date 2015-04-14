@@ -80,10 +80,29 @@ class TestMiddleware(BaseTest):
             yield from self._setup_app(func)
 
             # make sure that exception page rendered
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
+            resp = yield from aiohttp.request(
+                'GET', self.url, allow_redirects=False, loop=self.loop)
             txt = yield from resp.text()
             self.assertEqual(200, resp.status)
             self.assertTrue('Redirect intercepted' in txt)
+
+        self.loop.run_until_complete(go())
+
+    def test_intercept_redirects_disabled(self):
+        @asyncio.coroutine
+        def func(request):
+            raise web.HTTPMovedPermanently(location='/')
+
+        @asyncio.coroutine
+        def go():
+            yield from self._setup_app(func, intercept_redirects=False)
+
+            # make sure that exception page rendered
+            resp = yield from aiohttp.request(
+                'GET', self.url, allow_redirects=False, loop=self.loop)
+            txt = yield from resp.text()
+            self.assertEqual(301, resp.status)
+            self.assertEqual('301: Moved Permanently', txt)
 
         self.loop.run_until_complete(go())
 
