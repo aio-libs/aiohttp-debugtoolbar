@@ -4,9 +4,10 @@ aiohttp_debugtoolbar
     :target: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar
     :alt: |Build status|
 
-**aiohttp_debugtoolbar** provides a debug toolbar your aiohttp_ web application.
-Library is dirty port of pyramid_debugtoolbar_ and still in early development
-stages. Basic functionality has been ported:
+**aiohttp_debugtoolbar** provides a debug toolbar for your aiohttp_
+web application.  Library is dirty port of pyramid_debugtoolbar_ and
+still in early development stages. Basic functionality has been
+ported:
 
 * basic panels
 * intercept redirects
