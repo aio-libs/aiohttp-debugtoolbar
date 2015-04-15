@@ -1,7 +1,7 @@
 aiohttp_debugtoolbar
 ====================
-.. image:: https://travis-ci.org/jettify/aiohttp_debugtoolbar.svg?branch=master
-    :target: https://travis-ci.org/jettify/aiohttp_debugtoolbar
+.. image:: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar.svg?branch=master
+    :target: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar
     :alt: |Build status|
 
 **aiohttp_debugtoolbar** provides a debug toolbar your aiohttp_ web application.
