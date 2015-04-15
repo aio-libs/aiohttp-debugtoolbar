@@ -7,12 +7,12 @@ _ = lambda x: x
 
 class MiddlewaresDebugPanel(DebugPanel):
     """
-    A panel to display the tweens used by your Pyramid application.
+    A panel to display the middlewares used by your Pyramid application.
     """
-    name = 'Tweens'
+    name = 'Middlewares'
     has_content = True
-    template = 'tweens.dbtmako'
-    title = _('Tweens')
+    template = 'middlewares.dbtmako'
+    title = _('Middlewares')
     nav_title = title
 
     def __init__(self, request):
@@ -25,8 +25,8 @@ class MiddlewaresDebugPanel(DebugPanel):
 
     def populate(self, request):
         # TODO: fix this works only for functions and classes
-        tweens = [t.__name__ for t in request.app.middlewares]
-        self.data = {'tweens': tweens}
+        middlewares = [t.__name__ for t in request.app.middlewares]
+        self.data = {'middlewares': middlewares}
 
     def render_vars(self, request):
         static_path = self._request.app.router[STATIC_ROUTE_NAME]\

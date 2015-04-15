@@ -4,7 +4,7 @@ from .request_vars import RequestVarsDebugPanel
 from .routes import RoutesDebugPanel
 from .settings import SettingsDebugPanel
 from .traceback import TracebackPanel
-from .tweens import MiddlewaresDebugPanel
+from .middlewares import MiddlewaresDebugPanel
 from .versions import VersionDebugPanel
 
 # flake8

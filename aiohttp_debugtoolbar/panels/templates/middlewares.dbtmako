@@ -2,14 +2,14 @@
 	<thead>
 		<tr>
 			<th>Order (from server to application)</th>
-			<th>Tween</th>
+			<th>Middleware</th>
 		</tr>
 	</thead>
 	<tbody>
-		% for i, tween in enumerate(tweens):
+		% for i, middleware in enumerate(middlewares):
 			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
 				<td>${str(i)}</td>
-				<td>${tween}</td>
+				<td>${middleware}</td>
 			</tr>
 		% endfor
 	</tbody>
