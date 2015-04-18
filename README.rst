@@ -3,6 +3,10 @@ aiohttp_debugtoolbar
 .. image:: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar.svg?branch=master
     :target: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar
     :alt: |Build status|
+.. image:: https://coveralls.io/repos/aio-libs/aiohttp_debugtoolbar/badge.svg
+    :target: https://coveralls.io/r/aio-libs/aiohttp_debugtoolbar
+    :alt: |Coverage status|
+
 
 **aiohttp_debugtoolbar** provides a debug toolbar for your aiohttp_
 web application.  Library is dirty port of pyramid_debugtoolbar_ and
