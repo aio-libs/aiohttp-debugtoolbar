@@ -177,12 +177,12 @@ class _InteractiveConsole(code.InteractiveInterpreter):
     def runcode(self, code):
         try:
             exec(code, self.globals, self.locals)
-        except Exception:
-            self.showtraceback()
+        except Exception as exc:
+            self.showtraceback(exc)
 
-    def showtraceback(self):
+    def showtraceback(self, exc):
         from .tbtools import get_current_traceback
-        tb = get_current_traceback(skip=1)
+        tb = get_current_traceback(skip=1, exc=exc)
         sys.stdout._write(tb.render_summary())
 
     def showsyntaxerror(self, filename=None):

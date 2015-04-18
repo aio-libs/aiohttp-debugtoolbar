@@ -29,7 +29,7 @@ class TestExceptionViews(BaseTest):
         self.addCleanup(srv.close)
         return app
 
-    def test_view_sourse(self):
+    def test_view_source(self):
         @asyncio.coroutine
         def func(request):
             raise NotImplementedError
@@ -57,7 +57,7 @@ class TestExceptionViews(BaseTest):
 
         self.loop.run_until_complete(go())
 
-    def test_view_(self):
+    def test_view_execute(self):
         @asyncio.coroutine
         def func(request):
             raise NotImplementedError
@@ -81,7 +81,9 @@ class TestExceptionViews(BaseTest):
                                                   loop=self.loop)
                 yield from resp.text()
                 self.assertEqual(resp.status, 200)
-                params = {'frm': frame_id, 'token': token, 'cmd': 'int(10.5)'}
+
+                params = {'frm': frame_id, 'token': token,
+                          'cmd': 'dump(object)'}
                 url = '{}/_debugtoolbar/execute'.format(self.url)
                 resp = yield from aiohttp.request('GET', url, params=params,
                                                   loop=self.loop)
