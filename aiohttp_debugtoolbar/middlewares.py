@@ -17,6 +17,7 @@ def toolbar_middleware_factory(app, handler):
     settings = app[APP_KEY]['settings']
     request_history = app[APP_KEY]['request_history']
     exc_history = app[APP_KEY]['exc_history']
+    intercept_exc = app[APP_KEY]['settings']['intercept_exc']
 
     if not app[APP_KEY]['settings']['enabled']:
         return handler
@@ -62,7 +63,7 @@ def toolbar_middleware_factory(app, handler):
             response = e
 
         except Exception as e:
-            if exc_history is not None:
+            if intercept_exc:
                 tb = get_traceback(info=sys.exc_info(),
                                    skip=1,
                                    show_hidden_frames=False,

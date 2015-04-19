@@ -150,3 +150,20 @@ class TestMiddleware(BaseTest):
             self.assertEqual(200, resp.status)
             self.assertEqual(payload, {"a": 42})
         self.loop.run_until_complete(go())
+
+    def test_do_not_intercept_exceptions(self):
+
+        @asyncio.coroutine
+        def func(request):
+            raise NotImplementedError
+
+        @asyncio.coroutine
+        def go():
+            yield from self._setup_app(func, intercept_exc=False)
+            # make sure that exception page rendered
+            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
+            txt = yield from resp.text()
+            self.assertEqual(500, resp.status)
+            self.assertFalse('<div class="debugger">' in txt)
+
+        self.loop.run_until_complete(go())
