@@ -25,7 +25,7 @@ default_global_panel_names = [
 
 default_settings = {
     'enabled': True,
-    'intercept_exc': 'debug',  # display or debug
+    'intercept_exc': 'debug',  # display or debug or False
     'intercept_redirects': True,
     'panels': default_panel_names,
     'extra_panels': [],

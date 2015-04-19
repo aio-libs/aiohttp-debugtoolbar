@@ -70,7 +70,7 @@ class DebugPanel:
     def data(self):
         """A dictionary of data, updated during the request lifecycle, and
         later used to render the panel's HTML."""
-        return {}
+        return {}  # pragma: no cover
 
     @property
     def request(self):
