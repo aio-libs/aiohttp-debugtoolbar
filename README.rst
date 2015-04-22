@@ -45,6 +45,33 @@ Help Needed
 * refresh html design
 * rethink UI
 
+Play With Demo
+--------------
+
+1) clone repository::
+
+    $ git clone git@github.com:aio-libs/aiohttp_debugtoolbar.git
+
+2) create virtual environment, for instance using *virtualenvwraper*::
+
+    $ cd aiohttp_debugtoolbar
+    $ mkvirtualenv -p ``which python3` aiohttp_debugtoolbar
+
+3) install `aiohttp_mako`::
+
+    $ pip install git+https://github.com/jettify/aiohttp_mako.git@master
+
+4) install `aiohttp_debugtoolbar` and other dependencies::
+
+    $ pip install -e .
+
+5) run demo.py::
+
+    python3 demo/demo.py
+
+Now you can play with `aiohttp_debugtoolbar` on http://127.0.0.1:9000
+
+
 Requirements
 ------------
 
@@ -59,5 +86,5 @@ Requirements
 .. _aiohttp: https://github.com/KeepSafe/aiohttp
 .. _aiopg: https://github.com/aio-libs/aiopg
 .. _aiomysql: https://github.com/aio-libs/aiomysql
-.. _aiohttp_mako: https://github.com/jettify/aiohttp_mako
+.. _aiohttp_mako: https://github.com/aio-libs/aiohttp_mako
 .. _pyramid_debugtoolbar: https://github.com/Pylons/pyramid_debugtoolbar
