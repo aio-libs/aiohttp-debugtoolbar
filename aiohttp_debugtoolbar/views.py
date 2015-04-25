@@ -86,8 +86,9 @@ class ExceptionDebugView:
         self._validate_token(request)
         tb_id = yield from self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
-        text = tb.render_full(request).encode('utf-8', 'replace')
-        response = web.Response(text=text, status=500)
+        body = tb.render_full(request).encode('utf-8', 'replace')
+        response = web.Response(status=500)
+        response.body = body
         return response
 
     @asyncio.coroutine
