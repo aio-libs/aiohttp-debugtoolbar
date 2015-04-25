@@ -90,4 +90,15 @@ class TestExceptionViews(BaseTest):
                 yield from resp.text()
                 self.assertEqual(resp.status, 200)
 
+            # wrong token
+            params = {'frm': frame_id, 'token': 'x', 'cmd': 'dump(object)'}
+            resp = yield from aiohttp.request('GET', url, params=params,
+                                              loop=self.loop)
+            self.assertEqual(resp.status, 400)
+            # no token at all
+            params = {'frm': frame_id, 'cmd': 'dump(object)'}
+            resp = yield from aiohttp.request('GET', url, params=params,
+                                              loop=self.loop)
+            self.assertEqual(resp.status, 400)
+
         self.loop.run_until_complete(go())
