@@ -87,7 +87,7 @@ class ExceptionDebugView:
         tb_id = yield from self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
         body = tb.render_full(request).encode('utf-8', 'replace')
-        response = web.Response(status=500)
+        response = web.Response(status=200)
         response.body = body
         return response
 

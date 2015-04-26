@@ -102,3 +102,32 @@ class TestExceptionViews(BaseTest):
             self.assertEqual(resp.status, 400)
 
         self.loop.run_until_complete(go())
+
+    def test_view_exception(self):
+        @asyncio.coroutine
+        def func(request):
+            raise NotImplementedError
+
+        @asyncio.coroutine
+        def go():
+            app = yield from self._setup_app(func)
+            # make sure that exception page rendered
+            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
+            txt = yield from resp.text()
+            self.assertEqual(500, resp.status)
+            self.assertTrue('<div class="debugger">' in txt)
+
+            token = app[APP_KEY]['pdtb_token']
+            exc_history = app[APP_KEY]['exc_history']
+
+            tb_id = list(exc_history.tracebacks.keys())[0]
+            url = '{}/_debugtoolbar/exception?tb={}&token={}'.format(
+                self.url, tb_id, token)
+
+            resp = yield from aiohttp.request('GET', url,
+                                              loop=self.loop)
+            yield from resp.text()
+            self.assertEqual(resp.status, 200)
+            self.assertTrue('<div class="debugger">' in txt)
+
+        self.loop.run_until_complete(go())
