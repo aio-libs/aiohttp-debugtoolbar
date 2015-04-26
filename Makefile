@@ -3,7 +3,10 @@
 flake:
 	flake8 aiohttp_debugtoolbar tests
 
-test:
+test: flake
+	nosetests -s ./tests/
+
+vtest:
 	nosetests -s -v ./tests/
 
 cov cover coverage: flake
