@@ -1,11 +1,11 @@
 import os
 import aiohttp_mako
-from .views import ExceptionDebugView
 
 from . import views
 from . import panels
 from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
     ToolbarStorage, ExceptionHistory
+from .views import ExceptionDebugView
 
 default_panel_names = [
     panels.HeaderDebugPanel,
