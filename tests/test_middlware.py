@@ -3,7 +3,7 @@ import aiohttp
 import aiohttp_mako
 from aiohttp import web
 
-from aiohttp_debugtoolbar import toolbar_middleware_factory, setup as tbstup
+from aiohttp_debugtoolbar import toolbar_middleware_factory, setup as tbsetup
 
 from .base import BaseTest
 
@@ -15,7 +15,7 @@ class TestMiddleware(BaseTest):
         app = web.Application(loop=self.loop,
                               middlewares=[toolbar_middleware_factory])
 
-        tbstup(app, **kw)
+        tbsetup(app, **kw)
         lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
                                     output_encoding='utf-8',
                                     default_filters=['decode.utf8'])

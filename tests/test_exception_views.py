@@ -3,8 +3,8 @@ import aiohttp
 import aiohttp_mako
 from aiohttp import web
 
-from aiohttp_debugtoolbar import toolbar_middleware_factory, setup as tbstup, \
-    APP_KEY
+from aiohttp_debugtoolbar import (toolbar_middleware_factory,
+                                  setup as tbsetup, APP_KEY)
 
 from .base import BaseTest
 
@@ -15,7 +15,7 @@ class TestExceptionViews(BaseTest):
         app = web.Application(loop=self.loop,
                               middlewares=[toolbar_middleware_factory])
 
-        tbstup(app, **kw)
+        tbsetup(app, **kw)
         lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
                                     output_encoding='utf-8',
                                     default_filters=['decode.utf8'])
