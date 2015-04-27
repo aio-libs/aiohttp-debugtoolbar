@@ -143,7 +143,7 @@ class ExceptionDebugView:
     #     return vars
 
 
-U_SSE_PAYLOAD = "id:{0}\nevent: new_request\ndata:{1}\n\n"
+U_SSE_PAYLOAD = "id: {0}\nevent: new_request\ndata: {1}\n\n"
 
 
 @asyncio.coroutine
