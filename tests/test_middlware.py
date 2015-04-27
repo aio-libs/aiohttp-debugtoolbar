@@ -40,8 +40,11 @@ class TestMiddleware(BaseTest):
         def go():
             yield from self._setup_app(func)
 
-            # make sure that toolbar buttorn present on apps page
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
+            # make sure that toolbar button present on apps page
+            # add cookie to enforce performance panel measure time
+            cookie = {"pdtb_active": "pDebugPerformancePanel"}
+            resp = yield from aiohttp.request('GET', self.url, cookies=cookie,
+                                              loop=self.loop)
             self.assertEqual(200, resp.status)
             txt = yield from resp.text()
             self.assertTrue('pDebugToolbarHandle' in txt)
