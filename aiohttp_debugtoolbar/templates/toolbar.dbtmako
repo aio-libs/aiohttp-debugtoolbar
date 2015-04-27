@@ -114,7 +114,7 @@
                 source.close();
             }
 
-            source = new EventSource('${root_path}sse?request_id=${request_id}');
+            source = new EventSource('${root_path}/sse?request_id=${request_id}');
             source.addEventListener('new_request', new_request);
         }
 

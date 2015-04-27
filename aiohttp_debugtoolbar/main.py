@@ -79,15 +79,16 @@ def setup(app, **kw):
     #                      name='debugtoolbar.sql_select')
     # app.router.add_route('GET', '_debugtoolbar/sqlalchemy/sql_explain',
     #                      name='debugtoolbar.sql_explain')
+
+    app.router.add_route('GET', '/_debugtoolbar/sse', views.sse,
+                         name='debugtoolbar.sse')
+
     app.router.add_route('GET', '/_debugtoolbar/{request_id}',
                          views.request_view, name='debugtoolbar.request')
-
     app.router.add_route('GET', '/_debugtoolbar', views.request_view,
                          name='debugtoolbar.main')
     app.router.add_route('GET', '/_debugtoolbar', views.request_view,
                          name='debugtoolbar')
-    app.router.add_route('GET', '/_debugtoolbarsse', views.sse,
-                         name='debugtoolbar.sse')
 
     def settings_opt(name):
         return app[APP_KEY]['settings'][name]
