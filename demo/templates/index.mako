@@ -14,9 +14,6 @@
           <a href="${app.router['test_exc'].url()}">Exception example</a>
         </p>
         <p>
-          <a href="${app.router['test_notfound'].url()}">Not found example</a>
-        </p>
-        <p>
           <a href="#'].url()}">High-order characters in URL example</a>
         </p>
 		% if show_sqla_link:
@@ -27,11 +24,13 @@
         <p>
           <a href="${app.router['test_ajax'].url()}">AJAX example</a>
         </p>
-        <p>
-          <a href="#">Chameleon Exception example</a>
-        </p>
+
         <p>
           <a href="${app.router['test_mako_exc'].url()}">Mako Exception example</a>
+        </p>
+
+        <p>
+          <a href="${app.router['test_jinja2_exc'].url()}">Jinja2 Exception example</a>
         </p>
 
     </body>

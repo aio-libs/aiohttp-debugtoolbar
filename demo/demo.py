@@ -1,22 +1,20 @@
-import os
 import asyncio
 import json
-from aiohttp import web
-import aiohttp_debugtoolbar
-import aiohttp_mako
-from aiohttp_debugtoolbar.middlewares import toolbar_middleware_factory
-
 import logging
-import sys
+import os
 
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+import jinja2
+import aiohttp_debugtoolbar
+import aiohttp_jinja2
+import aiohttp_mako
+from aiohttp import web
+from aiohttp_debugtoolbar import toolbar_middleware_factory
 
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-root.addHandler(ch)
+
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__file__)
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+templates = os.path.join(PROJECT_ROOT, 'templates')
 
 
 def json_renderer(func):
@@ -43,28 +41,15 @@ def exc(request):
     raise NotImplementedError
 
 
-@asyncio.coroutine
-def notfound(request):
-    raise web.HTTPNotFound()
-
-
-# @view_config(route_name='test_ajax', renderer='__main__:templates/ajax.mako')
 @aiohttp_mako.template('ajax.mako')
 def test_ajax(request):
-    return {}
+    return {'app': request.app}
 
 
 @json_renderer
-@aiohttp_mako.template('ajax.mako')
+@asyncio.coroutine
 def call_ajax(request):
     return {'ajax': 'success'}
-
-
-@aiohttp_mako.template('notfound.mako')
-def notfound_view(request):
-    request.response.status_code = 404
-    return aiohttp_mako.render_template('notfound.mako', request, {},
-                                        status=404)
 
 
 @asyncio.coroutine
@@ -76,7 +61,6 @@ def test_redirect(request):
 @asyncio.coroutine
 def test_page(request):
     title = 'Aiohttp Debugtoolbar'
-    # log.info(title)
 
     return {
         'title': title,
@@ -86,47 +70,49 @@ def test_page(request):
 
 
 @aiohttp_mako.template('error.mako')
-@asyncio.coroutine
-def test_template_exc(request):
-    return {'title': 'Test template exceptions'}
+def test_mako_exc(request):
+    return {'title': 'Test mako template exceptions'}
 
 
-here = os.path.dirname(os.path.abspath(__file__))
-templates = os.path.join(here, 'templates')
+@aiohttp_jinja2.template('error.jinja2')
+def test_jinja2_exc(request):
+    return {'title': 'Test jinja2 template exceptions'}
 
 
 @asyncio.coroutine
 def init(loop):
     app = web.Application(loop=loop, middlewares=[toolbar_middleware_factory])
 
-    aiohttp_debugtoolbar.setup(app)
+    aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
 
     aiohttp_mako.setup(app, input_encoding='utf-8',
                        output_encoding='utf-8',
                        default_filters=['decode.utf8'],
-                       directories=[templates],
-    )
+                       directories=[templates])
 
-    app['DEBUG_TEMPLATE'] = True
-
-
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(templates))
 
     # static view
-    app.router.add_static('/static', os.path.join(here, 'static'))
-    # routes setup
+    app.router.add_static('/static', os.path.join(PROJECT_ROOT, 'static'))
+
     app.router.add_route('GET', '/redirect', test_redirect,
                          name='test_redirect')
     app.router.add_route('GET', '/', test_page, name='test_page')
     app.router.add_route('GET', '/exc', exc, name='test_exc')
-    app.router.add_route('GET', '/notfound', notfound, name='test_notfound')
+
+    # ajax handlers
     app.router.add_route('GET', '/ajax', test_ajax, name='test_ajax')
     app.router.add_route('GET', '/call_ajax', call_ajax, name='call_ajax')
-    app.router.add_route('GET', '/mako_exc', test_template_exc,
+
+    # templates error handlers
+    app.router.add_route('GET', '/mako_exc', test_mako_exc,
                          name='test_mako_exc')
+    app.router.add_route('GET', '/jinja2_exc', test_jinja2_exc,
+                         name='test_jinja2_exc')
 
     handler = app.make_handler()
     srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
-    print("Server started at http://127.0.0.1:9000")
+    log.debug("Server started at http://127.0.0.1:9000")
     return srv, handler
 
 
