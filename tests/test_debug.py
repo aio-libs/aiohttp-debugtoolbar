@@ -13,7 +13,7 @@ import unittest
 from aiohttp_debugtoolbar.tbtools.console import HTMLStringO
 from aiohttp_debugtoolbar.tbtools.repr import (debug_repr, DebugReprGenerator,
                                                dump, helper)
-from aiohttp_debugtoolbar.utils import text_
+from aiohttp_debugtoolbar.tbtools import text_
 
 
 class Test_debug_repr(unittest.TestCase):

@@ -18,8 +18,8 @@ import re
 from traceback import format_exception_only
 from collections import deque
 
-
-from ..utils import escape, text_
+from ..tbtools import text_
+from ..utils import escape
 
 
 missing = object()

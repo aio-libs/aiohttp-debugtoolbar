@@ -19,11 +19,11 @@ from tokenize import TokenError
 from aiohttp.helpers import reify
 from .console import Console
 
+from ..tbtools import text_
 from ..utils import render, STATIC_ROUTE_NAME, APP_KEY
-from ..utils import escape, text_
+from ..utils import escape
 from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
-
 _coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
 _line_re = re.compile(r'^(.*?)$(?m)')
 _funcdef_re = re.compile(r'^(\s*def\s)|(.*(?<!\w)lambda(:|\s))|^(\s*@)')
