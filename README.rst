@@ -15,7 +15,7 @@ ported:
 
 * basic panels
 * intercept redirects
-* intercept and pretty print exception (still need cleanup)
+* intercept and pretty print exception
 * interactive console
 * show source code
 
@@ -29,7 +29,6 @@ Ported Panels
 Panels that will be ported
 --------------------------
 ``LoggingPanel`` , ``SQLADebugPanel``,
-
 
 
 Help Needed
