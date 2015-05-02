@@ -13,12 +13,13 @@ _ = lambda x: x
 packages = []
 for distribution in pkg_resources.working_set:
     name = distribution.project_name
+    deps = [d.project_name for d in distribution.requires()]
     packages.append({'version': distribution.version,
                      'lowername': name.lower(),
-                     'name': name})
+                     'name': name,
+                     'dependencies': deps})
 
 packages = sorted(packages, key=itemgetter('lowername'))
-# TODO: fix this, looks like aiohttp_version nerver used
 aiohttp_version = pkg_resources.get_distribution('aiohttp').version
 
 
@@ -35,7 +36,9 @@ class VersionDebugPanel(DebugPanel):
 
     def __init__(self, request):
         super().__init__(request)
-        self.data = {'platform': self.get_platform(), 'packages': packages}
+        self.data = {'platform': self.get_platform(),
+                     'packages': packages,
+                     'aiohttp_version': aiohttp_version}
 
     def _get_platform_name(self):
         return platform.platform()

@@ -1,5 +1,7 @@
 <h4>Platform</h4>
 <div>${platform}</div>
+<h4>aiohttp</h4>
+<div>${aiohttp_version}</div>
 
 <h4>Packages</h4>
 
@@ -8,6 +10,7 @@
 		<tr>
 			<th>Package Name</th>
 			<th>Version</th>
+			<th>Dependencies</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -15,6 +18,10 @@
 			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
 				<td>${package['name']|h}</td>
 				<td>${package['version']|h}</td>
+				<td>
+					<% deps = ", ".join(package['dependencies']) %>
+					${deps}
+				</td>
 			</tr>
 		% endfor
 	</tbody>
