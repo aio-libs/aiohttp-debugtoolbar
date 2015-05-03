@@ -33,8 +33,9 @@ class RequestVarsDebugPanel(DebugPanel):
             'cookies': [(k, request.cookies.get(k)) for k in request.cookies],
             'attrs': [(k, v) for k, v in request.items()],
         })
-        # TODO: think about separate session table, is it possible to implement
-        # aiohttp_sessions support?
+        # TODO: think about adding aiohttp_sessions support as separate table
+        # and maybe aiohttp_security
+        
         # if hasattr(request, 'session'):
         #     data.update({
         #         'session': dictrepr(request.session),

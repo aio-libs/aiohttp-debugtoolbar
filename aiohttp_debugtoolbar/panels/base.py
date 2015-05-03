@@ -105,14 +105,6 @@ class DebugPanel:
         """The ``id`` tag of the panel's tab. May be used by CSS and
         Javascript to implement custom styles and actions."""
         return 'pDebug%sPanel' % (self.name.replace(' ', ''))
-    # TODO: findout where to use
-    # def pluralize(self, singular, plural, n, domain=None, mapping=None):
-    #     request = get_current_request()
-    #     localizer = get_localizer(request)
-    #     return localizer.pluralize(singular, plural, n, domain=domain,
-    #                                mapping=mapping)
-    #     return singular
-    # Standard middleware methods
 
     @asyncio.coroutine
     def process_response(self, response):
