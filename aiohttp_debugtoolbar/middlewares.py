@@ -74,14 +74,15 @@ def toolbar_middleware_factory(app, handler):
                 exc_history.tracebacks[tb.id] = tb
                 request['pdbt_tb'] = tb
 
-                token = request.app[APP_KEY]['pdtb_token']
-                qs = {'token': token, 'tb': str(tb.id)}
-                msg = 'Exception at %s\ntraceback url: %s'
-
-                exc_url = request.app.router['debugtoolbar.exception']\
-                    .url(query=qs)
-                # TODO: find out how to port following code example
-                assert exc_url, msg
+                # TODO: find out how to port following to aiohttp
+                # or just remove it
+                # token = request.app[APP_KEY]['pdtb_token']
+                # qs = {'token': token, 'tb': str(tb.id)}
+                # msg = 'Exception at %s\ntraceback url: %s'
+                #
+                # exc_url = request.app.router['debugtoolbar.exception']\
+                #     .url(query=qs)
+                # assert exc_url, msg
                 # exc_msg = msg % (request.path, exc_url)
                 # logger.exception(exc_msg)
 

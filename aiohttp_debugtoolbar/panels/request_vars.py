@@ -35,7 +35,7 @@ class RequestVarsDebugPanel(DebugPanel):
         })
         # TODO: think about adding aiohttp_sessions support as separate table
         # and maybe aiohttp_security
-        
+
         # if hasattr(request, 'session'):
         #     data.update({
         #         'session': dictrepr(request.session),
