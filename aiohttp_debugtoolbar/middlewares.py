@@ -13,6 +13,11 @@ HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 @asyncio.coroutine
 def toolbar_middleware_factory(app, handler):
+
+    if APP_KEY not in app:
+        raise RuntimeError('Please setup debug toolbar with '
+                           'aiohttp_debugtoolbar.setup method')
+
     # just create namespace for handler
     settings = app[APP_KEY]['settings']
     request_history = app[APP_KEY]['request_history']

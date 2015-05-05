@@ -170,3 +170,13 @@ class TestMiddleware(BaseTest):
             self.assertFalse('<div class="debugger">' in txt)
 
         self.loop.run_until_complete(go())
+
+    def test_setup_not_called_exception(self):
+
+        @asyncio.coroutine
+        def go():
+            app = web.Application(loop=self.loop)
+            with self.assertRaises(RuntimeError):
+                yield from toolbar_middleware_factory(app, lambda r: r)
+
+        self.loop.run_until_complete(go())
