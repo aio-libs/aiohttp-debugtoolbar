@@ -1,7 +1,7 @@
 # Some simple testing tasks (sorry, UNIX only).
 
 flake:
-	flake8 aiohttp_debugtoolbar tests
+	flake8 aiohttp_debugtoolbar tests demo examples
 
 test: flake
 	nosetests -s ./tests/
