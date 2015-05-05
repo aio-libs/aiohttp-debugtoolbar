@@ -26,9 +26,92 @@ Ported Panels
 ``SettingsDebugPanel``, ``MiddlewaresDebugPanel``, ``VersionDebugPanel``,
 ``RoutesDebugPanel``,  ``RequestVarsDebugPanel``
 
-Panels that will be ported
---------------------------
-``LoggingPanel`` , ``SQLADebugPanel``,
+
+Install and Configuration
+-------------------------
+``aiohttp_mako`` and ``aiohttp_debugtoolbar`` has not been released yet so
+you need to install this packages from github::
+
+    $ pip install git+https://github.com/aio-libs/aiohttp_mako.git@master
+    $ pip install git+https://github.com/aio-libs/aiohttp_debugtoolbar.git@master
+
+
+In order to plug in ``aiohttp_debugtoolbar`` you have to attach middleware to
+your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
+
+.. code:: python
+
+    app = web.Application(loop=loop, middlewares=[toolbar_middleware_factory])
+    aiohttp_debugtoolbar.setup(app)
+
+
+Full Example
+------------
+
+.. code:: python
+
+    import asyncio
+    import aiohttp_debugtoolbar
+    import aiohttp_mako
+
+    from aiohttp import web
+
+
+    @aiohttp_mako.template('index.html')
+    def basic_handler(request):
+        return {'title': 'example aiohttp_debugtoolbar!',
+                'text': 'Hello aiohttp_debugtoolbar!',
+                'app': request.app}
+
+
+    @asyncio.coroutine
+    def exception_handler(request):
+        raise NotImplementedError
+
+
+    @asyncio.coroutine
+    def init(loop):
+        # add aiohttp_debugtoolbar middleware to you application
+        app = web.Application(loop=loop, middlewares=[aiohttp_debugtoolbar
+                              .toolbar_middleware_factory])
+        # install aiohttp_debugtoolbar
+        aiohttp_debugtoolbar.setup(app)
+
+        # install mako templates
+        lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
+                                    output_encoding='utf-8',
+                                    default_filters=['decode.utf8'])
+        template = """
+        <html>
+            <head>
+                <title>${title}</title>
+            </head>
+            <body>
+                <h1>${text}</h1>
+                <p>
+                  <a href="${app.router['exc_example'].url()}">
+                  Exception example</a>
+                </p>
+            </body>
+        </html>
+        """
+        lookup.put_string('index.html', template)
+
+        app.router.add_route('GET', '/', basic_handler, name='index')
+        app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
+
+        handler = app.make_handler()
+        srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
+        print("Server started at http://127.0.0.1:9000")
+        return srv, handler
+
+
+    loop = asyncio.get_event_loop()
+    srv, handler = loop.run_until_complete(init(loop))
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+    loop.run_until_complete(handler.finish_connections())
 
 
 Help Needed
@@ -47,29 +130,7 @@ Help Needed
 Play With Demo
 --------------
 
-1) clone repository::
-
-    $ git clone git@github.com:aio-libs/aiohttp_debugtoolbar.git
-
-2) create virtual environment, for instance using *virtualenvwraper*::
-
-    $ cd aiohttp_debugtoolbar
-    $ mkvirtualenv -p ``which python3` aiohttp_debugtoolbar
-
-3) install `aiohttp_mako`::
-
-    $ pip install git+https://github.com/jettify/aiohttp_mako.git@master
-
-4) install `aiohttp_debugtoolbar` and other dependencies::
-
-    $ pip install -e .
-
-5) run demo.py::
-
-    python3 demo/demo.py
-
-Now you can play with `aiohttp_debugtoolbar` on http://127.0.0.1:9000
-
+https://github.com/aio-libs/aiohttp_debugtoolbar/tree/master/demo
 
 Requirements
 ------------
