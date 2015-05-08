@@ -3,3 +3,4 @@ nose
 coverage
 flake8
 -e .
+aiohttp_jinja2
