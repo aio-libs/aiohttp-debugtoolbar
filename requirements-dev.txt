@@ -2,3 +2,4 @@ ipdb
 nose
 coverage
 flake8
+-e .
