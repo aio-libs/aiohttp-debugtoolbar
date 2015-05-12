@@ -29,10 +29,9 @@ Ported Panels
 
 Install and Configuration
 -------------------------
-``aiohttp_mako`` and ``aiohttp_debugtoolbar`` has not been released yet so
-you need to install this packages from github::
+``aiohttp_debugtoolbar`` has not been released yet so you need to install
+this package from github::
 
-    $ pip install git+https://github.com/aio-libs/aiohttp_mako.git@master
     $ pip install git+https://github.com/aio-libs/aiohttp_debugtoolbar.git@master
 
 

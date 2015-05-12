@@ -13,7 +13,7 @@ Play With Demo
 
 3) install ``aiohttp_mako`` and ``aiohttp_jinja2``::
 
-    $ pip install git+https://github.com/aio-libs/aiohttp_mako.git@master
+    $ pip install aiohttp_mako
     $ pip install aiohttp_jinja2
 
 4) install `aiohttp_debugtoolbar` and other dependencies::
