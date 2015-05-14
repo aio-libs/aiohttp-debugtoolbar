@@ -14,7 +14,7 @@ div.footer   { font-size: 13px; text-align: right; margin: 30px 0;
                color: #999999; }
 
 h2           { margin: 1.3em 0 0.0 0; padding: 9px;
-               background: #bc2131; color: #000000; }
+               background: #e28d29; color: #000000; }
 h2.traceback, h3.traceback {
     color: #ffffff;
     border-top-right-radius: 4px;
@@ -73,7 +73,7 @@ pre.console div.box { margin: 5px; white-space: normal;
                       font-family: sans-serif;  }
 pre.console div.box h3,
 pre.console div.traceback h3 { margin: -5px -5px 5px -5px; padding: 5px;
-                               background: #bc2131; color: #ffffff; }
+                               background: #e28d29; color: #ffffff; }
 
 pre.console div.traceback pre:hover { cursor: default; background: #eeeeee; }
 pre.console div.traceback pre.syntaxerror { background: #eeeeee; border: none;

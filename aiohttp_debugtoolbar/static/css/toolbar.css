@@ -40,7 +40,7 @@ a.active {
 
 #pDebug #pDebugToolbarHandle {
     position:fixed;
-    border:1px solid #bc2131;
+    border:1px solid #e28d29;
     top: 25%;
     right:0;
     z-index:100000000;
@@ -66,13 +66,13 @@ a.active {
     text-decoration:none;
     text-align:center;
     text-indent:-999999px;
-    background:#bc2131 url(../img/pdtb.png) no-repeat left center;
+    background:#e28d29 url(../img/aiohttp_tb.png) no-repeat left center;
     opacity:0.8;
     filter:alpha(opacity=80);
 }
 
 #pDebug a#pShowToolBarButton:hover {
-    background-color:#bc2131;
+    background-color:#e28d29;
     padding-right:2px;
     border-top-color:#fff;
     border-left-color:#fff;

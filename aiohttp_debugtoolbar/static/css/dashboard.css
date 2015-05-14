@@ -8,35 +8,43 @@ body {
 }
 
 a {
-    color: #bc2131;
+    color: #e28d29;
 }
 
 a:hover {
-    color: #96000b;
+    color: #c56b00;
 }
 
 .navbar-collapse {
-    border-color: #bc2131;
+    border-color: #e28d29;
 }
 
 .navbar-inverse {
-    background: #bc2131;
+    background: #e28d29;
 }
 
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
     color: #fff;
 }
 
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus,
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus,
+
 .navbar-inverse .navbar-nav > li.active > a,
 .navbar-inverse .navbar-nav > li.active:hover > a {
-    background-color: #96000b;
+    background-color: #c56b00;
 }
 
 .navbar-brand:before {
     position: absolute;
     top: 10px;
     left: 10px;
-    content: url(../img/pyramid.png);
+    content: url(../img/aiohttp.png);
 }
 .navbar-brand {
     padding-left: 50px;
