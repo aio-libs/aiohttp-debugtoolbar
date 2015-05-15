@@ -19,8 +19,20 @@ a:hover {
     border-color: #e28d29;
 }
 
-.navbar-inverse {
-    background: #e28d29;
+/*
+.navbar-inner {
+    background-color:  #dd7c0d;
+    background-image: linear-gradient(left, #dd7c0d, #dbc1a4;
+    background-image: -moz-linear-gradient(left, #dd7c0d, #dbc1a4;
+    background-image: -ms-linear-gradient(left, #dd7c0d, #dbc1a4;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dd7c0d), to(#dbc1a4);
+    background-image: -webkit-linear-gradient(left, #dd7c0d, #dbc1a4;
+    background-image: -o-linear-gradient(left, #dd7c0d, #dbc1a4;
+}
+*/
+
+ .navbar-inverse {
+    background: #dd7c0d;
 }
 
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
