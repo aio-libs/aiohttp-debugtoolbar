@@ -9,14 +9,14 @@ aiohttp_debugtoolbar
 
 
 **aiohttp_debugtoolbar** provides a debug toolbar for your aiohttp_
-web application.  Library is dirty port of pyramid_debugtoolbar_ and
+web application.  Library is port of pyramid_debugtoolbar_ and
 still in early development stages. Basic functionality has been
 ported:
 
 * basic panels
 * intercept redirects
 * intercept and pretty print exception
-* interactive console
+* interactive python console
 * show source code
 
 
@@ -27,12 +27,17 @@ Ported Panels
 ``RoutesDebugPanel``,  ``RequestVarsDebugPanel``
 
 
+Help Needed
+-----------
+Are you an experienced coder looking for a project to contribute to
+python/asyncio libraries? This is the project for you!
+
+
 Install and Configuration
 -------------------------
-``aiohttp_debugtoolbar`` has not been released yet so you need to install
-this package from github::
+::
 
-    $ pip install git+https://github.com/aio-libs/aiohttp_debugtoolbar.git@master
+    $ pip install aiohttp_debugtoolbar
 
 
 In order to plug in ``aiohttp_debugtoolbar`` you have to attach middleware to
@@ -40,6 +45,7 @@ your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
 
 .. code:: python
 
+    import aiohttp_debugtoolbar
     app = web.Application(loop=loop, middlewares=[toolbar_middleware_factory])
     aiohttp_debugtoolbar.setup(app)
 
@@ -112,19 +118,6 @@ Full Example
     except KeyboardInterrupt:
     loop.run_until_complete(handler.finish_connections())
 
-
-Help Needed
------------
-* write tests
-* increase coverage
-* port EventSource to simple ajax calls or websockets
-* refactor tbtools module
-* port more panels
-* port demo app
-* add events to aiopg_ and aiomysql_
-* update jquery to newer version
-* refresh html design
-* rethink UI
 
 Play With Demo
 --------------
