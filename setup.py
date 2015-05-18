@@ -15,8 +15,7 @@ with codecs.open(os.path.join(os.path.abspath(os.path.dirname(
 def read(f):
     return open(os.path.join(os.path.dirname(__file__), f)).read().strip()
 
-install_requires = ['aiohttp>=0.14', 'mako>=1.0.0', 'aiohttp_mako',
-                    'ipaddress']
+install_requires = ['aiohttp>=0.14', 'mako>=1.0.0', 'aiohttp_mako']
 tests_require = install_requires + ['nose']
 
 
@@ -32,8 +31,8 @@ setup(name='aiohttp_debugtoolbar',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Topic :: Internet :: WWW/HTTP'],
-      author='',
-      author_email='',
+      author="Nikolay Novik",
+      author_email="nickolainovik@gmail.com",
       url='https://github.com/jettify/aiohttp_debugtoolbar/',
       license='Apache 2',
       packages=find_packages(),
