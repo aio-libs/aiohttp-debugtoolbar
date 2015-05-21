@@ -46,7 +46,8 @@ your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
 .. code:: python
 
     import aiohttp_debugtoolbar
-    app = web.Application(loop=loop, middlewares=[toolbar_middleware_factory])
+    app = web.Application(loop=loop,
+                           middlewares=[aiohttp_debugtoolbar.toolbar_middleware_factory])
     aiohttp_debugtoolbar.setup(app)
 
 
