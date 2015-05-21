@@ -5,13 +5,20 @@
 	top: 25%;
 	right:0;
 	z-index:100000000;
+
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-bottom-left-radius: 20px;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
 
 #pDebug a#pShowToolBarButton {
 	display:block;
-	height:40px;
-	width:40px;
+	height:30px;
+	width:20px;
 	border-right:none;
 	border-bottom:1px solid #fff;
 	border-top:1px solid #fff;
@@ -22,17 +29,31 @@
 	text-decoration:none;
 	text-align:center;
 	text-indent:-999999px;
-	background:#e28d29 url(../img/aiohttp_tb.png) no-repeat left center;
+	background:#fff url(../img/aiohttp_tb.png) no-repeat left center;
 	opacity:0.8;
 	filter:alpha(opacity=80);
+
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-bottom-left-radius: 20px;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
 #pDebug a#pShowToolBarButton:hover {
-	background-color:#e28d29;
+	background-color:#fff;
 	padding-right:3px;
 	border-top-color:#fff;
 	border-left-color:#fff;
 	border-bottom-color:#fff;
 	opacity:1.0;
+
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-bottom-left-radius: 20px;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
