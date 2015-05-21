@@ -66,7 +66,11 @@ a.active {
     text-decoration:none;
     text-align:center;
     text-indent:-999999px;
-    background:#e28d29 url(../img/aiohttp_tb.png) no-repeat left center;
+    background-color:#e28d29;
+    background-size:40px 40px;
+    background-image:url(../img/aiohttp.svg);
+    background-position: left center;
+    background-repead: no-repeat;
     opacity:0.8;
     filter:alpha(opacity=80);
 }

@@ -59,12 +59,14 @@ a:hover {
     background-color: #c56b00;
 }
 
-.navbar-brand:before {
+.navbar-brand > img {
     position: absolute;
     top: 10px;
     left: 10px;
-    content: url(../img/aiohttp.png);
+    width: 35px;
+    height: 35px;
 }
+
 .navbar-brand {
     padding-left: 50px;
 }
