@@ -32,7 +32,14 @@ a:hover {
 */
 
  .navbar-inverse {
-    background: #dd7c0d;
+    background: #dd7c0d; /* Old browsers */
+    background: -moz-linear-gradient(left, #dd7c0d 0%, #c99662 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dd7c0d), color-stop(100%,#c99662)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #dd7c0d 0%,#c99662 100%); /* IE10+ */
+    background: linear-gradient(to right, #dd7c0d 0%,#c99662 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dd7c0d', endColorstr='#c99662',GradientType=1 ); /* IE6-9 */
 }
 
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
