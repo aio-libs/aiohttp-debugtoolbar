@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Aiohttp Debug Toolbar</title>
-    <!--bootstrap version 2.3.2-->
+
     <link rel="stylesheet" type="text/css" href="${static_path}css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${static_path}css/toolbar.css">
     <link rel="stylesheet" type="text/css" href="${static_path}css/dashboard.css">
@@ -32,7 +32,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="${root_path}">
-            <!-- <img src="${static_path}img/pyramid.png"/> -->
+            <img src="${static_path}img/aiohttp.svg"/>
             Aiohttp DebugToolbar</a>
         </div>
         <div class="navbar-collapse collapse">
