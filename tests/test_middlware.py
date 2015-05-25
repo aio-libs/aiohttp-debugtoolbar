@@ -42,18 +42,24 @@ class TestMiddleware(BaseTest):
 
             # make sure that toolbar button present on apps page
             # add cookie to enforce performance panel measure time
+            conn = aiohttp.TCPConnector(loop=self.loop, force_close=True)
             cookie = {"pdtb_active": "pDebugPerformancePanel"}
             resp = yield from aiohttp.request('GET', self.url, cookies=cookie,
-                                              loop=self.loop)
+                                              loop=self.loop, connector=conn)
             self.assertEqual(200, resp.status)
             txt = yield from resp.text()
             self.assertTrue('pDebugToolbarHandle' in txt)
+            resp.close()
 
             # make sure that debug toolbar page working
             url = "{}/_debugtoolbar".format(self.url)
-            resp = yield from aiohttp.request('GET', url, loop=self.loop)
+            resp = yield from aiohttp.request('GET', url, loop=self.loop,
+                                              connector=conn)
             yield from resp.text()
             self.assertEqual(200, resp.status)
+            resp.close()
+
+            conn.close()
 
             yield from handler.finish_connections()
             srv.close()
