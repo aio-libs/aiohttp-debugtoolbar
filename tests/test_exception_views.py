@@ -24,10 +24,10 @@ class TestExceptionViews(BaseTest):
 
         app.router.add_route('GET', '/', handler)
 
+        handler = app.make_handler()
         srv = yield from self.loop.create_server(
-            app.make_handler(), '127.0.0.1', self.port)
-        self.addCleanup(srv.close)
-        return app
+            handler, '127.0.0.1', self.port)
+        return app, srv, handler
 
     def test_view_source(self):
         @asyncio.coroutine
@@ -36,7 +36,7 @@ class TestExceptionViews(BaseTest):
 
         @asyncio.coroutine
         def go():
-            app = yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
@@ -55,6 +55,9 @@ class TestExceptionViews(BaseTest):
                 yield from resp.text()
                 self.assertEqual(resp.status, 200)
 
+            yield from handler.finish_connections()
+            srv.close()
+
         self.loop.run_until_complete(go())
 
     def test_view_execute(self):
@@ -64,7 +67,7 @@ class TestExceptionViews(BaseTest):
 
         @asyncio.coroutine
         def go():
-            app = yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
@@ -101,6 +104,9 @@ class TestExceptionViews(BaseTest):
                                               loop=self.loop)
             self.assertEqual(resp.status, 400)
 
+            yield from handler.finish_connections()
+            srv.close()
+
         self.loop.run_until_complete(go())
 
     def test_view_exception(self):
@@ -110,7 +116,7 @@ class TestExceptionViews(BaseTest):
 
         @asyncio.coroutine
         def go():
-            app = yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
@@ -129,5 +135,8 @@ class TestExceptionViews(BaseTest):
             yield from resp.text()
             self.assertEqual(resp.status, 200)
             self.assertTrue('<div class="debugger">' in txt)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
