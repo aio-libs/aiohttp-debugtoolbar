@@ -24,10 +24,10 @@ class TestMiddleware(BaseTest):
 
         app.router.add_route('GET', '/', handler)
 
+        handler = app.make_handler()
         srv = yield from self.loop.create_server(
-            app.make_handler(), '127.0.0.1', self.port)
-        self.addCleanup(srv.close)
-        return app
+            handler, '127.0.0.1', self.port)
+        return app, srv, handler
 
     def test_render_toolbar_page(self):
         @asyncio.coroutine
@@ -38,7 +38,7 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
 
             # make sure that toolbar button present on apps page
             # add cookie to enforce performance panel measure time
@@ -55,6 +55,9 @@ class TestMiddleware(BaseTest):
             yield from resp.text()
             self.assertEqual(200, resp.status)
 
+            yield from handler.finish_connections()
+            srv.close()
+
         self.loop.run_until_complete(go())
 
     def test_render_with_exception(self):
@@ -64,12 +67,15 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
             self.assertEqual(500, resp.status)
             self.assertTrue('<div class="debugger">' in txt)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
 
@@ -80,7 +86,7 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
 
             # make sure that exception page rendered
             resp = yield from aiohttp.request(
@@ -88,6 +94,9 @@ class TestMiddleware(BaseTest):
             txt = yield from resp.text()
             self.assertEqual(200, resp.status)
             self.assertTrue('Redirect intercepted' in txt)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
 
@@ -98,7 +107,8 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func, intercept_redirects=False)
+            app, srv, handler = yield from self._setup_app(
+                func, intercept_redirects=False)
 
             # make sure that exception page rendered
             resp = yield from aiohttp.request(
@@ -106,6 +116,9 @@ class TestMiddleware(BaseTest):
             txt = yield from resp.text()
             self.assertEqual(301, resp.status)
             self.assertEqual('301: Moved Permanently', txt)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
 
@@ -118,7 +131,7 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func, enabled=False)
+            app, srv, handler = yield from self._setup_app(func, enabled=False)
 
             # make sure that toolbar button NOT present on apps page
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
@@ -131,6 +144,9 @@ class TestMiddleware(BaseTest):
             resp = yield from aiohttp.request('GET', url, loop=self.loop)
             yield from resp.text()
             self.assertEqual(200, resp.status)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
 
@@ -145,13 +161,17 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func)
+            app, srv, handler = yield from self._setup_app(func)
 
             # make sure that toolbar button NOT present on apps page
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             payload = yield from resp.json()
             self.assertEqual(200, resp.status)
             self.assertEqual(payload, {"a": 42})
+
+            yield from handler.finish_connections()
+            srv.close()
+
         self.loop.run_until_complete(go())
 
     def test_do_not_intercept_exceptions(self):
@@ -162,12 +182,16 @@ class TestMiddleware(BaseTest):
 
         @asyncio.coroutine
         def go():
-            yield from self._setup_app(func, intercept_exc=False)
+            app, srv, handler = yield from self._setup_app(
+                func, intercept_exc=False)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
             self.assertEqual(500, resp.status)
             self.assertFalse('<div class="debugger">' in txt)
+
+            yield from handler.finish_connections()
+            srv.close()
 
         self.loop.run_until_complete(go())
 
