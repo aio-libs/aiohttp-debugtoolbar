@@ -1,4 +1,4 @@
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 from .middlewares import toolbar_middleware_factory, middleware
 from .main import setup, APP_KEY
