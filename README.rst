@@ -47,7 +47,7 @@ your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
 
     import aiohttp_debugtoolbar
     app = web.Application(loop=loop,
-                           middlewares=[aiohttp_debugtoolbar.toolbar_middleware_factory])
+                           middlewares=[aiohttp_debugtoolbar.middleware])
     aiohttp_debugtoolbar.setup(app)
 
 
@@ -78,8 +78,8 @@ Full Example
     @asyncio.coroutine
     def init(loop):
         # add aiohttp_debugtoolbar middleware to you application
-        app = web.Application(loop=loop, middlewares=[aiohttp_debugtoolbar
-                              .toolbar_middleware_factory])
+        app = web.Application(loop=loop,
+                              middlewares=[aiohttp_debugtoolbar.middleware])
         # install aiohttp_debugtoolbar
         aiohttp_debugtoolbar.setup(app)
 
@@ -104,7 +104,8 @@ Full Example
         lookup.put_string('index.html', template)
 
         app.router.add_route('GET', '/', basic_handler, name='index')
-        app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
+        app.router.add_route('GET', '/exc',
+                             exception_handler, name='exc_example')
 
         handler = app.make_handler()
         srv = yield from loop.create_server(handler, '127.0.0.1', 9000)

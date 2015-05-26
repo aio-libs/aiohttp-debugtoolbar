@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+0.0.2 (2015-05-26)
+^^^^^^^^^^^^^^^^^^
+
+* Redesign UI look-and-feel
+
+* Rename `toolbar_middleware_factory` to just `middleware`.
+
 
 0.0.1 (2015-05-18)
 ^^^^^^^^^^^^^^^^^^

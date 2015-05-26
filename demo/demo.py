@@ -8,7 +8,6 @@ import aiohttp_debugtoolbar
 import aiohttp_jinja2
 import aiohttp_mako
 from aiohttp import web
-from aiohttp_debugtoolbar import toolbar_middleware_factory
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -81,7 +80,8 @@ def test_jinja2_exc(request):
 
 @asyncio.coroutine
 def init(loop):
-    app = web.Application(loop=loop, middlewares=[toolbar_middleware_factory])
+    app = web.Application(loop=loop,
+                          middlewares=[aiohttp_debugtoolbar.middleware])
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
 

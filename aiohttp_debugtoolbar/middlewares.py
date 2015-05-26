@@ -7,12 +7,12 @@ from .toolbar import DebugToolbar
 from .tbtools.tbtools import get_traceback
 from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify
 
-__all__ = ['toolbar_middleware_factory']
+__all__ = ['toolbar_middleware_factory', 'middleware']
 HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 
 @asyncio.coroutine
-def toolbar_middleware_factory(app, handler):
+def middleware(app, handler):
 
     if APP_KEY not in app:
         raise RuntimeError('Please setup debug toolbar with '
@@ -142,6 +142,11 @@ def toolbar_middleware_factory(app, handler):
         return response
 
     return toolbar_middleware
+
+
+# Deprecated, will drop it in 0.3+
+toolbar_middleware_factory = middleware
+
 
 toolbar_html_template = """\
 <script type="text/javascript">
