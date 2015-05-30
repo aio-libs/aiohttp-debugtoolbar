@@ -3,10 +3,16 @@ import json
 import logging
 import os
 
+import sys
+
+from pathlib import Path
+parent = Path('.').parent
+parent = str(parent.absolute())
+sys.path.insert(0, parent)
+
 import jinja2
 import aiohttp_debugtoolbar
 import aiohttp_jinja2
-import aiohttp_mako
 from aiohttp import web
 
 
@@ -40,7 +46,7 @@ def exc(request):
     raise NotImplementedError
 
 
-@aiohttp_mako.template('ajax.mako')
+@aiohttp_jinja2.template('ajax.jinja2')
 def test_ajax(request):
     return {'app': request.app}
 
@@ -56,7 +62,7 @@ def test_redirect(request):
     raise web.HTTPSeeOther(location='/')
 
 
-@aiohttp_mako.template('index.mako')
+@aiohttp_jinja2.template('index.jinja2')
 @asyncio.coroutine
 def test_page(request):
     title = 'Aiohttp Debugtoolbar'
@@ -66,11 +72,6 @@ def test_page(request):
         'show_jinja2_link': True,
         'show_sqla_link': False,
         'app': request.app}
-
-
-@aiohttp_mako.template('error.mako')
-def test_mako_exc(request):
-    return {'title': 'Test mako template exceptions'}
 
 
 @aiohttp_jinja2.template('error.jinja2')
@@ -84,11 +85,9 @@ def init(loop):
                           middlewares=[aiohttp_debugtoolbar.middleware])
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
-
-    aiohttp_mako.setup(app, input_encoding='utf-8',
-                       output_encoding='utf-8',
-                       default_filters=['decode.utf8'],
-                       directories=[templates])
+    
+    loader = jinja2.FileSystemLoader([templates])
+    aiohttp_jinja2.setup(app, loader=loader)
 
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(templates))
 
@@ -105,8 +104,6 @@ def init(loop):
     app.router.add_route('GET', '/call_ajax', call_ajax, name='call_ajax')
 
     # templates error handlers
-    app.router.add_route('GET', '/mako_exc', test_mako_exc,
-                         name='test_mako_exc')
     app.router.add_route('GET', '/jinja2_exc', test_jinja2_exc,
                          name='test_jinja2_exc')
 

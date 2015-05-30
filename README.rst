@@ -58,12 +58,12 @@ Full Example
 
     import asyncio
     import aiohttp_debugtoolbar
-    import aiohttp_mako
+    import aiohttp_jinja2
 
     from aiohttp import web
 
 
-    @aiohttp_mako.template('index.html')
+    @aiohttp_jinja2.template('index.html')
     def basic_handler(request):
         return {'title': 'example aiohttp_debugtoolbar!',
                 'text': 'Hello aiohttp_debugtoolbar!',
@@ -83,8 +83,8 @@ Full Example
         # install aiohttp_debugtoolbar
         aiohttp_debugtoolbar.setup(app)
 
-        # install mako templates
-        lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
+        # install jinja2 templates
+        lookup = aiohttp_jinja2.setup(app, input_encoding='utf-8',
                                     output_encoding='utf-8',
                                     default_filters=['decode.utf8'])
         template = """
@@ -132,7 +132,7 @@ Requirements
 * Python_ 3.3+
 * asyncio_ or Python_ 3.4+
 * aiohttp_
-* aiohttp_mako_
+* aiohttp_jinja2_
 
 
 .. _Python: https://www.python.org
@@ -140,5 +140,5 @@ Requirements
 .. _aiohttp: https://github.com/KeepSafe/aiohttp
 .. _aiopg: https://github.com/aio-libs/aiopg
 .. _aiomysql: https://github.com/aio-libs/aiomysql
-.. _aiohttp_mako: https://github.com/aio-libs/aiohttp_mako
+.. _aiohttp_jinja2: https://github.com/aio-libs/aiohttp_jinja2
 .. _pyramid_debugtoolbar: https://github.com/Pylons/pyramid_debugtoolbar

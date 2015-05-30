@@ -7,7 +7,7 @@ from collections import deque
 from itertools import islice
 
 APP_KEY = 'aiohttp_debugtollbar'
-TEMPLATE_KEY = 'aiohttp_debugtollbar_mako'
+TEMPLATE_KEY = 'aiohttp_debugtollbar_jinja2'
 
 REDIRECT_CODES = (301, 302, 303, 304)
 STATIC_PATH = 'static/'

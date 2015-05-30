@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
-import aiohttp_mako
+import aiohttp_jinja2
+import jinja2
 from aiohttp import web
 
 from aiohttp_debugtoolbar import toolbar_middleware_factory, setup as tbsetup
@@ -16,11 +17,10 @@ class TestMiddleware(BaseTest):
                               middlewares=[toolbar_middleware_factory])
 
         tbsetup(app, **kw)
-        lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
-                                    output_encoding='utf-8',
-                                    default_filters=['decode.utf8'])
-        tplt = "<html><body><h1>${head}</h1>${text}</body></html>"
-        lookup.put_string('tplt.html', tplt)
+
+        tplt = "<html><body><h1>{{ head }}</h1>{{ text }}</body></html>"
+        loader = jinja2.DictLoader({'tplt.html':tplt})
+        env = aiohttp_jinja2.setup(app, loader=loader)
 
         app.router.add_route('GET', '/', handler)
 
@@ -32,7 +32,7 @@ class TestMiddleware(BaseTest):
     def test_render_toolbar_page(self):
         @asyncio.coroutine
         def func(request):
-            return aiohttp_mako.render_template(
+            return aiohttp_jinja2.render_template(
                 'tplt.html', request,
                 {'head': 'HEAD', 'text': 'text'})
 
@@ -131,7 +131,7 @@ class TestMiddleware(BaseTest):
     def test_toolbar_not_enabled(self):
         @asyncio.coroutine
         def func(request):
-            return aiohttp_mako.render_template(
+            return aiohttp_jinja2.render_template(
                 'tplt.html', request,
                 {'head': 'HEAD', 'text': 'text'})
 
