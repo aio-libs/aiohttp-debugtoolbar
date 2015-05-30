@@ -11,7 +11,7 @@
 	<div class="scroll">
 		<dl>
 			<dt>Executed SQL</dt>
-			<dd>{{ sql|n }}</dd>
+			<dd>{{ sql }}</dd>
 			<dt>Time</dt>
 			<dd>{{ '%.2f' % (duration) }} ms</dd>
 		</dl>
@@ -26,8 +26,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for i, row in enumerate(result) %}
-				    <tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				{% for row in result %}
+				    <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
 						{% for column in row %}
 						<td>{{ column }}</td>
 						{% endfor %}

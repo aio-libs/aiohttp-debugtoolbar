@@ -50,7 +50,7 @@
             </div>
             <div class="pDebugPanelContent">
               <div class="scroll">
-                {{ panel.render_content(request)n }}
+                {{ panel.render_content(request) }}
               </div>
             </div>
           </div>

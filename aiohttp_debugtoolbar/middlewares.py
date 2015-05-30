@@ -1,6 +1,6 @@
 import asyncio
 import sys
-import aiohttp_mako
+import aiohttp_jinja2 
 from aiohttp import web
 
 from .toolbar import DebugToolbar
@@ -123,7 +123,7 @@ def middleware(app, handler):
                 context = {'redirect_to': response.location,
                            'redirect_code': response.status}
 
-                _response = aiohttp_mako.render_template(
+                _response = aiohttp_jinja2.render_template(
                     'redirect.dbtmako', request, context,
                     app_key=TEMPLATE_KEY)
                 response = _response

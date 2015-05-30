@@ -1,4 +1,4 @@
 <div class="{{ classes }}">
-  {{ title|n }}
-  <ul>{{ frames|n }}</ul>
+  {{ title }}
+  <ul>{{ frames }}</ul>
 </div>

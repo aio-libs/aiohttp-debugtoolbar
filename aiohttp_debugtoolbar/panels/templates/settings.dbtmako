@@ -6,10 +6,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(settings) %}
-			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ key|h }}</td>
-				<td>{{ value|h }}</td>
+		{% for key, value in settings %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ key }}</td>
+				<td>{{ value }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>

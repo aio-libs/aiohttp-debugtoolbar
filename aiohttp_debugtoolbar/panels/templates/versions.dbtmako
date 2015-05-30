@@ -14,10 +14,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, package in enumerate(packages) %}
-			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ package['name']|h }}</td>
-				<td>{{ package['version']|h }}</td>
+		{% for package in packages %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ package['name'] }}</td>
+				<td>{{ package['version'] }}</td>
 				<td>
 					{% deps = ", ".join(package['dependencies']) %}
 					{{ deps }}

@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="{{ static_path }}css/debugger.css" type="text/css">
 
 
-    ## include scripts here that should be included before pageload
-    ##  this *should* only be jquery, as we only need the `$` variable defined
-    ##  in order for other javascript to be run after the document is loaded
+    <!-- ## include scripts here that should be included before pageload -->
+    <!-- ##  this *should* only be jquery, as we only need the `$` variable defined -->
+    <!-- ##  in order for other javascript to be run after the document is loaded -->
 
     <script type="text/javascript">
       var DEBUG_TOOLBAR_STATIC_PATH = '{{ static_path }}';

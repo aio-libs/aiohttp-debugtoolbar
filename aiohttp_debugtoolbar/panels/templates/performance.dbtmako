@@ -11,10 +11,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(timing_rows) %}
-			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ key|h }}</td>
-				<td>{{ value|h }}</td>
+		{% for key, value in timing_rows %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ key }}</td>
+				<td>{{ value }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>
@@ -39,14 +39,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for i, row in enumerate(function_calls) %}
-                <tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            {% for row in function_calls %}
+                <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
                     <td>{{ str(row['ncalls']) }}</td>
                     <td>{{ str(row['tottime']) }}</td>
                     <td>{{ '%.4f' % row['percall'] }}</td>
-                    <td>{{ str(row['cumtime']) }}</td>
+                    <td>{{ row['cumtime'] }}</td>
                     <td>{{ '%.4f' % row['percall_cum'] }}</td>
-                    <td title="{{ row['filename_long']}">${row['filename']|h }}</td>
+                    <td title="{{ row['filename_long']}">${row['filename'] }}</td>
                 </tr>
             {% endfor %}
         </tbody>

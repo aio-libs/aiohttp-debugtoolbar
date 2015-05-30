@@ -12,10 +12,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(cookies) %}
-		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key|h }}</td>
-			<td>{{ value|h }}</td>
+		{% for key, value in cookies %}
+		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -38,10 +38,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(session) %}
-		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key|h }}</td>
-			<td>{{ value|h }}</td>
+		{% for key, value in session %}
+		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -60,10 +60,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(get) %}
-		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key|h }}</td>
-			<td>{{ ', '.join(value)|h }}</td>
+		{% for key, value in get %}
+		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key }}</td>
+			<td>{{ ', '.join(value) }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -82,10 +82,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(post) %}
-		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key|h }}</td>
-			<td>{{ value|h }}</td>
+		{% for key, value in post %}
+		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
@@ -104,10 +104,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for i, (key, value) in enumerate(attrs) %}
-		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key|h }}</td>
-			<td>{{ value|h }}</td>
+		{% for key, value in attrs %}
+		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key }}</td>
+			<td>{{ value }}</td>
 		</tr>
 		% endfor
 	</tbody>

@@ -2,10 +2,10 @@
 
     <h1>{{ exception_type }}</h1>
     <div class="detail">
-      <pre class= "errormsg">{{ exception|n }}</pre>
+      <pre class= "errormsg">{{ exception }}</pre>
     </div>
     <h2 class="traceback">Traceback <small>(most recent call last)</small></h2>
-    {{ summary|n }}
+    {{ summary }}
     <div class="plain">
       <p>
         <input type="hidden" name="language" value="pytb">
