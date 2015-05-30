@@ -13,7 +13,7 @@ default_panel_names = [
     panels.PerformanceDebugPanel,
     panels.RequestVarsDebugPanel,
     panels.TracebackPanel,
-    ]
+]
 
 
 default_global_panel_names = [
@@ -51,10 +51,8 @@ def setup(app, **kw):
     templates_panels = os.path.join(APP_ROOT, 'panels/templates')
 
     app[APP_KEY]['settings'] = config
-
-    aiohttp_jinja2.setup(app,
-            loader= jinja2.FileSystemLoader([templates_app, templates_panels]),
-                       app_key=TEMPLATE_KEY)
+    loader = jinja2.FileSystemLoader([templates_app, templates_panels])
+    aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
     static_location = os.path.join(APP_ROOT, 'static')
 
