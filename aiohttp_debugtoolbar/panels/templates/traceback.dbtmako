@@ -67,7 +67,7 @@
       -->
 
     <script type="text/javascript">
-      var TRACEBACK = {{ str(traceback_id) }},
+      var TRACEBACK = {{ traceback_id }},
           DEBUGGER_TOKEN = "{{ token }}",
           CONSOLE_MODE = {{ console }},
           EVALEX = {{ evalex }},

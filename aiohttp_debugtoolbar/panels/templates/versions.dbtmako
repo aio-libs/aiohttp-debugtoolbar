@@ -19,8 +19,7 @@
 				<td>{{ package['name'] }}</td>
 				<td>{{ package['version'] }}</td>
 				<td>
-					{% deps = ", ".join(package['dependencies']) %}
-					{{ deps }}
+					{{ package['dependencies']|join(', ') }}
 				</td>
 			</tr>
 		{% endfor %}

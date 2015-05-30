@@ -28,7 +28,7 @@
 				{% for row in result %}
 				    <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
 						{% for column in row %}
-						<td>{{ str(column).replace(' ', '&nbsp;') }}</td>
+						<td>{{ column.replace(' ', '&nbsp;') }}</td>
 						{% endfor %}
 					</tr>
 				{% endfor %}

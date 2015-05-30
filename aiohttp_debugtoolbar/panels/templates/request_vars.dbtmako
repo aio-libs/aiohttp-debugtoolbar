@@ -48,7 +48,7 @@
 </table>
 {% else %}
 <p>No session data</p>
-{ endif %}
+{% endif %}
 
 <h4>GET Variables</h4>
 {% if get %}
@@ -73,7 +73,7 @@
 {% endif %}
 
 <h4>POST Variables</h4>
-{% if post $}
+{% if post %}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -109,10 +109,9 @@
 			<td>{{ key }}</td>
 			<td>{{ value }}</td>
 		</tr>
-		% endfor
+                {% endfor %}
 	</tbody>
 </table>
 {% else %} 
 <p>No request attributes</p>
 {% endif %}
-

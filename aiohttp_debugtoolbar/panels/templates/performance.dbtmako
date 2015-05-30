@@ -41,17 +41,17 @@
         <tbody>
             {% for row in function_calls %}
                 <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-                    <td>{{ str(row['ncalls']) }}</td>
-                    <td>{{ str(row['tottime']) }}</td>
+                    <td>{{ row['ncalls'] }}</td>
+                    <td>{{ row['tottime'] }}</td>
                     <td>{{ '%.4f' % row['percall'] }}</td>
                     <td>{{ row['cumtime'] }}</td>
                     <td>{{ '%.4f' % row['percall_cum'] }}</td>
-                    <td title="{{ row['filename_long']}">${row['filename'] }}</td>
+                    <td title="{{ row['filename_long'] }}">{{ row['filename'] }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 {% else %}
     <p>The profiler is not activated. Activate the checkbox in the toolbar to use it.</p>
-{}% endif %}
+{% endif %}
 
