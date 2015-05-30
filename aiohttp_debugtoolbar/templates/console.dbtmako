@@ -2,17 +2,17 @@
   "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-    <title>${title} // Werkzeug Debugger</title>
-    <link rel="stylesheet" href="${static_path}css/debugger.css" 
+    <title>{{ title }} // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="{{ static_path }}css/debugger.css" 
           type="text/css">
     <script type="text/javascript">
-      var TRACEBACK = ${str(traceback_id)},
-          CONSOLE_MODE = ${console},
-          DEBUGGER_TOKEN = "${token}",
-          EVALEX = ${evalex};
+      var TRACEBACK = {{ str(traceback_id) }},
+          CONSOLE_MODE = {{ console }},
+          DEBUGGER_TOKEN = "{{ token }}",
+          EVALEX = {{ evalex }};
     </script>
-    <script data-main="${static_path}js/debugger"
-            src="${static_path}js/require.js"></script>
+    <script data-main="{{ static_path }}js/debugger"
+            src="{{ static_path }}js/require.js"></script>
   </head>
   <body>
 

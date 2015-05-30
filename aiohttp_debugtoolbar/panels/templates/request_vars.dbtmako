@@ -1,5 +1,5 @@
 <h4>Cookie Variables</h4>
-% if cookies:
+{% if cookies %}
 <table class="table table-striped">
 	<colgroup>
 		<col style="width:20%"/>
@@ -12,20 +12,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(cookies):
-		<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-			<td>${key|h}</td>
-			<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(cookies) %}
+		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key|h }}</td>
+			<td>{{ value|h }}</td>
 		</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
-% else:
+{% else %}
 <p>No cookie data</p>
-% endif
+{% endif %}
 
 <h4>Session Variables</h4>
-% if session:
+{% if session %}
 <table class="table table-striped">
 	<colgroup>
 		<col style="width:20%"/>
@@ -38,20 +38,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(session):
-		<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-			<td>${key|h}</td>
-			<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(session) %}
+		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key|h }}</td>
+			<td>{{ value|h }}</td>
 		</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
-% else:
+{% else %}
 <p>No session data</p>
-% endif
+{ endif %}
 
 <h4>GET Variables</h4>
-% if get:
+{% if get %}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -60,20 +60,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(get):
-		<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-			<td>${key|h}</td>
-			<td>${', '.join(value)|h}</td>
+		{% for i, (key, value) in enumerate(get) %}
+		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key|h }}</td>
+			<td>{{ ', '.join(value)|h }}</td>
 		</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
-% else:
+{% else %}
 <p>No GET data</p>
-% endif
+{% endif %}
 
 <h4>POST Variables</h4>
-% if post:
+{% if post $}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -82,20 +82,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(post):
-		<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-			<td>${key|h}</td>
-			<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(post) %}
+		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key|h }}</td>
+			<td>{{ value|h }}</td>
 		</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
-% else:
+{% else %}
 <p>No POST data</p>
-% endif
+{% endif %}
 
 <h4>Request attributes</h4>
-% if attrs:
+{% if attrs %}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -104,15 +104,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(attrs):
-		<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-			<td>${key|h}</td>
-			<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(attrs) %}
+		<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+			<td>{{ key|h }}</td>
+			<td>{{ value|h }}</td>
 		</tr>
 		% endfor
 	</tbody>
 </table>
-% else:
+{% else %} 
 <p>No request attributes</p>
-% endif
+{% endif %}
 

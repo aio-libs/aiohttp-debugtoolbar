@@ -1,6 +1,6 @@
 import asyncio
 import json
-import aiohttp_mako
+import aiohttp_jinja2
 
 from aiohttp import web
 
@@ -8,7 +8,7 @@ from aiohttp import web
 from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
 
 
-@aiohttp_mako.template('toolbar.dbtmako', app_key=TEMPLATE_KEY)
+@aiohttp_jinja2.template('toolbar.dbtmako', app_key=TEMPLATE_KEY)
 def request_view(request):
     settings = request.app[APP_KEY]['settings']
     history = request.app[APP_KEY]['request_history']

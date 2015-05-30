@@ -11,27 +11,27 @@
 	<div class="scroll">
 		<dl>
 			<dt>Executed SQL</dt>
-			<dd>${sql|n}</dd>
+			<dd>{{ sql|n }}</dd>
 			<dt>Time</dt>
-			<dd>${'%.2f' % (duration)} ms</dd>
+			<dd>{{ '%.2f' % (duration) }} ms</dd>
 		</dl>
 		<table class="djSqlExplain table table-striped"
 >
 			<thead>
 				<tr>
-					% for h in headers:
-						<th>${h.upper()}</th>
-					% endfor
+					{% for h in headers %}
+						<th>{{ h.upper() }}</th>
+					{% endfor %}
 				</tr>
 			</thead>
 			<tbody>
-				% for i, row in enumerate(result):
-				    <tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-						% for column in row:
-						<td>${str(column).replace(' ', '&nbsp;')|n}</td>
-						% endfor
+				{% for i, row in enumerate(result) %}
+				    <tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+						{% for column in row %}
+						<td>{{ str(column).replace(' ', '&nbsp;')|n }}</td>
+						{% endfor %}
 					</tr>
-				% endfor
+				{% endfor %}
 			</tbody>
 		</table>
 	</div>

@@ -8,13 +8,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, route_info in enumerate(routes):
-			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-				<td>${route_info['name']|h}</td>
-				<td>${route_info['method']|h}</td>
-				<td>${route_info['pattern']|h}</td>
-				<td>${route_info['handler']|h}</td>
+		{% for i, route_info in enumerate(routes) %}
+			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ route_info['name']|h }}</td>
+				<td>{{ route_info['method']|h }}</td>
+				<td>{{ route_info['pattern']|h }}</td>
+				<td>{{ route_info['handler']|h }}</td>
 			</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>

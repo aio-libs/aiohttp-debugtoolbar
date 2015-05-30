@@ -1,7 +1,7 @@
 <h4>Platform</h4>
-<div>${platform}</div>
+<div>{{ platform }}</div>
 <h4>aiohttp</h4>
-<div>${aiohttp_version}</div>
+<div>{{ aiohttp_version }}</div>
 
 <h4>Packages</h4>
 
@@ -14,15 +14,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, package in enumerate(packages):
-			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-				<td>${package['name']|h}</td>
-				<td>${package['version']|h}</td>
+		{% for i, package in enumerate(packages) %}
+			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ package['name']|h }}</td>
+				<td>{{ package['version']|h }}</td>
 				<td>
-					<% deps = ", ".join(package['dependencies']) %>
-					${deps}
+					{% deps = ", ".join(package['dependencies']) %}
+					{{ deps }}
 				</td>
 			</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>

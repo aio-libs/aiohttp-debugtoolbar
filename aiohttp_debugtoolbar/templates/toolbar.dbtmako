@@ -1,24 +1,23 @@
-<%namespace file="history_tab.dbtmako" import="history_tab"/>
-<%namespace file="global_tab.dbtmako" import="global_tab"/>
-<%namespace file="settings_tab.dbtmako" import="settings_tab"/>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Aiohttp Debug Toolbar</title>
 
-    <link rel="stylesheet" type="text/css" href="${static_path}css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${static_path}css/toolbar.css">
-    <link rel="stylesheet" type="text/css" href="${static_path}css/dashboard.css">
-    <link rel="stylesheet" href="${static_path}css/debugger.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/toolbar.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/dashboard.css">
+    <link rel="stylesheet" href="{{ static_path }}css/debugger.css" type="text/css">
+
 
     ## include scripts here that should be included before pageload
     ##  this *should* only be jquery, as we only need the `$` variable defined
     ##  in order for other javascript to be run after the document is loaded
+
     <script type="text/javascript">
-      var DEBUG_TOOLBAR_STATIC_PATH = '${static_path}';
+      var DEBUG_TOOLBAR_STATIC_PATH = '{{ static_path }}';
     </script>
-    <script src="${static_path}js/jquery-1.10.2.min.js"></script>
+    <script src="{{ static_path }}js/jquery-1.10.2.min.js"></script>
   </head>
   <body>
 
@@ -31,8 +30,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="${root_path}">
-            <img src="${static_path}img/aiohttp.svg"/>
+          <a class="navbar-brand" href="{{ root_path }}">
+            <img src="{{ static_path }}img/aiohttp.svg"/>
             Aiohttp DebugToolbar</a>
         </div>
         <div class="navbar-collapse collapse">
@@ -50,15 +49,15 @@
             <div class="col-md-12">
                 <div class="tab-content">
                 <div class="tab-pane active" id="history">
-                    ${history_tab()}
+                    {% include "history_tab.dbtmako" %}
                 </div>
 
                 <div class="tab-pane" id="global">
-                    ${global_tab()}
+                    {% include "global_tab.dbtmako" %}
                 </div>
 
                 <div class="tab-pane" id="settings">
-                    ${settings_tab()}
+                    {% include "settings_tab.dbtmako" %}
                 </div>
                 </div>
             </div>
@@ -66,10 +65,10 @@
     </div>
 
     ## scripts that can be included after pageload
-    <script src="${static_path}js/jquery.cookie.js"></script>
-    <script src="${static_path}js/jquery.tablesorter.min.js"></script>
-    <script src="${static_path}js/bootstrap.min.js"></script>
-    <script src="${static_path}js/toolbar.js"></script>
+    <script src="{{ static_path }}js/jquery.cookie.js"></script>
+    <script src="{{ static_path }}js/jquery.tablesorter.min.js"></script>
+    <script src="{{ static_path }}js/bootstrap.min.js"></script>
+    <script src="{{ static_path }}js/toolbar.js"></script>
 	<script>
 	  $(function () {
 	    $('#myTab a:first').tab('show');
@@ -87,12 +86,12 @@
                 var details = item[1];
                 var request_id = item[0];
                 var active = item[2];
-                url = '${root_path}' + '/' + request_id;
+                url = '{{ root_path }}' + '/' + request_id;
                 if (url == location.pathname){
                     active = 'active'
                 }
 
-                html += '<li class="'+active+'"><a href="${root_path}' + '/' + request_id+'" title="'+details.path+'">';
+                html += '<li class="'+active+'"><a href="{{ root_path }}' + '/' + request_id+'" title="'+details.path+'">';
                 html += '<span class="badge pull-right _'+details.status_code+'">'+details.status_code+'</span>';
                 html += details.method;
                 if (details.scheme == 'https'){
@@ -114,7 +113,7 @@
                 source.close();
             }
 
-            source = new EventSource('${root_path}/sse?request_id=${request_id}');
+            source = new EventSource('{{ root_path }}/sse?request_id={{ request_id }}');
             source.addEventListener('new_request', new_request);
         }
 

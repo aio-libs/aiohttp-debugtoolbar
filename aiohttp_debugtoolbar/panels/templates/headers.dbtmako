@@ -7,12 +7,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(request_headers):
-			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-				<td>${key|h}</td>
-				<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(request_headers) %}
+			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ key|h }}</td>
+				<td>{{ value|h }}</td>
 			</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
 
@@ -25,11 +25,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, (key, value) in enumerate(response_headers):
-			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-				<td>${key|h}</td>
-				<td>${value|h}</td>
+		{% for i, (key, value) in enumerate(response_headers) %}
+			<tr class="{{ i%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ key|h }}</td>
+				<td>{{ value|h }}</td>
 			</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>
