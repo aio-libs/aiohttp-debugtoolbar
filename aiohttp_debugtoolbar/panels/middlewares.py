@@ -11,7 +11,7 @@ class MiddlewaresDebugPanel(DebugPanel):
     """
     name = 'Middlewares'
     has_content = True
-    template = 'middlewares.dbtmako'
+    template = 'middlewares.jinja2'
     title = _('Middlewares')
     nav_title = title
 

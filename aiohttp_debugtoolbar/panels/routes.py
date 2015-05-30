@@ -12,7 +12,7 @@ class RoutesDebugPanel(DebugPanel):
     """
     name = 'Routes'
     has_content = True
-    template = 'routes.dbtmako'
+    template = 'routes.jinja2'
     title = _('Routes')
     nav_title = title
 

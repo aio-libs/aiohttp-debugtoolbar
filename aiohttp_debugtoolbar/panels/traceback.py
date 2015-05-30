@@ -13,7 +13,7 @@ _ = lambda x: x
 
 class TracebackPanel(DebugPanel):
     name = 'Traceback'
-    template = 'traceback.dbtmako'
+    template = 'traceback.jinja2'
     title = _('Traceback')
     nav_title = title
 

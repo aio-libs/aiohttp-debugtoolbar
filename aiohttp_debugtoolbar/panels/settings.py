@@ -15,7 +15,7 @@ class SettingsDebugPanel(DebugPanel):
     """
     name = 'Settings'
     has_content = True
-    template = 'settings.dbtmako'
+    template = 'settings.jinja2'
     title = _('Settings')
     nav_title = title
 

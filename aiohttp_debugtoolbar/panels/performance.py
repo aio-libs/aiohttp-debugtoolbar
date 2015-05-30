@@ -40,7 +40,7 @@ class PerformanceDebugPanel(DebugPanel):
     function_calls = None
     has_resource = bool(resource)
     has_content = bool(pstats and profile)
-    template = 'performance.dbtmako'
+    template = 'performance.jinja2'
     title = _('Performance')
     nav_title = title
 

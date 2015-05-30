@@ -124,7 +124,7 @@ def middleware(app, handler):
                            'redirect_code': response.status}
 
                 _response = aiohttp_jinja2.render_template(
-                    'redirect.dbtmako', request, context,
+                    'redirect.jinja2', request, context,
                     app_key=TEMPLATE_KEY)
                 response = _response
 

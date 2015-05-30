@@ -11,7 +11,7 @@ class HeaderDebugPanel(DebugPanel):
     """
     name = 'Header'
     has_content = True
-    template = 'headers.dbtmako'
+    template = 'headers.jinja2'
     title = _('HTTP Headers')
     nav_title = title
 

@@ -8,7 +8,7 @@ from aiohttp import web
 from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
 
 
-@aiohttp_jinja2.template('toolbar.dbtmako', app_key=TEMPLATE_KEY)
+@aiohttp_jinja2.template('toolbar.jinja2', app_key=TEMPLATE_KEY)
 def request_view(request):
     settings = request.app[APP_KEY]['settings']
     history = request.app[APP_KEY]['request_history']
@@ -120,7 +120,7 @@ class ExceptionDebugView:
         return web.HTTPBadRequest()
 
     # TODO: figure out how to enable console mode on frontend
-    # @aiohttp_mako.template('console.dbtmako',  app_key=TEMPLATE_KEY)
+    # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
     # def console(self, request):
     #     self._validate_token(request)
     #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')

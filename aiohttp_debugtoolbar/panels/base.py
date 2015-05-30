@@ -49,7 +49,7 @@ class DebugPanel:
     #: implementation of ``render_content``. This is an
     #: :term:`asset specification` pointing at the template to be rendered
     #: for the panel. Usually of the format
-    #: ``'mylib:templates/panel.dbtmako'``.
+    #: ``'mylib:templates/panel.jinja2'``.
     template = NotImplemented
 
     #: Title showing in toolbar. Must be overridden.

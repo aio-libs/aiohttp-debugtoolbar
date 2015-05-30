@@ -30,7 +30,7 @@ class VersionDebugPanel(DebugPanel):
     """
     name = 'Version'
     has_content = True
-    template = 'versions.dbtmako'
+    template = 'versions.jinja2'
     title = _('Versions')
     nav_title = title
 

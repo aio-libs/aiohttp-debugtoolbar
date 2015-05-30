@@ -15,7 +15,7 @@ class RequestVarsDebugPanel(DebugPanel):
     """
     name = 'RequestVars'
     has_content = True
-    template = 'request_vars.dbtmako'
+    template = 'request_vars.jinja2'
     title = _('Request Vars')
     nav_title = title
 
