@@ -113,7 +113,7 @@ class DebugPanel:
         Override this method to track properties of the response."""
         pass
 
-    def wrap_handler(self, handler):
+    def wrap_handler(self, handler, context_switcher):
         """May be overridden to monitor the entire lifecycle of the request.
 
         A handler receives a request and returns a response. An example
@@ -121,7 +121,7 @@ class DebugPanel:
 
         .. code-block:: python
 
-           def wrap_handler(self, handler):
+           def wrap_handler(self, handler, context_switcher):
                def wrapper(request):
                    start_time = time.time()
                    response = handler(request)

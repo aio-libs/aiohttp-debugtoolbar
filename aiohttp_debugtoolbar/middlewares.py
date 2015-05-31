@@ -5,7 +5,8 @@ from aiohttp import web
 
 from .toolbar import DebugToolbar
 from .tbtools.tbtools import get_traceback
-from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify
+from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify, \
+    ContextSwitcher
 
 __all__ = ['toolbar_middleware_factory', 'middleware']
 HTML_TYPES = ('text/html', 'application/xhtml+xml')
@@ -56,12 +57,13 @@ def middleware(app, handler):
         toolbar = DebugToolbar(request, panel_classes, global_panel_classes)
         _handler = handler
 
+        context_switcher = ContextSwitcher()
         # XXX
         for panel in toolbar.panels:
-            _handler = panel.wrap_handler(_handler)
+            _handler = panel.wrap_handler(_handler, context_switcher)
 
         try:
-            response = yield from _handler(request)
+            response = yield from context_switcher(_handler(request))
         except (web.HTTPSuccessful, web.HTTPRedirection,
                 web.HTTPClientError) as e:
             # TODO: fix dirty hack
