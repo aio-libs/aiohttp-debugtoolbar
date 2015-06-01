@@ -3,7 +3,6 @@ from .base import DebugPanel
 
 
 __all__ = ['RoutesDebugPanel']
-_ = lambda x: x
 
 
 class RoutesDebugPanel(DebugPanel):
@@ -13,7 +12,7 @@ class RoutesDebugPanel(DebugPanel):
     name = 'Routes'
     has_content = True
     template = 'routes.jinja2'
-    title = _('Routes')
+    title = 'Routes'
     nav_title = title
 
     def __init__(self, request):

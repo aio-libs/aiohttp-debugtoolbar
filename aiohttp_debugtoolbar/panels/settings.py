@@ -5,7 +5,6 @@ from ..utils import APP_KEY
 
 
 __all__ = ['SettingsDebugPanel']
-_ = lambda x: x
 
 
 class SettingsDebugPanel(DebugPanel):
@@ -16,7 +15,7 @@ class SettingsDebugPanel(DebugPanel):
     name = 'Settings'
     has_content = True
     template = 'settings.jinja2'
-    title = _('Settings')
+    title = 'Settings'
     nav_title = title
 
     def __init__(self, request):

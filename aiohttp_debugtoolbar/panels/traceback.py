@@ -8,13 +8,12 @@ from ..utils import ROOT_ROUTE_NAME
 
 
 __all__ = ['TracebackPanel']
-_ = lambda x: x
 
 
 class TracebackPanel(DebugPanel):
     name = 'Traceback'
     template = 'traceback.jinja2'
-    title = _('Traceback')
+    title = 'Traceback'
     nav_title = title
 
     def __init__(self, request):

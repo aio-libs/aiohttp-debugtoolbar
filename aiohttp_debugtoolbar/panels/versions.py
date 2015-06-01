@@ -7,7 +7,6 @@ from .base import DebugPanel
 
 
 __all__ = ['VersionDebugPanel']
-_ = lambda x: x
 
 
 packages = []
@@ -31,7 +30,7 @@ class VersionDebugPanel(DebugPanel):
     name = 'Version'
     has_content = True
     template = 'versions.jinja2'
-    title = _('Versions')
+    title = 'Versions'
     nav_title = title
 
     def __init__(self, request):

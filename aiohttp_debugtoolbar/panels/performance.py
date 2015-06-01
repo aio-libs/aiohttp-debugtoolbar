@@ -24,7 +24,6 @@ from ..utils import format_fname
 
 
 __all__ = ['PerformanceDebugPanel']
-_ = lambda x: x
 
 
 class PerformanceDebugPanel(DebugPanel):
@@ -41,7 +40,7 @@ class PerformanceDebugPanel(DebugPanel):
     has_resource = bool(resource)
     has_content = bool(pstats and profile)
     template = 'performance.jinja2'
-    title = _('Performance')
+    title = 'Performance'
     nav_title = title
 
     def __init__(self, request):
@@ -177,11 +176,11 @@ class PerformanceDebugPanel(DebugPanel):
 
             # TODO l10n on values
             rows = (
-                (_('User CPU time'), '%0.3f msec' % utime),
-                (_('System CPU time'), '%0.3f msec' % stime),
-                (_('Total CPU time'), '%0.3f msec' % (utime + stime)),
-                (_('Elapsed time'), '%0.3f msec' % self.total_time),
-                (_('Context switches'), '%d voluntary, %d involuntary' % (
+                ('User CPU time', '%0.3f msec' % utime),
+                ('System CPU time', '%0.3f msec' % stime),
+                ('Total CPU time', '%0.3f msec' % (utime + stime)),
+                ('Elapsed time', '%0.3f msec' % self.total_time),
+                ('Context switches', '%d voluntary, %d involuntary' % (
                     vcsw, ivcsw)),
                 # (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
                 # rss, srss, urss + usrss)),
