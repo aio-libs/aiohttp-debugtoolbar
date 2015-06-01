@@ -57,6 +57,7 @@ Full Example
 .. code:: python
 
     import asyncio
+    import jinja2
     import aiohttp_debugtoolbar
     import aiohttp_jinja2
 
@@ -83,29 +84,28 @@ Full Example
         # install aiohttp_debugtoolbar
         aiohttp_debugtoolbar.setup(app)
 
-        # install jinja2 templates
-        lookup = aiohttp_jinja2.setup(app, input_encoding='utf-8',
-                                    output_encoding='utf-8',
-                                    default_filters=['decode.utf8'])
         template = """
         <html>
             <head>
-                <title>${title}</title>
+                <title>{{ title }}</title>
             </head>
             <body>
-                <h1>${text}</h1>
+                <h1>{{ text }}</h1>
                 <p>
-                  <a href="${app.router['exc_example'].url()}">
+                  <a href="{{ app.router['exc_example'].url() }}">
                   Exception example</a>
                 </p>
             </body>
         </html>
         """
-        lookup.put_string('index.html', template)
+        # install jinja2 templates
+        loader = jinja2.DictLoader({'index.html': template})
+        aiohttp_jinja2.setup(app, loader=loader)
 
+        # init routes for index page, and page with error
         app.router.add_route('GET', '/', basic_handler, name='index')
-        app.router.add_route('GET', '/exc',
-                             exception_handler, name='exc_example')
+        app.router.add_route('GET', '/exc', exception_handler,
+                             name='exc_example')
 
         handler = app.make_handler()
         srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
@@ -118,7 +118,7 @@ Full Example
     try:
         loop.run_forever()
     except KeyboardInterrupt:
-    loop.run_until_complete(handler.finish_connections())
+        loop.run_until_complete(handler.finish_connections())
 
 
 Play With Demo
