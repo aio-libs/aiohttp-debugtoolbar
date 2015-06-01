@@ -28,6 +28,15 @@
         <p>
           <a href="{{ app.router['test_jinja2_exc'].url() }}">Jinja2 Exception example</a>
         </p>
+        {% if aiohttp_mako %}
+        <p>
+        <a href="{{ app.router['test_mako_exc'].url() }}">Mako Exception example</a>
+        </p>
+        {% else %}
+        <p>
+          aiohttp_mako is not available, please install it by <code><pre>$ pip install aiohttp_mako</pre></code> to see how mako excetion handling works.
+        </p>
+        {% endif %}
 
     </body>
 </html>
