@@ -27,8 +27,8 @@ def init(loop):
 
     # install jinja2 templates
     lookup = aiohttp_jinja2.setup(app, input_encoding='utf-8',
-                                output_encoding='utf-8',
-                                default_filters=['decode.utf8'])
+                                  output_encoding='utf-8',
+                                  default_filters=['decode.utf8'])
     template = """
     <html>
         <head>

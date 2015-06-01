@@ -20,8 +20,8 @@ class TestExceptionViews(BaseTest):
         tbsetup(app, **kw)
 
         tplt = "<html><body><h1>{{ head }}</h1>{{ text }}</body></html>"
-        loader = jinja2.DictLoader({'tplt.html':tplt})
-        env = aiohttp_jinja2.setup(app, loader=loader)
+        loader = jinja2.DictLoader({'tplt.html': tplt})
+        aiohttp_jinja2.setup(app, loader=loader)
 
         app.router.add_route('GET', '/', handler)
 

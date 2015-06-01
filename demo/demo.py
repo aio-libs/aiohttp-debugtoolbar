@@ -2,13 +2,9 @@ import asyncio
 import json
 import logging
 import os
-
 import sys
 
 from pathlib import Path
-parent = Path('.').parent
-parent = str(parent.absolute())
-sys.path.insert(0, parent)
 
 import jinja2
 import aiohttp_debugtoolbar
@@ -19,6 +15,12 @@ try:
     import aiohttp_mako
 except ImportError:
     aiohttp_mako = None
+
+
+parent = Path('.').parent
+parent = str(parent.absolute())
+sys.path.insert(0, parent)
+
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
@@ -84,14 +86,12 @@ def test_jinja2_exc(request):
     return {'title': 'Test jinja2 template exceptions'}
 
 
-
 @asyncio.coroutine
 def init(loop):
     app = web.Application(loop=loop,
                           middlewares=[aiohttp_debugtoolbar.middleware])
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
-    
     loader = jinja2.FileSystemLoader([templates])
     aiohttp_jinja2.setup(app, loader=loader)
 
@@ -100,13 +100,13 @@ def init(loop):
                            output_encoding='utf-8',
                            default_filters=['decode.utf8'],
                            directories=[templates])
+
         @aiohttp_mako.template('error.mako')
         def test_mako_exc(request):
             return {'title': 'Test Mako template exceptions'}
 
-        app.router.add_route('GET', '/mako_exc', test_mako_exc, name='test_mako_exc')
-
-
+        app.router.add_route('GET', '/mako_exc', test_mako_exc,
+                             name='test_mako_exc')
 
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(templates))
 
