@@ -21,8 +21,8 @@ def exception_handler(request):
 @asyncio.coroutine
 def init(loop):
     # add aiohttp_debugtoolbar middleware to you application
-    app = web.Application(loop=loop, middlewares=[aiohttp_debugtoolbar
-                          .toolbar_middleware_factory])
+    app = web.Application(loop=loop,
+                          middlewares=[aiohttp_debugtoolbar.middleware])
     # install aiohttp_debugtoolbar
     aiohttp_debugtoolbar.setup(app)
 

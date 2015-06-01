@@ -4,7 +4,7 @@ import aiohttp_jinja2
 import jinja2
 from aiohttp import web
 
-from aiohttp_debugtoolbar import toolbar_middleware_factory, setup as tbsetup
+from aiohttp_debugtoolbar import middleware, setup as tbsetup
 
 from .base import BaseTest
 
@@ -14,7 +14,7 @@ class TestMiddleware(BaseTest):
     @asyncio.coroutine
     def _setup_app(self, handler, **kw):
         app = web.Application(loop=self.loop,
-                              middlewares=[toolbar_middleware_factory])
+                              middlewares=[middleware])
 
         tbsetup(app, **kw)
 
@@ -207,6 +207,6 @@ class TestMiddleware(BaseTest):
         def go():
             app = web.Application(loop=self.loop)
             with self.assertRaises(RuntimeError):
-                yield from toolbar_middleware_factory(app, lambda r: r)
+                yield from middleware(app, lambda r: r)
 
         self.loop.run_until_complete(go())

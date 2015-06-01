@@ -5,8 +5,7 @@ import aiohttp_jinja2
 import jinja2
 from aiohttp import web
 
-from aiohttp_debugtoolbar import (toolbar_middleware_factory,
-                                  setup as tbsetup, APP_KEY)
+from aiohttp_debugtoolbar import middleware, setup as tbsetup, APP_KEY
 
 from .base import BaseTest
 
@@ -14,8 +13,7 @@ from .base import BaseTest
 class TestExceptionViews(BaseTest):
     @asyncio.coroutine
     def _setup_app(self, handler, **kw):
-        app = web.Application(loop=self.loop,
-                              middlewares=[toolbar_middleware_factory])
+        app = web.Application(loop=self.loop, middlewares=[middleware])
 
         tbsetup(app, **kw)
 
