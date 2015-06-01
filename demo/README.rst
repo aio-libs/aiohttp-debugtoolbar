@@ -9,7 +9,7 @@ Play With Demo
 2) create virtual environment, for instance using *virtualenvwraper*::
 
     $ cd aiohttp_debugtoolbar
-    $ mkvirtualenv -p ``which python3` aiohttp_debugtoolbar
+    $ mkvirtualenv -p `which python3` aiohttp_debugtoolbar
 
 3) install ``aiohttp_jinja2``::
 

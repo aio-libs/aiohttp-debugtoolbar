@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+0.0.3 (xxxx-xx-xx)
+^^^^^^^^^^^^^^^^^^
+
+* Switched template engine from mako to jinja2 (Thanks @iho)
+
+
 0.0.2 (2015-05-26)
 ^^^^^^^^^^^^^^^^^^
 
