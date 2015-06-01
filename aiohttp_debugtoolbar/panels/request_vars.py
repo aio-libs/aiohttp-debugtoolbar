@@ -5,7 +5,6 @@ from .base import DebugPanel
 
 
 __all__ = ['RequestVarsDebugPanel']
-_ = lambda x: x
 
 
 class RequestVarsDebugPanel(DebugPanel):
@@ -15,8 +14,8 @@ class RequestVarsDebugPanel(DebugPanel):
     """
     name = 'RequestVars'
     has_content = True
-    template = 'request_vars.dbtmako'
-    title = _('Request Vars')
+    template = 'request_vars.jinja2'
+    title = 'Request Vars'
     nav_title = title
 
     def __init__(self, request):

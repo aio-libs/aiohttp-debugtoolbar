@@ -1,0 +1,27 @@
+<h4>Platform</h4>
+<div>{{ platform }}</div>
+<h4>aiohttp</h4>
+<div>{{ aiohttp_version }}</div>
+
+<h4>Packages</h4>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Package Name</th>
+			<th>Version</th>
+			<th>Dependencies</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for package in packages %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ package['name'] }}</td>
+				<td>{{ package['version'] }}</td>
+				<td>
+					{{ package['dependencies']|join(', ') }}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

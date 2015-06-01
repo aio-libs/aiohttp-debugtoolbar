@@ -6,11 +6,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		% for i, middleware in enumerate(middlewares):
-			<tr class="${i%2 and 'pDebugEven' or 'pDebugOdd'}">
-				<td>${str(i)}</td>
-				<td>${middleware}</td>
+		{% for middleware in middlewares %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ i }}</td>
+				<td>{{ middleware }}</td>
 			</tr>
-		% endfor
+		{% endfor %}
 	</tbody>
 </table>

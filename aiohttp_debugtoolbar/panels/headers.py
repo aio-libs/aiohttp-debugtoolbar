@@ -2,7 +2,6 @@ import asyncio
 from .base import DebugPanel
 
 __all__ = ['HeaderDebugPanel']
-_ = lambda x: x
 
 
 class HeaderDebugPanel(DebugPanel):
@@ -11,8 +10,8 @@ class HeaderDebugPanel(DebugPanel):
     """
     name = 'Header'
     has_content = True
-    template = 'headers.dbtmako'
-    title = _('HTTP Headers')
+    template = 'headers.jinja2'
+    title = 'HTTP Headers'
     nav_title = title
 
     def __init__(self, request):

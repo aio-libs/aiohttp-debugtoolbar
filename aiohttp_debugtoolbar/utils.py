@@ -7,7 +7,7 @@ from collections import deque
 from itertools import islice
 
 APP_KEY = 'aiohttp_debugtollbar'
-TEMPLATE_KEY = 'aiohttp_debugtollbar_mako'
+TEMPLATE_KEY = 'aiohttp_debugtollbar_jinja2'
 
 REDIRECT_CODES = (301, 302, 303, 304)
 STATIC_PATH = 'static/'
@@ -76,7 +76,7 @@ def render(template_name, app, context, *, app_key=TEMPLATE_KEY,  **kw):
     template = lookup.get_template(template_name)
     c = context.copy()
     c.update(kw)
-    txt = template.render_unicode(**c)
+    txt = template.render(**c)
     return txt
 
 

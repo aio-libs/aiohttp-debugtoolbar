@@ -227,7 +227,7 @@ class Traceback:
             'description': description_wrapper % escape(self.exception),
         }
         app = request.app
-        return render('exception_summary.dbtmako', app, vars, request=request)
+        return render('exception_summary.jinja2', app, vars, request=request)
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
@@ -257,7 +257,7 @@ class Traceback:
             'root_path': root_path,
             'url': url,
         }
-        return render('exception.dbtmako', request.app, vars, request=request)
+        return render('exception.jinja2', request.app, vars, request=request)
 
     def generate_plaintext_traceback(self):
         """Like the plaintext attribute but returns a generator"""

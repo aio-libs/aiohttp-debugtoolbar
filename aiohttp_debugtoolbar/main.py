@@ -1,5 +1,6 @@
 import os
-import aiohttp_mako
+import jinja2
+import aiohttp_jinja2
 
 from . import views
 from . import panels
@@ -12,7 +13,7 @@ default_panel_names = [
     panels.PerformanceDebugPanel,
     panels.RequestVarsDebugPanel,
     panels.TracebackPanel,
-    ]
+]
 
 
 default_global_panel_names = [
@@ -50,12 +51,8 @@ def setup(app, **kw):
     templates_panels = os.path.join(APP_ROOT, 'panels/templates')
 
     app[APP_KEY]['settings'] = config
-
-    aiohttp_mako.setup(app, input_encoding='utf-8',
-                       output_encoding='utf-8',
-                       default_filters=['decode.utf8'],
-                       directories=[templates_app, templates_panels],
-                       app_key=TEMPLATE_KEY)
+    loader = jinja2.FileSystemLoader([templates_app, templates_panels])
+    aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
     static_location = os.path.join(APP_ROOT, 'static')
 

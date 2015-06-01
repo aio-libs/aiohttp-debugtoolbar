@@ -7,7 +7,6 @@ from .base import DebugPanel
 
 
 __all__ = ['VersionDebugPanel']
-_ = lambda x: x
 
 
 packages = []
@@ -30,8 +29,8 @@ class VersionDebugPanel(DebugPanel):
     """
     name = 'Version'
     has_content = True
-    template = 'versions.dbtmako'
-    title = _('Versions')
+    template = 'versions.jinja2'
+    title = 'Versions'
     nav_title = title
 
     def __init__(self, request):

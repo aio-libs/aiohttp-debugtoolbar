@@ -1,0 +1,20 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Route Name</th>
+			<th>Method</th>
+			<th>Route Pattern</th>
+			<th>View Callable</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for  route_info in routes %}
+			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+				<td>{{ route_info['name'] }}</td>
+				<td>{{ route_info['method'] }}</td>
+				<td>{{ route_info['pattern'] }}</td>
+				<td>{{ route_info['handler'] }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

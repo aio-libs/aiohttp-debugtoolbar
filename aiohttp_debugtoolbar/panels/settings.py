@@ -5,7 +5,6 @@ from ..utils import APP_KEY
 
 
 __all__ = ['SettingsDebugPanel']
-_ = lambda x: x
 
 
 class SettingsDebugPanel(DebugPanel):
@@ -15,8 +14,8 @@ class SettingsDebugPanel(DebugPanel):
     """
     name = 'Settings'
     has_content = True
-    template = 'settings.dbtmako'
-    title = _('Settings')
+    template = 'settings.jinja2'
+    title = 'Settings'
     nav_title = title
 
     def __init__(self, request):

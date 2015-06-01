@@ -1,11 +1,11 @@
 import asyncio
 import aiohttp_debugtoolbar
-import aiohttp_mako
+import aiohttp_jinja2
 
 from aiohttp import web
 
 
-@aiohttp_mako.template('index.html')
+@aiohttp_jinja2.template('index.html')
 def basic_handler(request):
     return {'title': 'example aiohttp_debugtoolbar!',
             'text': 'Hello aiohttp_debugtoolbar!',
@@ -25,10 +25,10 @@ def init(loop):
     # install aiohttp_debugtoolbar
     aiohttp_debugtoolbar.setup(app)
 
-    # install mako templates
-    lookup = aiohttp_mako.setup(app, input_encoding='utf-8',
-                                output_encoding='utf-8',
-                                default_filters=['decode.utf8'])
+    # install jinja2 templates
+    lookup = aiohttp_jinja2.setup(app, input_encoding='utf-8',
+                                  output_encoding='utf-8',
+                                  default_filters=['decode.utf8'])
     template = """
     <html>
         <head>

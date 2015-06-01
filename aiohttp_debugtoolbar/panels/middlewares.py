@@ -2,7 +2,6 @@ from .base import DebugPanel
 from ..utils import STATIC_ROUTE_NAME
 
 __all__ = ['MiddlewaresDebugPanel']
-_ = lambda x: x
 
 
 class MiddlewaresDebugPanel(DebugPanel):
@@ -11,8 +10,8 @@ class MiddlewaresDebugPanel(DebugPanel):
     """
     name = 'Middlewares'
     has_content = True
-    template = 'middlewares.dbtmako'
-    title = _('Middlewares')
+    template = 'middlewares.jinja2'
+    title = 'Middlewares'
     nav_title = title
 
     def __init__(self, request):
