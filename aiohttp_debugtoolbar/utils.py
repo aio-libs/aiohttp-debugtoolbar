@@ -142,17 +142,21 @@ def escape(s, quote=False):
 
 
 class ContextSwitcher:
-    # https://www.python.org/dev/peps/pep-0380/#formal-semantics
+    """This object is alternative to *yield from*. It is useful in cases
+    when you need to track context switches inside coroutine.
+
+    see: https://www.python.org/dev/peps/pep-0380/#formal-semantics
+    """
     def __init__(self):
         self._on_context_switch_out = []
         self._on_context_switch_in = []
 
     def add_context_in(self, callback):
-        # TODO add check for callabe and callable is not coroutine
+        assert callable(callback), 'callback should be callable'
         self._on_context_switch_in.append(callback)
 
     def add_context_out(self, callback):
-        # TODO add check for callabe and callable is not coroutine
+        assert callable(callback), 'callback should be callable'
         self._on_context_switch_out.append(callback)
 
     def __call__(self, expr):
