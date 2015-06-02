@@ -40,7 +40,7 @@ class LoggingPanel(DebugPanel):
 
     def wrap_handler(self, handler, context_switcher):
         context_switcher.add_context_in(self._install_handler)
-        context_switcher.add_context_out(self._install_handler)
+        context_switcher.add_context_out(self._uninstall_handler)
         return handler
 
     @asyncio.coroutine
