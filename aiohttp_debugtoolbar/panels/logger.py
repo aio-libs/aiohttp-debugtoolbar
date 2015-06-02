@@ -7,9 +7,6 @@ from .base import DebugPanel
 from ..utils import format_fname
 
 
-_ = lambda x: x
-
-
 class RequestTrackingHandler(logging.Handler):
 
     def __init__(self, *args, **kwargs):
@@ -27,9 +24,9 @@ class RequestTrackingHandler(logging.Handler):
 class LoggingPanel(DebugPanel):
 
     name = 'logging'
-    template = 'logger.dbtmako'
-    title = _('Log Messages')
-    nav_title = _('Logging')
+    template = 'logger.jinja2'
+    title = 'Log Messages'
+    nav_title = 'Logging'
 
     def __init__(self, request):
         super().__init__(request)
@@ -64,8 +61,7 @@ class LoggingPanel(DebugPanel):
     def has_content(self):
         if self.data.get('records'):
             return True
-        else:
-            return False
+        return False
 
     @property
     def nav_subtitle(self):
