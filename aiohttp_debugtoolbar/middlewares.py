@@ -58,7 +58,6 @@ def middleware(app, handler):
         _handler = handler
 
         context_switcher = ContextSwitcher()
-        # XXX
         for panel in toolbar.panels:
             _handler = panel.wrap_handler(_handler, context_switcher)
 
