@@ -49,6 +49,7 @@ def json_renderer(func):
 
 @asyncio.coroutine
 def exc(request):
+    log.error('NotImplementedError exception handler')
     raise NotImplementedError
 
 
@@ -60,11 +61,13 @@ def test_ajax(request):
 @json_renderer
 @asyncio.coroutine
 def call_ajax(request):
+    log.info('call_ajax handler')
     return {'ajax': 'success'}
 
 
 @asyncio.coroutine
 def test_redirect(request):
+    log.info('redirect handler')
     raise web.HTTPSeeOther(location='/')
 
 
@@ -72,6 +75,10 @@ def test_redirect(request):
 @asyncio.coroutine
 def test_page(request):
     title = 'Aiohttp Debugtoolbar'
+
+    log.info('Info logger fon index page')
+    log.debug('Debug logger fon index page')
+    log.critical('Critical logger fon index page')
 
     return {
         'title': title,

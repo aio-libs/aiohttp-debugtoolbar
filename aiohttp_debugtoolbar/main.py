@@ -13,6 +13,7 @@ default_panel_names = [
     panels.PerformanceDebugPanel,
     panels.RequestVarsDebugPanel,
     panels.TracebackPanel,
+    panels.LoggingPanel,
 ]
 
 
