@@ -4,7 +4,9 @@ CHANGES
 0.0.3 (xxxx-xx-xx)
 ^^^^^^^^^^^^^^^^^^
 
-* Switched template engine from mako to jinja2 (Thanks @iho)
+* Switched template engine from mako to jinja2. (Thanks @iho)
+* Added custom *yield from* to track context switches inside coroutine.
+* Implemented panel for collecting request log messages.
 
 
 0.0.2 (2015-05-26)
