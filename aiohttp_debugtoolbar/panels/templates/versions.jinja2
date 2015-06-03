@@ -16,7 +16,7 @@
 	<tbody>
 		{% for package in packages %}
 			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ package['name'] }}</td>
+				<td><a href="{{ package['url'] }}">{{ package['name'] }}</a></td>
 				<td>{{ package['version'] }}</td>
 				<td>
 					{{ package['dependencies']|join(', ') }}
