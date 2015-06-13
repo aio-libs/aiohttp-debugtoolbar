@@ -19,6 +19,8 @@ ported:
 * interactive python console
 * show source code
 
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp_debugtoolbar/master/demo/aiohttp_debugtoolba_sceenshot.png
+
 
 Ported Panels
 -------------
