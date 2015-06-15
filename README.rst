@@ -122,6 +122,13 @@ Full Example
     except KeyboardInterrupt:
         loop.run_until_complete(handler.finish_connections())
 
+Thanks
+------
+I've borrowed a lot of code from following projects. I highly recommend to check them out:
+
+* `pyramid_debugtoolbar <https://github.com/Pylons/pyramid_debugtoolbar>`_  
+* `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_  
+* `flask-debugtoolbar <https://github.com/mgood/flask-debugtoolbar>`_  
 
 Play With Demo
 --------------
