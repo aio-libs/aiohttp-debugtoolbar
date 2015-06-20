@@ -9,8 +9,7 @@ __all__ = ['SettingsDebugPanel']
 
 class SettingsDebugPanel(DebugPanel):
     """
-    A panel to display Pyramid deployment settings for your application (the
-    values in ``registry.settings``).
+    A panel to display debug toolbar setting for now.
     """
     name = 'Settings'
     has_content = True
@@ -20,7 +19,7 @@ class SettingsDebugPanel(DebugPanel):
 
     def __init__(self, request):
         super().__init__(request)
-
+        # TODO: show application setting here
         # always repr this stuff before it's sent to the template to appease
         # dumbass stuff like MongoDB's __getattr__ that always returns a
         # Collection, which fails when Jinja tries to look up __html__ on it.

@@ -80,7 +80,7 @@ class DebugPanel:
     def __init__(self, request):
         """Configure the panel for a request.
 
-        :param request: The instance of :class:`pyramid.request.Request` that
+        :param request: The instance of :class:`aiohttp.web.Request` that
                         this object is wrapping.
         """
         self._request = request

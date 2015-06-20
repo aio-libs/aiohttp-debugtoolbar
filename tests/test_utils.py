@@ -34,17 +34,17 @@ class TestUtils(unittest.TestCase):
 
         sys_path = map(lambda path: path.replace('/', os.path.sep), sys_path)
         modpath = format_fname(
-            '/foo/bar/pyramid_debugtoolbar/tests/debugfoo.py'.replace(
+            '/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py'.replace(
                 '/', os.path.sep), sys_path)
         self.assertEqual(modpath,
-                         '<pyramid_debugtoolbar/tests/debugfoo.py>'.replace(
+                         '<aiohttp_debugtoolbar/tests/debugfoo.py>'.replace(
                              '/', os.path.sep))
 
     def test_no_matching_sys_path(self):
-        val = '/foo/bar/pyramid_debugtoolbar/foo.py'
+        val = '/foo/bar/aiohttp_debugtoolbar/foo.py'
         sys_path = ['/bar/baz']
         self.assertEqual(format_fname(val, sys_path),
-                         '</foo/bar/pyramid_debugtoolbar/foo.py>')
+                         '</foo/bar/aiohttp_debugtoolbar/foo.py>')
 
     def test_addr_in(self):
         self.assertFalse(addr_in('127.0.0.1', []))

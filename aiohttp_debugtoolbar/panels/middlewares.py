@@ -6,7 +6,7 @@ __all__ = ['MiddlewaresDebugPanel']
 
 class MiddlewaresDebugPanel(DebugPanel):
     """
-    A panel to display the middlewares used by your Pyramid application.
+    A panel to display the middlewares used by your aiohttp application.
     """
     name = 'Middlewares'
     has_content = True
