@@ -1,24 +1,24 @@
 <h4>Cookie Variables</h4>
 {% if cookies %}
 <table class="table table-striped">
-	<colgroup>
-		<col style="width:20%"/>
-		<col/>
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in cookies %}
-		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key }}</td>
-			<td>{{ value }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
+    <colgroup>
+        <col style="width:20%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in cookies %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No cookie data</p>
@@ -27,24 +27,24 @@
 <h4>Session Variables</h4>
 {% if session %}
 <table class="table table-striped">
-	<colgroup>
-		<col style="width:20%"/>
-		<col/>
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in session %}
-		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key }}</td>
-			<td>{{ value }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
+    <colgroup>
+        <col style="width:20%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in session %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No session data</p>
@@ -53,20 +53,20 @@
 <h4>GET Variables</h4>
 {% if get %}
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in get %}
-		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key }}</td>
-			<td>{{ ', '.join(value) }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in get %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td>{{ ', '.join(value) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No GET data</p>
@@ -75,20 +75,20 @@
 <h4>POST Variables</h4>
 {% if post %}
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Variable</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in post %}
-		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key }}</td>
-			<td>{{ value }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in post %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No POST data</p>
@@ -97,20 +97,20 @@
 <h4>Request attributes</h4>
 {% if attrs %}
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Attribute</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in attrs %}
-		<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-			<td>{{ key }}</td>
-			<td>{{ value }}</td>
-		</tr>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in attrs %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
                 {% endfor %}
-	</tbody>
+    </tbody>
 </table>
 {% else %} 
 <p>No request attributes</p>

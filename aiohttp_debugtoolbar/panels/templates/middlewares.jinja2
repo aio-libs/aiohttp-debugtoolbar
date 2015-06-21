@@ -1,16 +1,16 @@
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Order (from server to application)</th>
-			<th>Middleware</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for middleware in middlewares %}
-			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ i }}</td>
-				<td>{{ middleware }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Order (from server to application)</th>
+            <th>Middleware</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for middleware in middlewares %}
+            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+                <td>{{ i }}</td>
+                <td>{{ middleware }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>

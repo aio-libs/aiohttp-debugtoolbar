@@ -5,36 +5,36 @@
 <div class="modal-body">
 
 <div class="pDebugPanelTitle">
-	<h3>SQL Explained</h3>
+    <h3>SQL Explained</h3>
 </div>
 <div class="pDebugPanelContent">
-	<div class="scroll">
-		<dl>
-			<dt>Executed SQL</dt>
-			<dd>{{ sql }}</dd>
-			<dt>Time</dt>
-			<dd>{{ '%.2f' % (duration) }} ms</dd>
-		</dl>
-		<table class="djSqlExplain table table-striped"
+    <div class="scroll">
+        <dl>
+            <dt>Executed SQL</dt>
+            <dd>{{ sql }}</dd>
+            <dt>Time</dt>
+            <dd>{{ '%.2f' % (duration) }} ms</dd>
+        </dl>
+        <table class="djSqlExplain table table-striped"
 >
-			<thead>
-				<tr>
-					{% for h in headers %}
-						<th>{{ h.upper() }}</th>
-					{% endfor %}
-				</tr>
-			</thead>
-			<tbody>
-				{% for row in result %}
-				    <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-						{% for column in row %}
-						<td>{{ column.replace(' ', '&nbsp;') }}</td>
-						{% endfor %}
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+            <thead>
+                <tr>
+                    {% for h in headers %}
+                        <th>{{ h.upper() }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in result %}
+                    <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+                        {% for column in row %}
+                        <td>{{ column.replace(' ', '&nbsp;') }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </div>

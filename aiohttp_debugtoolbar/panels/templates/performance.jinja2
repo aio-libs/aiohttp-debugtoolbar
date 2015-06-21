@@ -1,23 +1,23 @@
 {% if timing_rows %}
 <table class="table table-striped">
-	<colgroup>
-		<col style="width:20%"/>
-		<col/>
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Resource</th>
-			<th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for key, value in timing_rows %}
-			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td>{{ key }}</td>
-				<td>{{ value }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
+    <colgroup>
+        <col style="width:20%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Resource</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in timing_rows %}
+            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
     <p>Resource statistics have been disabled. This is because the 'resource'

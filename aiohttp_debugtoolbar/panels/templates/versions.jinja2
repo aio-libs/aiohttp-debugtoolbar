@@ -6,22 +6,22 @@
 <h4>Packages</h4>
 
 <table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Package Name</th>
-			<th>Version</th>
-			<th>Dependencies</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for package in packages %}
-			<tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
-				<td><a href="{{ package['url'] }}">{{ package['name'] }}</a></td>
-				<td>{{ package['version'] }}</td>
-				<td>
-					{{ package['dependencies']|join(', ') }}
-				</td>
-			</tr>
-		{% endfor %}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Package Name</th>
+            <th>Version</th>
+            <th>Dependencies</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for package in packages %}
+            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+                <td><a href="{{ package['url'] }}">{{ package['name'] }}</a></td>
+                <td>{{ package['version'] }}</td>
+                <td>
+                    {{ package['dependencies']|join(', ') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
