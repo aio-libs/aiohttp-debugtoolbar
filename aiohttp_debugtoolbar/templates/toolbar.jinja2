@@ -69,13 +69,13 @@
     <script src="{{ static_path }}js/jquery.tablesorter.min.js"></script>
     <script src="{{ static_path }}js/bootstrap.min.js"></script>
     <script src="{{ static_path }}js/toolbar.js"></script>
-	<script>
-	  $(function () {
-	    $('#myTab a:first').tab('show');
-	    $('#myTab a').click(function (e) {
-	      e.preventDefault();
-	      $(this).tab('show');
-	    });
+    <script>
+      $(function () {
+        $('#myTab a:first').tab('show');
+        $('#myTab a').click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        });
         var source;
         function new_request(e) {
             $('ul#requests li a').tooltip('hide')
@@ -95,7 +95,7 @@
                 html += '<span class="badge pull-right _'+details.status_code+'">'+details.status_code+'</span>';
                 html += details.method;
                 if (details.scheme == 'https'){
-                	html += '&nbsp;<span class="badge"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>';
+                    html += '&nbsp;<span class="badge"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>';
                 }
                 html += '<br>' + details.path;
                 html += '</a></li>';
@@ -121,8 +121,8 @@
             connectEventSource();
         }
 
-	  });
-	</script>
+      });
+    </script>
 
       </body>
     </html>

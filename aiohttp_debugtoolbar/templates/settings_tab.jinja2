@@ -7,14 +7,14 @@
 <p>Some aiohttp debug toolbar panels can be activated (this enables additional features)</p>
 
 {% for panel in panels %}
-	{% if panel.user_activate %}
-		<h4>
-		{{ panel.name }}
-		</h4>
-		<span>Enable: </span>	<span id="{{ panel.dom_id }}-switch" class="switch
+    {% if panel.user_activate %}
+        <h4>
+        {{ panel.name }}
+        </h4>
+        <span>Enable: </span>    <span id="{{ panel.dom_id }}-switch" class="switch
                     {{ 'active' if panel.is_active else 'inactive'}}" 
-		title="Enable or disable the panel"> </span>
-	{% endif %}
+        title="Enable or disable the panel"> </span>
+    {% endif %}
 {% endfor %}
 
 </div>
