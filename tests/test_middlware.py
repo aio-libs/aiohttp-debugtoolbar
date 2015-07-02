@@ -210,3 +210,28 @@ class TestMiddleware(BaseTest):
                 yield from middleware(app, lambda r: r)
 
         self.loop.run_until_complete(go())
+
+    def test_process_stream_response(self):
+
+        @asyncio.coroutine
+        def func(request):
+            response = web.StreamResponse(status=200)
+            response.content_type = 'text/html'
+            response.start(request)
+            response.write(b'text')
+            return response
+
+        @asyncio.coroutine
+        def go():
+            app, srv, handler = yield from self._setup_app(func)
+
+            # make sure that toolbar button NOT present on apps page
+            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
+            payload = yield from resp.read()
+            self.assertEqual(200, resp.status)
+            self.assertEqual(payload, b'text')
+
+            yield from handler.finish_connections()
+            srv.close()
+
+        self.loop.run_until_complete(go())

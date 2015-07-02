@@ -1,5 +1,6 @@
 import asyncio
 from urllib.parse import unquote as url_unquote
+from aiohttp.web import Response
 from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
 
 
@@ -53,6 +54,8 @@ class DebugToolbar:
         Inject the debug toolbar iframe into an HTML response.
         """
         # called in host app
+        if not isinstance(response, Response):
+            return
         settings = request.app[APP_KEY]['settings']
         response_html = response.body
         route = request.app.router['debugtoolbar.request']
