@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.0.3 (xxxx-xx-xx)
+0.0.3 (2015-07-03)
 ^^^^^^^^^^^^^^^^^^
 
 * Switched template engine from mako to jinja2. (Thanks @iho)
