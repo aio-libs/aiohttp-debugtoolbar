@@ -26,12 +26,12 @@ Ported Panels
 -------------
 ``HeaderDebugPanel``, ``PerformanceDebugPanel``, ``TracebackPanel``,
 ``SettingsDebugPanel``, ``MiddlewaresDebugPanel``, ``VersionDebugPanel``,
-``RoutesDebugPanel``,  ``RequestVarsDebugPanel``
+``RoutesDebugPanel``,  ``RequestVarsDebugPanel``, ``LoggingPanel``
 
 
 Help Needed
 -----------
-Are you an experienced coder looking for a project to contribute to
+Are you coder looking for a project to contribute to
 python/asyncio libraries? This is the project for you!
 
 
@@ -49,7 +49,7 @@ your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
 
     import aiohttp_debugtoolbar
     app = web.Application(loop=loop,
-                           middlewares=[aiohttp_debugtoolbar.middleware])
+                          middlewares=[aiohttp_debugtoolbar.middleware])
     aiohttp_debugtoolbar.setup(app)
 
 
@@ -122,8 +122,8 @@ Full Example
     except KeyboardInterrupt:
         loop.run_until_complete(handler.finish_connections())
 
-Thanks
-------
+Thanks!
+-------
 I've borrowed a lot of code from following projects. I highly recommend to check them out:
 
 * `pyramid_debugtoolbar <https://github.com/Pylons/pyramid_debugtoolbar>`_  
