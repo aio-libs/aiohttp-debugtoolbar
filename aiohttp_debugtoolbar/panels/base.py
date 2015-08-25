@@ -1,5 +1,4 @@
 import asyncio
-from aiohttp.helpers import reify
 from ..utils import render
 
 
@@ -66,12 +65,6 @@ class DebugPanel:
     #: when the user clicks on the panel's tab in the toolbar.
     url = ''
 
-    @reify
-    def data(self):
-        """A dictionary of data, updated during the request lifecycle, and
-        later used to render the panel's HTML."""
-        return {}  # pragma: no cover
-
     @property
     def request(self):
         return self._request
@@ -84,6 +77,7 @@ class DebugPanel:
                         this object is wrapping.
         """
         self._request = request
+        self.data = {}
 
     def render_content(self, request):
         """Return a string containing the HTML to be rendered for the panel.
