@@ -22,11 +22,10 @@ class TestExceptionViews(BaseTest):
         aiohttp_jinja2.setup(app, loader=loader)
 
         app.router.add_route('GET', '/', handler)
-
+        app_handler = app.make_handler()
         srv = yield from self.loop.create_server(
-            app.make_handler(), '127.0.0.1', self.port)
-        self.addCleanup(srv.close)
-        return app
+            app_handler, '127.0.0.1', self.port)
+        return app, srv, app_handler
 
     def test_sse(self):
         @asyncio.coroutine
@@ -35,7 +34,7 @@ class TestExceptionViews(BaseTest):
 
         @asyncio.coroutine
         def go():
-            app = yield from self._setup_app(func)
+            app, srv, app_handler = yield from self._setup_app(func)
             # make sure that exception page rendered
             resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
             txt = yield from resp.text()
@@ -65,5 +64,8 @@ class TestExceptionViews(BaseTest):
                          ""]]
 
             self.assertEqual(payload, expected, payload)
+            yield from app_handler.finish_connections(timeout=600)
+            srv.close()
+            yield from srv.wait_closed()
 
         self.loop.run_until_complete(go())
