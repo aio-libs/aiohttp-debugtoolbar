@@ -50,6 +50,7 @@ class PerformanceDebugPanel(DebugPanel):
 
     def _wrap_timer_handler(self, handler):
         if self.has_resource:
+            @asyncio.coroutine
             def resource_timer_handler(request):
                 _start_time = time.time()
                 self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
@@ -65,6 +66,7 @@ class PerformanceDebugPanel(DebugPanel):
 
             return resource_timer_handler
 
+        @asyncio.coroutine
         def noresource_timer_handler(request):
             _start_time = time.time()
             try:
