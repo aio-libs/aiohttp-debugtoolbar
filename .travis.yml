@@ -2,11 +2,12 @@ language: python
 python:
   - 3.3
   - 3.4
+  - 3.5.0b3
 
 install:
   - pip install --upgrade setuptools
   - pip install coveralls --use-mirrors
-  - pip install git+https://github.com/jettify/aiohttp_mako.git@master
+  - pip install aiohttp_mako
   - pip install -r requirements-dev.txt
   - python setup.py develop
 
