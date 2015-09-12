@@ -6,7 +6,7 @@ python:
 
 install:
   - pip install --upgrade setuptools
-  - pip install coveralls --use-mirrors
+  - pip install coveralls
   - pip install aiohttp_mako
   - pip install -r requirements-dev.txt
   - python setup.py develop
