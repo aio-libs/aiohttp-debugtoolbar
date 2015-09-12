@@ -46,7 +46,8 @@ def middleware(app, handler):
         p = request.path
         starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
-        remote_host, remote_port = request.transport.get_extra_info('peername')
+        peername = request.transport.get_extra_info('peername')
+        remote_host, remote_port = peername[:2]
 
         last_proxy_addr = remote_host
 
