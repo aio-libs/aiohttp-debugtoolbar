@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-0.0.5 (XXXX-XX-XX)
+0.0.5 (2015-09-13)
 ^^^^^^^^^^^^^^^^^^
 
 * Fixed IPv6 socket family error (Thanks @stormandco!)
