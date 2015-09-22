@@ -1,0 +1,4 @@
+[run]
+branch = True
+source = aiohttp_debugtoolbar, tests
+omit = site-packages, .tox

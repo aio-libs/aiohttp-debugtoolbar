@@ -8,8 +8,7 @@ python:
 install:
   - pip install --upgrade setuptools
   - pip install coveralls
-  - pip install aiohttp_mako
-  - pip install -r requirements-dev.txt
+  - pip install -Ur requirements-dev.txt
   - python setup.py develop
 
 script:
