@@ -4,15 +4,14 @@ flake:
 	flake8 aiohttp_debugtoolbar tests demo examples
 
 test: flake
-	nosetests -s ./tests/
+	py.test -s ./tests/
 
 vtest:
-	nosetests -s -v ./tests/
+	py.test -s -v ./tests/
 
 cov cover coverage: flake
-	nosetests -s --with-cover --cover-html --cover-branches \
-            --cover-package=aiohttp_debugtoolbar ./tests/
-	@echo "open file://`pwd`/cover/index.html"
+	py.test -s -v  --cov-report term --cov-report html --cov aiohttp_debugtoolbar ./tests
+	@echo "open file://`pwd`/htmlcov/index.html"
 
 clean:
 	rm -rf `find . -name __pycache__`
@@ -27,6 +26,7 @@ clean:
 	rm -rf coverage
 	rm -rf build
 	rm -rf cover
+	rm -rf htmlcov
 
 doc:
 	make -C docs html
