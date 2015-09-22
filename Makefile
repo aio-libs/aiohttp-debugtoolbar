@@ -1,7 +1,7 @@
 # Some simple testing tasks (sorry, UNIX only).
 
 flake:
-	flake8 aiohttp_debugtoolbar tests demo examples
+	flake8 --exclude=pep492 aiohttp_debugtoolbar tests demo examples
 
 test: flake
 	py.test -s ./tests/
