@@ -1,4 +1,6 @@
 import asyncio
+import sys
+import unittest
 import aiohttp
 import aiohttp_jinja2
 import jinja2
@@ -235,3 +237,33 @@ class TestMiddleware(BaseTest):
             srv.close()
 
         self.loop.run_until_complete(go())
+
+    @unittest.skipIf(sys.version_info[:3] < (3, 5, 0),
+                     'test only for native coroutines')
+    def test_handler_is_native_coroutine(self):
+
+        if sys.version_info[:3] >= (3, 5, 0):
+
+            #  to prevent invalid syntax
+            func = None
+            exec("""async def func(request):\n
+                resp = web.Response(body=b'native coroutine',
+                                    status=200,
+                                    content_type='text/plain')\n
+                return resp""")
+
+            @asyncio.coroutine
+            def go():
+                app, srv, handler = yield from self._setup_app(func)
+
+                resp = yield from aiohttp.request('GET', self.url,
+                                                  loop=self.loop)
+                self.assertEqual(200, resp.status)
+
+                body = yield from resp.read()
+                self.assertEquals(b'native coroutine', body)
+
+                yield from handler.finish_connections()
+                srv.close()
+
+            self.loop.run_until_complete(go())
