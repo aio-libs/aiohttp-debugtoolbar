@@ -1,5 +1,9 @@
 CHANGES
 =======
+0.0.6 (XXXX-XX-XX)
+
+* Fixed python 3.5 support (Thanks @stormandco!)
+
 
 0.0.5 (2015-09-13)
 ^^^^^^^^^^^^^^^^^^
