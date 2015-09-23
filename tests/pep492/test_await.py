@@ -2,7 +2,6 @@ import aiohttp
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
-
 from aiohttp_debugtoolbar import middleware, setup as tbsetup
 
 from ..base import BaseTest
@@ -37,8 +36,7 @@ class TestMiddleware(BaseTest):
         async def go():
             app, srv, handler = await self._setup_app(func)
 
-            resp = await aiohttp.request('GET', self.url,
-                                              loop=self.loop)
+            resp = await aiohttp.request('GET', self.url, loop=self.loop)
             self.assertEqual(200, resp.status)
 
             body = await resp.read()
