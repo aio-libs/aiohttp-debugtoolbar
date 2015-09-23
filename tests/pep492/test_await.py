@@ -46,4 +46,3 @@ class TestPEP492(BaseTest):
             srv.close()
 
         self.loop.run_until_complete(go())
-r
