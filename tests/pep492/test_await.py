@@ -7,7 +7,7 @@ from aiohttp_debugtoolbar import middleware, setup as tbsetup
 from ..base import BaseTest
 
 
-class TestMiddleware(BaseTest):
+class TestPEP492(BaseTest):
 
     async def _setup_app(self, handler, **kw):
         app = web.Application(loop=self.loop,
@@ -46,3 +46,4 @@ class TestMiddleware(BaseTest):
             srv.close()
 
         self.loop.run_until_complete(go())
+r
