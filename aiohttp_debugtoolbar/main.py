@@ -33,7 +33,7 @@ default_settings = {
     'extra_panels': [],
     'global_panels': default_global_panel_names,
     'extra_global_panels': [],
-    'hosts': ['127.0.0.1'],
+    'hosts': ['127.0.0.1', '::1'],
     'exclude_prefixes': [],
     'button_style': '',
     'max_request_history': 100,
