@@ -6,15 +6,10 @@ import sys
 from collections import deque
 from itertools import islice
 
-from http.client import (
-    MOVED_PERMANENTLY,  # 301
-    FOUND,  # 302
-    SEE_OTHER)  # 303
-
 APP_KEY = 'aiohttp_debugtollbar'
 TEMPLATE_KEY = 'aiohttp_debugtollbar_jinja2'
 
-REDIRECT_CODES = (MOVED_PERMANENTLY, FOUND, SEE_OTHER)
+REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
 STATIC_PATH = 'static/'
 ROOT_ROUTE_NAME = 'debugtoolbar.main'
 STATIC_ROUTE_NAME = 'debugtoolbar.static'
