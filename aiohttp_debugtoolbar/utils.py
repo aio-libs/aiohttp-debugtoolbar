@@ -9,7 +9,7 @@ from itertools import islice
 APP_KEY = 'aiohttp_debugtollbar'
 TEMPLATE_KEY = 'aiohttp_debugtollbar_jinja2'
 
-REDIRECT_CODES = (301, 302, 303, 304)
+REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
 STATIC_PATH = 'static/'
 ROOT_ROUTE_NAME = 'debugtoolbar.main'
 STATIC_ROUTE_NAME = 'debugtoolbar.static'
