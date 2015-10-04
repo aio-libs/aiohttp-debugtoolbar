@@ -26,16 +26,11 @@ def unused_port():
 
 @pytest.fixture
 def loop(request):
-    try:
-        old_loop = asyncio.get_event_loop()
-    except RuntimeError:
-        old_loop = None
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(None)
 
     def fin():
         loop.close()
-        asyncio.set_event_loop(old_loop)
 
     request.addfinalizer(fin)
     return loop
