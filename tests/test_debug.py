@@ -60,7 +60,7 @@ class Test_debug_repr(unittest.TestCase):
             pass
         tmp = debug_repr(MyList([1, 2]))
         assert tmp == \
-            '<span class="module">tests.test_debug.</span>MyList([' \
+            '<span class="module">test_debug.</span>MyList([' \
             '<span class="number">1</span>, <span class="number">2</span>])'
 
         result = debug_repr(re.compile(r'foo\d'))
