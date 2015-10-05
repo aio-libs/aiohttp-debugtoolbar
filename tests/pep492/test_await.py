@@ -1,8 +1,5 @@
 import aiohttp
-import aiohttp_jinja2
-import jinja2
 from aiohttp import web
-from aiohttp_debugtoolbar import middleware, setup as tbsetup
 
 
 def test_handler_is_native_coroutine(loop, create_server):
@@ -19,3 +16,5 @@ def test_handler_is_native_coroutine(loop, create_server):
 
         body = await resp.read()
         assert b'native coroutine' == body
+
+    loop.run_until_complete(go())
