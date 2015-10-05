@@ -1,140 +1,113 @@
 import asyncio
 import aiohttp
-import aiohttp_jinja2
-import jinja2
-from aiohttp import web
 
-from aiohttp_debugtoolbar import (middleware, setup as tbsetup, APP_KEY)
-
-from .base import BaseTest
+from aiohttp_debugtoolbar import APP_KEY
 
 
-class TestExceptionViews(BaseTest):
+def test_view_source(loop, create_server):
     @asyncio.coroutine
-    def _setup_app(self, handler, **kw):
-        app = web.Application(loop=self.loop,
-                              middlewares=[middleware])
+    def handler(request):
+        raise NotImplementedError
 
-        tbsetup(app, **kw)
-
-        tplt = "<html><body><h1>{{ head }}</h1>{{ text }}</body></html>"
-        loader = jinja2.DictLoader({'tplt.html': tplt})
-        aiohttp_jinja2.setup(app, loader=loader)
+    @asyncio.coroutine
+    def go():
+        app, url = yield from create_server()
         app.router.add_route('GET', '/', handler)
 
-        handler = app.make_handler()
-        srv = yield from self.loop.create_server(
-            handler, '127.0.0.1', self.port)
-        return app, srv, handler
+        # make sure that exception page rendered
+        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        txt = yield from resp.text()
+        assert 500 == resp.status
+        assert '<div class="debugger">' in txt
 
-    def test_view_source(self):
-        @asyncio.coroutine
-        def func(request):
-            raise NotImplementedError
+        token = app[APP_KEY]['pdtb_token']
+        exc_history = app[APP_KEY]['exc_history']
 
-        @asyncio.coroutine
-        def go():
-            app, srv, handler = yield from self._setup_app(func)
-            # make sure that exception page rendered
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
-            txt = yield from resp.text()
-            self.assertEqual(500, resp.status)
-            self.assertTrue('<div class="debugger">' in txt)
-
-            token = app[APP_KEY]['pdtb_token']
+        for frame_id in exc_history.frames:
+            source_url = '{}/_debugtoolbar/source?frm={}&token={}'.format(
+                url, frame_id, token)
             exc_history = app[APP_KEY]['exc_history']
-
-            for frame_id in exc_history.frames:
-                url = '{}/_debugtoolbar/source?frm={}&token={}'.format(
-                    self.url, frame_id, token)
-                exc_history = app[APP_KEY]['exc_history']
-                resp = yield from aiohttp.request('GET', url,
-                                                  loop=self.loop)
-                yield from resp.text()
-                self.assertEqual(resp.status, 200)
-
-            yield from handler.finish_connections()
-            srv.close()
-
-        self.loop.run_until_complete(go())
-
-    def test_view_execute(self):
-        @asyncio.coroutine
-        def func(request):
-            raise NotImplementedError
-
-        @asyncio.coroutine
-        def go():
-            app, srv, handler = yield from self._setup_app(func)
-            # make sure that exception page rendered
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
-            txt = yield from resp.text()
-            self.assertEqual(500, resp.status)
-            self.assertTrue('<div class="debugger">' in txt)
-
-            token = app[APP_KEY]['pdtb_token']
-            exc_history = app[APP_KEY]['exc_history']
-
-            for frame_id in exc_history.frames:
-                params = {'frm': frame_id, 'token': token}
-                url = '{}/_debugtoolbar/source'.format(self.url)
-                resp = yield from aiohttp.request('GET', url, params=params,
-                                                  loop=self.loop)
-                yield from resp.text()
-                self.assertEqual(resp.status, 200)
-
-                params = {'frm': frame_id, 'token': token,
-                          'cmd': 'dump(object)'}
-                url = '{}/_debugtoolbar/execute'.format(self.url)
-                resp = yield from aiohttp.request('GET', url, params=params,
-                                                  loop=self.loop)
-                yield from resp.text()
-                self.assertEqual(resp.status, 200)
-
-            # wrong token
-            params = {'frm': frame_id, 'token': 'x', 'cmd': 'dump(object)'}
-            resp = yield from aiohttp.request('GET', url, params=params,
-                                              loop=self.loop)
-            self.assertEqual(resp.status, 400)
-            # no token at all
-            params = {'frm': frame_id, 'cmd': 'dump(object)'}
-            resp = yield from aiohttp.request('GET', url, params=params,
-                                              loop=self.loop)
-            self.assertEqual(resp.status, 400)
-
-            yield from handler.finish_connections()
-            srv.close()
-
-        self.loop.run_until_complete(go())
-
-    def test_view_exception(self):
-        @asyncio.coroutine
-        def func(request):
-            raise NotImplementedError
-
-        @asyncio.coroutine
-        def go():
-            app, srv, handler = yield from self._setup_app(func)
-            # make sure that exception page rendered
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
-            txt = yield from resp.text()
-            self.assertEqual(500, resp.status)
-            self.assertTrue('<div class="debugger">' in txt)
-
-            token = app[APP_KEY]['pdtb_token']
-            exc_history = app[APP_KEY]['exc_history']
-
-            tb_id = list(exc_history.tracebacks.keys())[0]
-            url = '{}/_debugtoolbar/exception?tb={}&token={}'.format(
-                self.url, tb_id, token)
-
-            resp = yield from aiohttp.request('GET', url,
-                                              loop=self.loop)
+            resp = yield from aiohttp.request('GET', source_url, loop=loop)
             yield from resp.text()
-            self.assertEqual(resp.status, 200)
-            self.assertTrue('<div class="debugger">' in txt)
+            assert resp.status == 200
 
-            yield from handler.finish_connections()
-            srv.close()
+    loop.run_until_complete(go())
 
-        self.loop.run_until_complete(go())
+
+def test_view_execute(loop, create_server):
+    @asyncio.coroutine
+    def handler(request):
+        raise NotImplementedError
+
+    @asyncio.coroutine
+    def go():
+        app, url = yield from create_server()
+        app.router.add_route('GET', '/', handler)
+        # make sure that exception page rendered
+        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        txt = yield from resp.text()
+        assert 500 == resp.status
+        assert '<div class="debugger">' in txt
+
+        token = app[APP_KEY]['pdtb_token']
+        exc_history = app[APP_KEY]['exc_history']
+
+        source_url = '{}/_debugtoolbar/source'.format(url)
+        execute_url = '{}/_debugtoolbar/execute'.format(url)
+        for frame_id in exc_history.frames:
+            params = {'frm': frame_id, 'token': token}
+            resp = yield from aiohttp.request('GET', source_url, params=params,
+                                              loop=loop)
+            yield from resp.text()
+            assert resp.status == 200
+
+            params = {'frm': frame_id, 'token': token,
+                      'cmd': 'dump(object)'}
+            resp = yield from aiohttp.request('GET', execute_url,
+                                              params=params, loop=loop)
+            yield from resp.text()
+            assert resp.status == 200
+
+        # wrong token
+        params = {'frm': frame_id, 'token': 'x', 'cmd': 'dump(object)'}
+        resp = yield from aiohttp.request('GET', execute_url, params=params,
+                                          loop=loop)
+        assert resp.status == 400
+        # no token at all
+        params = {'frm': frame_id, 'cmd': 'dump(object)'}
+        resp = yield from aiohttp.request('GET', execute_url, params=params,
+                                          loop=loop)
+        assert resp.status == 400
+
+    loop.run_until_complete(go())
+
+
+def test_view_exception(loop, create_server):
+    @asyncio.coroutine
+    def handler(request):
+        raise NotImplementedError
+
+    @asyncio.coroutine
+    def go():
+        app, url = yield from create_server()
+        app.router.add_route('GET', '/', handler)
+        # make sure that exception page rendered
+        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        txt = yield from resp.text()
+        assert 500 == resp.status
+        assert '<div class="debugger">' in txt
+
+        token = app[APP_KEY]['pdtb_token']
+        exc_history = app[APP_KEY]['exc_history']
+
+        tb_id = list(exc_history.tracebacks.keys())[0]
+        url = '{}/_debugtoolbar/exception?tb={}&token={}'.format(
+            url, tb_id, token)
+
+        resp = yield from aiohttp.request('GET', url,
+                                          loop=loop)
+        yield from resp.text()
+        assert resp.status == 200
+        assert '<div class="debugger">' in txt
+
+    loop.run_until_complete(go())
