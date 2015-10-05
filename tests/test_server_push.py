@@ -1,71 +1,47 @@
 import asyncio
 import json
 import aiohttp
-import aiohttp_jinja2
-import jinja2
-from aiohttp import web
 
-from aiohttp_debugtoolbar import middleware, setup as tbsetup, APP_KEY
-
-from .base import BaseTest
+from aiohttp_debugtoolbar import APP_KEY
 
 
-class TestExceptionViews(BaseTest):
+def test_sse(loop, create_server):
     @asyncio.coroutine
-    def _setup_app(self, handler, **kw):
-        app = web.Application(loop=self.loop, middlewares=[middleware])
+    def handler(request):
+        raise NotImplementedError
 
-        tbsetup(app, **kw)
-
-        tplt = "<html><body><h1>{{ head }}</h1>{{ text }}</body></html>"
-        loader = jinja2.DictLoader({'tplt.html': tplt})
-        aiohttp_jinja2.setup(app, loader=loader)
-
+    @asyncio.coroutine
+    def go():
+        app, url = yield from create_server()
         app.router.add_route('GET', '/', handler)
-        app_handler = app.make_handler()
-        srv = yield from self.loop.create_server(
-            app_handler, '127.0.0.1', self.port)
-        return app, srv, app_handler
+        # make sure that exception page rendered
+        resp = yield from aiohttp.request('GET', url, loop=loop)
+        txt = yield from resp.text()
+        assert 500 == resp.status
+        assert '<div class="debugger">' in txt
 
-    def test_sse(self):
-        @asyncio.coroutine
-        def func(request):
-            raise NotImplementedError
+        # get request id from history
+        history = app[APP_KEY]['request_history']
+        request_id = history[0][0]
 
-        @asyncio.coroutine
-        def go():
-            app, srv, app_handler = yield from self._setup_app(func)
-            # make sure that exception page rendered
-            resp = yield from aiohttp.request('GET', self.url, loop=self.loop)
-            txt = yield from resp.text()
-            self.assertEqual(500, resp.status)
-            self.assertTrue('<div class="debugger">' in txt)
+        url = '{}/_debugtoolbar/sse'.format(url)
+        resp = yield from aiohttp.request('GET', url, loop=loop)
+        data = yield from resp.text()
+        data = data.strip()
 
-            # get request id from history
-            history = app[APP_KEY]['request_history']
-            request_id = history[0][0]
+        # split and check EventSource data
+        event_id, event, payload_raw = data.split('\n')
+        assert event_id == 'id: {}'.format(request_id)
+        assert event == 'event: new_request'
 
-            url = '{}/_debugtoolbar/sse'.format(self.url)
-            resp = yield from aiohttp.request('GET', url, loop=self.loop)
-            data = yield from resp.text()
-            data = data.strip()
+        payload_json = payload_raw.strip('data: ')
+        payload = json.loads(payload_json)
+        expected = [[request_id, {"path": "/",
+                                  "scheme": "http",
+                                  "method": "GET",
+                                  "status_code": 500},
+                     ""]]
 
-            # split and check EventSource data
-            event_id, event, payload_raw = data.split('\n')
-            self.assertEqual(event_id, 'id: {}'.format(request_id))
-            self.assertEqual(event, 'event: new_request')
+        assert payload == expected, payload
 
-            payload_json = payload_raw.strip('data: ')
-            payload = json.loads(payload_json)
-            expected = [[request_id, {"path": "/",
-                                      "scheme": "http",
-                                      "method": "GET",
-                                      "status_code": 500},
-                         ""]]
-
-            self.assertEqual(payload, expected, payload)
-            yield from app_handler.finish_connections(timeout=600)
-            srv.close()
-            yield from srv.wait_closed()
-
-        self.loop.run_until_complete(go())
+    loop.run_until_complete(go())
