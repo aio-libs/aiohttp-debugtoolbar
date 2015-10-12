@@ -13,7 +13,23 @@
                 <td>{{ route_info['name'] }}</td>
                 <td>{{ route_info['method'] }}</td>
                 <td>{{ route_info['pattern'] }}</td>
-                <td>{{ route_info['handler'] }}</td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-11">{{ route_info['handler']|e }}</div>
+                    <div class="col-md-1">
+                  <button class="btn btn-primary pull-right" type="button"
+                          data-toggle="collapse"
+                          data-target="#collapseSource{{ loop.index }}"
+                          aria-expanded="false"
+                          aria-controls="collapseSource{{ loop.index }}">
+                    Source
+                  </button>
+                      </div>
+                    </div>
+                  <div class="collapse" id="collapseSource{{ loop.index }}">
+                    <pre><code class="python">{{ route_info['source'] }}</code></pre>
+                  </div>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
