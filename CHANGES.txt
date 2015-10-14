@@ -4,6 +4,8 @@ CHANGES
 
 * Fixed python 3.5 support (Thanks @stormandco!)
 
+* Added view source button in RoutesDebugPanel (Thanks @stormandco!)
+ 
 
 0.0.5 (2015-09-13)
 ^^^^^^^^^^^^^^^^^^
