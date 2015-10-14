@@ -9,7 +9,7 @@
         {% for key, value in settings %}
             <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
                 <td>{{ key }}</td>
-                <td>{{ value }}</td>
+                <td>{{ value|e }}</td>
             </tr>
         {% endfor %}
     </tbody>

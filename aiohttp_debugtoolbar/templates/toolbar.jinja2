@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ static_path }}css/toolbar.css">
     <link rel="stylesheet" type="text/css" href="{{ static_path }}css/dashboard.css">
     <link rel="stylesheet" href="{{ static_path }}css/debugger.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/highlightjs_default.min.css">
 
 
     {# include scripts here that should be included before pageload #}
@@ -123,6 +124,8 @@
 
       });
     </script>
+    <script type="text/javascript" src="{{ static_path }}js/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
       </body>
     </html>
