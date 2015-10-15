@@ -25,11 +25,13 @@
       <p>
 
         Hover over any gray area in the traceback and click on the
-        <img src="{{ static_path }}img/console.png"/> icon on the right hand
-        side of that gray area to show an interactive console for the
-        associated frame.  Type arbitrary Python into the console; it will be
-        evaluated in the context of the associated frame.  In the interactive
-        console there are helpers available for introspection:
+        <button class="btn btn-xs btn-default">
+          <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
+        </button>
+        button on the right hand side of that gray area to show an interactive
+        console for the associated frame. Type arbitrary Python into the
+        console; it will be evaluated in the context of the associated frame. In
+        the interactive console there are helpers available for introspection:
 
         <ul>
           <li><code>dump()</code> shows all variables in the frame
@@ -40,8 +42,11 @@
 
       <p>
         Hover over any gray area in the traceback and click on
-        <img src="{{ static_path }}img/source.png"/> on the right hand side
-        of that gray area to show the source of the file associated with the frame.
+        <button class="btn btn-xs btn-default">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+        </button>
+        on the right hand side of that gray area to show the source of the file
+        associated with the frame.
       </p>
 
       <p>
