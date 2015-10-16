@@ -1,4 +1,4 @@
-
+/* TODO: cleanup unused styles */
 input        { background-color: #fff; margin: 0; text-align: left;
                outline: none !important; }
 pre, code, table.source,
@@ -99,3 +99,9 @@ div.sourceview { overflow: auto; border: 1px solid #ccc; }
 
 div.traceback .btn { margin: 1px 4px 1px 0; }
 div.traceback span, div.explanation span { margin: 2px; }
+
+div.sourceview span.current {
+    display: inline-block;
+    width: 100%;
+    background-color: #ddd;
+}

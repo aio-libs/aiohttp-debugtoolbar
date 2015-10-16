@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{ static_path }}css/toolbar.css">
     <link rel="stylesheet" href="{{ static_path }}css/debugger.css"
           type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/highlightjs_default.min.css">
     <script type="text/javascript">
       var TRACEBACK = {{ traceback_id }},
           DEBUGGER_TOKEN = "{{ token }}",
@@ -98,6 +99,7 @@
 
       -->
 
+    <script type="text/javascript" src="{{ static_path }}js/highlight.min.js"></script>
   </body>
 
 </html>

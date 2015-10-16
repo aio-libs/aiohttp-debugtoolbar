@@ -99,8 +99,13 @@ class ExceptionDebugView:
         if _frame is not None:
             frame = exc_history.frames.get(_frame)
             if frame is not None:
-                text = frame.render_source()
-                return web.Response(text=text, content_type='text/html')
+                # text = frame.render_source()
+                text = json.dumps({
+                    'line': frame.lineno,
+                    'source': '\n'.join(frame.sourcelines)
+                })
+                return web.Response(text=text,
+                                    content_type='application/json')
         return web.HTTPBadRequest()
 
     @asyncio.coroutine
