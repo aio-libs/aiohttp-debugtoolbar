@@ -48,8 +48,6 @@ div.box table.source { white-space: pre-wrap;       /* css-3 should we be so luc
 div.box h2 { color: #ffffff; }
 div.traceback pre:hover { background-color: #eeeeee; color: black; cursor: pointer; }
 div.traceback blockquote { margin: 1em 0 0 0; padding: 0; }
-div.traceback img { float: right; padding: 2px; margin: -3px 2px 0 0; cursor: pointer; }
-div.traceback img:hover { background-color: #ddd; border-color: #eeeeee; }
 div.traceback pre:hover img { display: block; }
 div.traceback cite.filename { font-style: normal; color: #666666; }
 
@@ -98,3 +96,6 @@ div.box table.source td.lineno { color: #999; padding-right: 10px; width: 1px; }
 div.box table.source tr.in-frame { background-color: white; }
 div.box table.source tr.current { background-color: #dddddd; color: #e5762b; }
 div.sourceview { overflow: auto; border: 1px solid #ccc; }
+
+div.traceback .btn { margin: 1px 4px 1px 0; }
+div.traceback span, div.explanation span { margin: 2px; }
