@@ -4,6 +4,7 @@ import aiohttp_jinja2
 
 from . import views
 from . import panels
+from .middlewares import middleware
 from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
     ToolbarStorage, ExceptionHistory
 from .views import ExceptionDebugView
@@ -48,6 +49,8 @@ def setup(app, **kw):
 
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     app[APP_KEY] = {}
+    app.middlewares.append(middleware)
+
     templates_app = os.path.join(APP_ROOT, 'templates')
     templates_panels = os.path.join(APP_ROOT, 'panels/templates')
 

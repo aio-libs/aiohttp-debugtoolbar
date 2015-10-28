@@ -42,14 +42,12 @@ Install and Configuration
     $ pip install aiohttp_debugtoolbar
 
 
-In order to plug in ``aiohttp_debugtoolbar`` you have to attach middleware to
-your ``aiohttp.web.Application``, and call ``aiohttp_debugtoolbar.setup``
+In order to plug in ``aiohttp_debugtoolbar``, call ``aiohttp_debugtoolbar.setup`` on your app.
 
 .. code:: python
 
     import aiohttp_debugtoolbar
-    app = web.Application(loop=loop,
-                          middlewares=[aiohttp_debugtoolbar.middleware])
+    app = web.Application(loop=loop)
     aiohttp_debugtoolbar.setup(app)
 
 
@@ -81,8 +79,7 @@ Full Example
     @asyncio.coroutine
     def init(loop):
         # add aiohttp_debugtoolbar middleware to you application
-        app = web.Application(loop=loop,
-                              middlewares=[aiohttp_debugtoolbar.middleware])
+        app = web.Application(loop=loop)
         # install aiohttp_debugtoolbar
         aiohttp_debugtoolbar.setup(app)
 
@@ -126,9 +123,9 @@ Thanks!
 -------
 I've borrowed a lot of code from following projects. I highly recommend to check them out:
 
-* `pyramid_debugtoolbar <https://github.com/Pylons/pyramid_debugtoolbar>`_  
-* `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_  
-* `flask-debugtoolbar <https://github.com/mgood/flask-debugtoolbar>`_  
+* `pyramid_debugtoolbar <https://github.com/Pylons/pyramid_debugtoolbar>`_
+* `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_
+* `flask-debugtoolbar <https://github.com/mgood/flask-debugtoolbar>`_
 
 Play With Demo
 --------------
