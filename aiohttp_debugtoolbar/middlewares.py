@@ -105,7 +105,7 @@ def middleware(app, handler):
                 body = tb.render_full(request).encode('utf-8', 'replace')
                 response = web.Response(
                     body=body, status=500,
-                    content_type='text/html; charset=utf-8')
+                    content_type='text/html')
 
                 yield from toolbar.process_response(request, response)
 
