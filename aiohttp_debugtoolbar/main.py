@@ -49,7 +49,8 @@ def setup(app, **kw):
 
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     app[APP_KEY] = {}
-    app.middlewares.append(middleware)
+    if middleware not in app.middlewares:
+        app.middlewares.append(middleware)
 
     templates_app = os.path.join(APP_ROOT, 'templates')
     templates_panels = os.path.join(APP_ROOT, 'panels/templates')

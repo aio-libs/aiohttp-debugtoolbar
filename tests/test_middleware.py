@@ -149,6 +149,13 @@ def test_setup_not_called_exception(loop):
         yield from aiohttp_debugtoolbar.middleware(app, lambda r: r)
 
 
+def test_setup_only_adds_middleware_if_not_already_added(loop):
+    app = web.Application(loop=loop,
+                          middlewares=[aiohttp_debugtoolbar.middleware])
+    aiohttp_debugtoolbar.setup(app)
+    assert app.middlewares == [aiohttp_debugtoolbar.middleware]
+
+
 @pytest.mark.run_loop
 def test_process_stream_response(loop, create_server):
     @asyncio.coroutine
