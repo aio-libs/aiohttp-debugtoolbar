@@ -103,7 +103,9 @@ def middleware(app, handler):
                 #
                 # response = request.invoke_subrequest(subrequest)
                 body = tb.render_full(request).encode('utf-8', 'replace')
-                response = web.Response(body=body, status=500)
+                response = web.Response(
+                    body=body, status=500,
+                    content_type='text/html; charset=utf-8')
 
                 yield from toolbar.process_response(request, response)
 
