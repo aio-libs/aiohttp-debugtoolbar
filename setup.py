@@ -15,7 +15,7 @@ with codecs.open(os.path.join(os.path.abspath(os.path.dirname(
 def read(f):
     return open(os.path.join(os.path.dirname(__file__), f)).read().strip()
 
-install_requires = ['aiohttp>=0.14', 'aiohttp_jinja2']
+install_requires = ['aiohttp>=0.18.0', 'aiohttp_jinja2']
 tests_require = install_requires + ['nose']
 
 
@@ -28,7 +28,6 @@ setup(name='aiohttp_debugtoolbar',
           'Intended Audience :: Developers',
           'Programming Language :: Python',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Topic :: Internet :: WWW/HTTP'],
