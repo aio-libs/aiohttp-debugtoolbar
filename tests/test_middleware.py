@@ -20,7 +20,7 @@ def test_render_toolbar_page(loop, create_server):
     # add cookie to enforce performance panel measure time
     conn = aiohttp.TCPConnector(loop=loop, force_close=True)
     cookie = {"pdtb_active": "pDebugPerformancePanel"}
-    resp = yield from aiohttp.request('GET', url+'/', cookies=cookie,
+    resp = yield from aiohttp.request('GET', url + '/', cookies=cookie,
                                       loop=loop, connector=conn)
     assert 200 == resp.status
     txt = yield from resp.text()
@@ -45,7 +45,7 @@ def test_render_with_exception(loop, create_server):
     app, url = yield from create_server()
     app.router.add_route('GET', '/', handler)
     # make sure that exception page rendered
-    resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+    resp = yield from aiohttp.request('GET', url + '/', loop=loop)
     txt = yield from resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' in txt
@@ -61,7 +61,7 @@ def test_intercept_redirect(loop, create_server):
     app.router.add_route('GET', '/', handler)
     # make sure that exception page rendered
     resp = yield from aiohttp.request(
-        'GET', url+'/', allow_redirects=False, loop=loop)
+        'GET', url + '/', allow_redirects=False, loop=loop)
     txt = yield from resp.text()
     assert 200 == resp.status
     assert 'Redirect intercepted' in txt
@@ -77,7 +77,7 @@ def test_intercept_redirects_disabled(loop, create_server):
     app.router.add_route('GET', '/', handler)
     # make sure that exception page rendered
     resp = yield from aiohttp.request(
-        'GET', url+'/', allow_redirects=False, loop=loop)
+        'GET', url + '/', allow_redirects=False, loop=loop)
     txt = yield from resp.text()
     assert 301 == resp.status
     assert '301: Moved Permanently' == txt
@@ -94,7 +94,7 @@ def test_toolbar_not_enabled(loop, create_server):
     app, url = yield from create_server(enabled=False)
     app.router.add_route('GET', '/', handler)
     # make sure that toolbar button NOT present on apps page
-    resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+    resp = yield from aiohttp.request('GET', url + '/', loop=loop)
     assert 200 == resp.status
     txt = yield from resp.text()
     assert 'pDebugToolbarHandle' not in txt
@@ -119,7 +119,7 @@ def test_toolbar_content_type_json(loop, create_server):
     app, url = yield from create_server()
     app.router.add_route('GET', '/', handler)
     # make sure that toolbar button NOT present on apps page
-    resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+    resp = yield from aiohttp.request('GET', url + '/', loop=loop)
     payload = yield from resp.json()
     assert 200 == resp.status
     assert payload == {"a": 42}
@@ -135,7 +135,7 @@ def test_do_not_intercept_exceptions(loop, create_server):
     app, url = yield from create_server(intercept_exc=False)
     app.router.add_route('GET', '/', handler)
     # make sure that exception page rendered
-    resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+    resp = yield from aiohttp.request('GET', url + '/', loop=loop)
     txt = yield from resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' not in txt
@@ -163,7 +163,7 @@ def test_process_stream_response(loop, create_server):
     app.router.add_route('GET', '/', handler)
 
     # make sure that toolbar button NOT present on apps page
-    resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+    resp = yield from aiohttp.request('GET', url + '/', loop=loop)
     payload = yield from resp.read()
     assert 200 == resp.status
     assert payload == b'text'

@@ -15,7 +15,7 @@ def test_view_source(loop, create_server):
         app.router.add_route('GET', '/', handler)
 
         # make sure that exception page rendered
-        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        resp = yield from aiohttp.request('GET', url + '/', loop=loop)
         txt = yield from resp.text()
         assert 500 == resp.status
         assert '<div class="debugger">' in txt
@@ -44,7 +44,7 @@ def test_view_execute(loop, create_server):
         app, url = yield from create_server()
         app.router.add_route('GET', '/', handler)
         # make sure that exception page rendered
-        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        resp = yield from aiohttp.request('GET', url + '/', loop=loop)
         txt = yield from resp.text()
         assert 500 == resp.status
         assert '<div class="debugger">' in txt
@@ -92,7 +92,7 @@ def test_view_exception(loop, create_server):
         app, url = yield from create_server()
         app.router.add_route('GET', '/', handler)
         # make sure that exception page rendered
-        resp = yield from aiohttp.request('GET', url+'/', loop=loop)
+        resp = yield from aiohttp.request('GET', url + '/', loop=loop)
         txt = yield from resp.text()
         assert 500 == resp.status
         assert '<div class="debugger">' in txt

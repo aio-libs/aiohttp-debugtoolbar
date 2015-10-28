@@ -37,7 +37,7 @@ default_settings = {
     'exclude_prefixes': [],
     'button_style': '',
     'max_request_history': 100,
-    'max_visible_requests':  10,
+    'max_visible_requests': 10,
 }
 
 

@@ -104,9 +104,9 @@ class Line(object):
 
     def render(self):
         return SOURCE_LINE_HTML % {
-            'classes':      text_(' '.join(self.classes)),
-            'lineno':       self.lineno,
-            'code':         escape(self.code)
+            'classes': text_(' '.join(self.classes)),
+            'lineno': self.lineno,
+            'code': escape(self.code)
         }
 
 

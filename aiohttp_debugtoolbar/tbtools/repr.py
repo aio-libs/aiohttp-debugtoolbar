@@ -209,7 +209,7 @@ class DebugReprGenerator(object):
         return text_(
             '<span class="brokenrepr">&lt;broken repr (%s)&gt;'
             '</span>' % escape(text_(info, 'utf-8', 'ignore').strip())
-            )
+        )
 
     def repr(self, obj):
         recursive = False
@@ -260,7 +260,7 @@ class DebugReprGenerator(object):
         if not html_items:
             html_items.append('<tr><td><em>Nothing</em>')
         return OBJECT_DUMP_HTML % {
-            'title':    escape(title),
-            'repr':     repr and '<pre class="repr">%s</pre>' % repr or '',
-            'items':    '\n'.join(html_items)
+            'title': escape(title),
+            'repr': repr and '<pre class="repr">%s</pre>' % repr or '',
+            'items': '\n'.join(html_items)
         }
