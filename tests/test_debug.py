@@ -81,7 +81,7 @@ class Test_debug_repr(unittest.TestCase):
 
         class Foo(object):
             def __repr__(self):
-                1/0
+                1 / 0
 
         result = debug_repr(Foo())
 
