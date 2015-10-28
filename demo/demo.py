@@ -95,8 +95,7 @@ def test_jinja2_exc(request):
 
 @asyncio.coroutine
 def init(loop):
-    app = web.Application(loop=loop,
-                          middlewares=[aiohttp_debugtoolbar.middleware])
+    app = web.Application(loop=loop)
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
     loader = jinja2.FileSystemLoader([templates])

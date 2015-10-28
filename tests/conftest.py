@@ -6,7 +6,7 @@ import pytest
 import jinja2
 import aiohttp_jinja2
 from aiohttp import web
-from aiohttp_debugtoolbar import middleware, setup
+from aiohttp_debugtoolbar import setup
 
 
 def pytest_ignore_collect(path, config):
@@ -43,7 +43,7 @@ def create_server(loop, unused_port):
     @asyncio.coroutine
     def create(*, debug=False, ssl_ctx=None, **kw):
         nonlocal app, app_handler, srv
-        app = web.Application(loop=loop, middlewares=[middleware])
+        app = web.Application(loop=loop)
         setup(app, **kw)
         port = unused_port
 
