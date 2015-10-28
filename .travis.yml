@@ -17,5 +17,5 @@ after_success:
 
 env:
   matrix:
-    - PYTHONASYNCIODEBUG=1
-    - PYTHONASYNCIODEBUG=0
+    - PYTHONASYNCIODEBUG=x
+    - PYTHONASYNCIODEBUG=
