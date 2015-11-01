@@ -26,7 +26,8 @@ from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
 _coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
 _line_re = re.compile(r'^(.*?)$(?m)')
-_funcdef_re = re.compile(r'^(\s*def\s)|(.*(?<!\w)lambda(:|\s))|^(\s*@)')
+_funcdef_re = re.compile(r'^(\s*(?:async\s+?)?def\s)|'
+                         r'(.*(?<!\w)lambda(:|\s))|^(\s*@)')
 UTF8_COOKIE = '\xef\xbb\xbf'
 
 system_exceptions = (SystemExit, KeyboardInterrupt)
@@ -35,6 +36,7 @@ try:
 except NameError:
     pass
 
+# TODO remove
 FRAME_HTML = '''\
 <div class="frame" id="frame-%(id)d">
   <h4>File <cite class="filename">"%(filename)s"</cite>,
@@ -44,8 +46,10 @@ FRAME_HTML = '''\
 </div>
 '''
 
+# TODO remove
 SOURCE_TABLE_HTML = '<table class=source>%s</table>'
 
+# TODO remove
 SOURCE_LINE_HTML = '''\
 <tr class="%(classes)s">
   <td class=lineno>%(lineno)s</td>
@@ -318,23 +322,30 @@ class Frame(object):
             'current_line': escape(self.current_line.strip())
         }
 
-    def get_annotated_lines(self):
-        """Helper function that returns lines with extra information."""
-        lines = [Line(idx + 1, x) for idx, x in enumerate(self.sourcelines)]
-
+    def get_in_frame_range(self):
         # find function definition and mark lines
         if hasattr(self.code, 'co_firstlineno'):
             lineno = self.code.co_firstlineno - 1
             while lineno > 0:
-                if _funcdef_re.match(lines[lineno].code):
+                if _funcdef_re.match(self.sourcelines[lineno]):
                     break
                 lineno -= 1
             try:
-                offset = len(inspect.getblock([x.code + '\n' for x
-                                               in lines[lineno:]]))
+                offset = len(inspect.getblock([x + '\n' for x
+                                               in self.sourcelines[lineno:]]))
             except TokenError:
                 offset = 0
-            for line in lines[lineno:lineno + offset]:
+
+            return (lineno, lineno + offset)
+        return None
+
+    def get_annotated_lines(self):
+        """Helper function that returns lines with extra information."""
+        lines = [Line(idx + 1, x) for idx, x in enumerate(self.sourcelines)]
+
+        in_frame = self.get_in_frame_range()
+        if in_frame:
+            for line in lines[in_frame[0]:in_frame[1]]:
                 line.in_frame = True
 
         # mark current line

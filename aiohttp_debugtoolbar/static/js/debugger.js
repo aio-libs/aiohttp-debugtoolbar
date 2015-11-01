@@ -33,7 +33,8 @@ pyramid_debugtoolbar_require([
        */
       if (EVALEX)
         $('<button class="btn btn-xs btn-default pull-right">' +
-            '<span class="glyphicon glyphicon-console pull-right" aria-hidden="true"></span></button>')
+            '<span class="glyphicon glyphicon-console pull-right" ' +
+          'aria-hidden="true"></span></button>')
           .attr('title', 'Open an interactive python shell in this frame')
           .click(function() {
             consoleNode = openShell(consoleNode, target, frameID);
@@ -45,7 +46,8 @@ pyramid_debugtoolbar_require([
        * Show sourcecode
        */
       var sourceButton = $('<button class="btn btn-xs btn-default pull-right">' +
-            '<span class="glyphicon glyphicon-file pull-right" aria-hidden="true"></span></button>')
+            '<span class="glyphicon glyphicon-file pull-right" ' +
+        'aria-hidden="true"></span></button>')
         .attr('title', 'Display the sourcecode for this frame')
         .click(function () {
           if (!sourceView)
@@ -59,13 +61,25 @@ pyramid_debugtoolbar_require([
               });
           $.get(window.DEBUG_TOOLBAR_ROOT_PATH + '/source',
             {frm: frameID, token: window.DEBUGGER_TOKEN}, function (data) {
-
-              var lines = hljs.highlight('python', data.source).value.split('\n');
-              lines[data.line - 1] = '<span class="current">' + lines[data.line - 1] + '</span>';
-              var code = '<pre><code class="python">' + lines.join('\n') + '</code></pre>';
+              var dataLine;
+              var inFrame = data.inFrame;
+              inFrame[0]++;
+              if (inFrame !== null && inFrame[0] !== inFrame[1]) {
+                dataLine = '' + inFrame[0] + '-' + (inFrame[1]);
+                //if (data.line !== inFrame[0] && data.line !== inFrame[1]) {
+                  dataLine += (',' + data.line);
+                //}
+              } else {
+                dataLine = '' + data.line
+              }
+              var code = '<pre data-line="' + dataLine + '"><code id="pDebugTracebackSrc"' +
+                'class="language-python">'
+                + data.source + '</code></pre>';
 
               $('pre', sourceView)
                 .replaceWith(code);
+
+              Prism.highlightElement(document.querySelector('#pDebugTracebackSrc'));
 
               if (!sourceView.is(':visible'))
                 sourceView.slideDown('fast', function () {
@@ -193,7 +207,7 @@ pyramid_debugtoolbar_require([
      * Focus the current block in the source view.
      */
     function focusSourceBlock() {
-      var tmp, line = $('pre code .current');
+      var tmp, line = $('pre code .line-highlight');
       for (var i = 0; i < 7; i++) {
         tmp = line.prev();
         if (!(tmp && tmp.is('.in-frame')))
