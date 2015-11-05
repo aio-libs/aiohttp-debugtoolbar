@@ -75,9 +75,9 @@ pre.console div.traceback h3 { margin: -5px -5px 5px -5px; padding: 5px;
 
 pre.console div.traceback pre:hover { cursor: default; background: #eeeeee; }
 pre.console div.traceback pre.syntaxerror { background: #eeeeee; border: none;
-                                            margin: 20px -10px -10px -10px;
+                                            margin: 0px 0px 0px 0px;
                                             padding: 10px; border-top: 1px solid #dddddd; }
-pre.console div.noframe-traceback pre.syntaxerror { margin-top: -10px; border: none; }
+pre.console div.noframe-traceback pre.syntaxerror { margin-top: 0px; border: none; }
 
 pre.console div.box pre.repr { padding: 0; margin: 0; background-color: white; border: none; }
 pre.console div.box table { margin-top: 6px; }
