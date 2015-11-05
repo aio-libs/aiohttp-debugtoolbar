@@ -75,7 +75,7 @@ def middleware(app, handler):
                                    skip=1,
                                    show_hidden_frames=False,
                                    ignore_system_exceptions=True,
-                                   exc=e)
+                                   exc=e, app=request.app)
                 for frame in tb.frames:
                     exc_history.frames[frame.id] = frame
                 exc_history.tracebacks[tb.id] = tb

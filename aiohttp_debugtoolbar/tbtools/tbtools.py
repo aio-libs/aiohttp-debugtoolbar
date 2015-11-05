@@ -55,7 +55,7 @@ SOURCE_LINE_HTML = '''\
 
 
 def get_current_traceback(*, ignore_system_exceptions=False,
-                          show_hidden_frames=False, skip=0, exc):
+                          show_hidden_frames=False, skip=0, exc, app):
     """Get the current exception info as `Traceback` object.  Per default
     calling this method will reraise system exceptions such as generator exit,
     system exit or others.  This behavior can be disabled by passing `False`
@@ -65,11 +65,11 @@ def get_current_traceback(*, ignore_system_exceptions=False,
     return get_traceback(info,
                          ignore_system_exceptions=ignore_system_exceptions,
                          show_hidden_frames=show_hidden_frames, skip=skip,
-                         exc=exc)
+                         exc=exc, app=app)
 
 
 def get_traceback(info, *, ignore_system_exceptions=False,
-                  show_hidden_frames=False, skip=0, exc):
+                  show_hidden_frames=False, skip=0, exc, app):
     exc_type, exc_value, tb = info
     if ignore_system_exceptions and exc_type in system_exceptions:
         raise exc
@@ -77,7 +77,7 @@ def get_traceback(info, *, ignore_system_exceptions=False,
         if tb.tb_next is None:
             break
         tb = tb.tb_next
-    tb = Traceback(exc_type, exc_value, tb)
+    tb = Traceback(exc_type, exc_value, tb, app)
     if not show_hidden_frames:
         tb.filter_hidden_frames()
     return tb
@@ -113,7 +113,8 @@ class Line(object):
 class Traceback:
     """Wraps a traceback."""
 
-    def __init__(self, exc_type, exc_value, tb):
+    def __init__(self, exc_type, exc_value, tb, app):
+        self._app = app
         self.exc_type = exc_type
         self.exc_value = exc_value
         if not isinstance(exc_type, str):
@@ -128,7 +129,7 @@ class Traceback:
         # the the magic variables as defined by paste.exceptions.collector
         self.frames = []
         while tb:
-            self.frames.append(Frame(exc_type, exc_value, tb))
+            self.frames.append(Frame(exc_type, exc_value, tb, self._app))
             tb = tb.tb_next
 
     def filter_hidden_frames(self):
@@ -191,7 +192,7 @@ class Traceback:
     #     srv = ServerProxy('%sxmlrpc/' % lodgeit_url)
     #     return srv.pastes.newPaste('pytb', self.plaintext)
 
-    def render_summary(self, include_title=True, request=None):
+    def render_summary(self, app, include_title=True):
         """Render the traceback for the interactive console."""
         title = ''
         frames = []
@@ -218,7 +219,6 @@ class Traceback:
             description_wrapper = text_('<pre class=syntaxerror>%s</pre>')
         else:
             description_wrapper = text_('<blockquote>%s</blockquote>')
-
         vars = {
             'classes': text_(' '.join(classes)),
             'title': title and text_('<h3 class="traceback">%s</h3>'
@@ -226,15 +226,14 @@ class Traceback:
             'frames': text_('\n'.join(frames)),
             'description': description_wrapper % escape(self.exception),
         }
-        app = request.app
-        return render('exception_summary.jinja2', app, vars, request=request)
+        return render('exception_summary.jinja2', app, vars)
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
         static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
         root_path = request.app.router[ROOT_ROUTE_NAME].url()
         exc = escape(self.exception)
-        summary = self.render_summary(include_title=False, request=request)
+        summary = self.render_summary(request.app, include_title=False)
         token = request.app[APP_KEY]['pdtb_token']
         qs = {'token': token, 'tb': str(self.id)}
 
@@ -281,7 +280,8 @@ class Traceback:
 class Frame(object):
     """A single frame in a traceback."""
 
-    def __init__(self, exc_type, exc_value, tb):
+    def __init__(self, exc_type, exc_value, tb, app):
+        self._app = app
         self.lineno = tb.tb_lineno
         self.function_name = tb.tb_frame.f_code.co_name
         self.locals = tb.tb_frame.f_locals
@@ -421,6 +421,6 @@ class Frame(object):
 
     @reify
     def console(self):
-        return Console(self.globals, self.locals)
+        return Console(self._app, self.globals, self.locals)
 
     id = property(lambda x: id(x))

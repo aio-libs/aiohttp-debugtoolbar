@@ -147,7 +147,8 @@ def _wrap_compiler(console):
 
 class _InteractiveConsole(code.InteractiveInterpreter):
 
-    def __init__(self, globals, locals):
+    def __init__(self, app, globals, locals):
+        self._app = app
         code.InteractiveInterpreter.__init__(self, locals)
         self.globals = dict(globals)
         self.globals['dump'] = dump
@@ -182,13 +183,14 @@ class _InteractiveConsole(code.InteractiveInterpreter):
 
     def showtraceback(self, exc):
         from .tbtools import get_current_traceback
-        tb = get_current_traceback(skip=1, exc=exc)
-        sys.stdout._write(tb.render_summary())
+        tb = get_current_traceback(skip=1, exc=exc, app=self._app)
+        sys.stdout._write(tb.render_summary(self._app))
 
     def showsyntaxerror(self, filename=None):
         from .tbtools import get_current_traceback
-        tb = get_current_traceback(skip=4)
-        sys.stdout._write(tb.render_summary())
+        exc = SyntaxError(filename)
+        tb = get_current_traceback(skip=6, exc=exc, app=self._app)
+        sys.stdout._write(tb.render_summary(self._app))
 
     def write(self, data):
         sys.stdout.write(data)
@@ -197,12 +199,13 @@ class _InteractiveConsole(code.InteractiveInterpreter):
 class Console:
     """An interactive console."""
 
-    def __init__(self, globals=None, locals=None):
+    def __init__(self, app, globals=None, locals=None):
+        self._app = app
         if locals is None:
             locals = {}
         if globals is None:
             globals = {}
-        self._ipy = _InteractiveConsole(globals, locals)
+        self._ipy = _InteractiveConsole(app, globals, locals)
 
     def eval(self, code):
         _local._current_ipy = self._ipy
@@ -217,6 +220,6 @@ class _ConsoleFrame:
     """Helper class so that we can reuse the frame console code for the
     standalone console.
     """
-    def __init__(self, namespace):
-        self.console = Console(namespace)
+    def __init__(self, namespace, app):
+        self.console = Console(namespace, app)
         self.id = 0
