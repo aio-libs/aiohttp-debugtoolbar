@@ -70,7 +70,10 @@ class ExceptionDebugView:
     @asyncio.coroutine
     def _get_tb(self, request):
         yield from request.read()
-        tb = request.GET.get('tb') or request.POST.get('tb')
+        tb = request.GET.get('tb')
+        if not tb:
+            yield from request.post()
+            tb = request.POST.get('tb')
         if tb is not None:
             tb = int(tb)
         return tb
@@ -78,7 +81,10 @@ class ExceptionDebugView:
     @asyncio.coroutine
     def _get_cmd(self, request):
         yield from request.read()
-        cmd = request.GET.get('cmd') or request.POST.get('cmd')
+        cmd = request.GET.get('cmd')
+        if not cmd:
+            yield from request.post()
+            cmd = request.POST.get('cmd')
         return cmd
 
     @asyncio.coroutine
