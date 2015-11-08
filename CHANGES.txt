@@ -10,6 +10,8 @@ CHANGES
 
 * Add middleware in setup method (Thanks @sloria!)
 
+* Fixed bug with interactive console
+
 
 0.0.5 (2015-09-13)
 ^^^^^^^^^^^^^^^^^^
