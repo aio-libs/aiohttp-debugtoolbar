@@ -33,8 +33,8 @@ class TracebackPanel(DebugPanel):
         traceback = self._request['pdbt_tb']
 
         exc = escape(traceback.exception)
-        summary = Traceback.render_summary(traceback, include_title=False,
-                                           request=self._request)
+        summary = Traceback.render_summary(traceback, self._request.app,
+                                           include_title=False)
         token = self.request.app[APP_KEY]['pdtb_token']
         url = ''  # self.request.route_url(EXC_ROUTE_NAME, _query=qs)
         evalex = self.exc_history.eval_exc
