@@ -36,7 +36,6 @@ try:
 except NameError:
     pass
 
-# TODO remove
 FRAME_HTML = '''\
 <div class="frame" id="frame-%(id)d">
   <h4>File <cite class="filename">"%(filename)s"</cite>,
@@ -44,17 +43,6 @@ FRAME_HTML = '''\
       in <code class="function">%(function_name)s</code></h4>
   <pre>%(current_line)s</pre>
 </div>
-'''
-
-# TODO remove
-SOURCE_TABLE_HTML = '<table class=source>%s</table>'
-
-# TODO remove
-SOURCE_LINE_HTML = '''\
-<tr class="%(classes)s">
-  <td class=lineno>%(lineno)s</td>
-  <td>%(code)s</td>
-</tr>
 '''
 
 
@@ -85,33 +73,6 @@ def get_traceback(info, *, ignore_system_exceptions=False,
     if not show_hidden_frames:
         tb.filter_hidden_frames()
     return tb
-
-
-class Line(object):
-    """Helper for the source renderer."""
-    __slots__ = ('lineno', 'code', 'in_frame', 'current')
-
-    def __init__(self, lineno, code):
-        self.lineno = lineno
-        self.code = code
-        self.in_frame = False
-        self.current = False
-
-    def classes(self):
-        rv = ['line']
-        if self.in_frame:
-            rv.append('in-frame')
-        if self.current:
-            rv.append('current')
-        return rv
-    classes = property(classes)
-
-    def render(self):
-        return SOURCE_LINE_HTML % {
-            'classes': text_(' '.join(self.classes)),
-            'lineno': self.lineno,
-            'code': escape(self.code)
-        }
 
 
 class Traceback:
@@ -338,28 +299,6 @@ class Frame(object):
 
             return (lineno, lineno + offset)
         return None
-
-    def get_annotated_lines(self):
-        """Helper function that returns lines with extra information."""
-        lines = [Line(idx + 1, x) for idx, x in enumerate(self.sourcelines)]
-
-        in_frame = self.get_in_frame_range()
-        if in_frame:
-            for line in lines[in_frame[0]:in_frame[1]]:
-                line.in_frame = True
-
-        # mark current line
-        try:
-            lines[self.lineno - 1].current = True
-        except IndexError:
-            pass
-
-        return lines
-
-    def render_source(self):
-        """Render the sourcecode."""
-        return SOURCE_TABLE_HTML % text_('\n'.join(line.render() for line in
-                                         self.get_annotated_lines()))
 
     def eval(self, code, mode='single'):
         """Evaluate code in the context of the frame."""
