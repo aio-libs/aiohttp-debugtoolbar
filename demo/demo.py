@@ -20,11 +20,7 @@ parent = Path('.').parent
 parent = str(parent.absolute())
 sys.path.insert(0, parent)
 
-
-logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-PROJECT_ROOT = Path(__file__).parent
-templates = PROJECT_ROOT / 'templates'
 
 
 def json_renderer(func):
@@ -94,6 +90,10 @@ def test_jinja2_exc(request):
 
 @asyncio.coroutine
 def init(loop):
+    logging.basicConfig(level=logging.DEBUG)
+    PROJECT_ROOT = Path(__file__).parent
+    templates = PROJECT_ROOT / 'templates'
+
     app = web.Application(loop=loop)
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
@@ -129,15 +129,9 @@ def init(loop):
     app.router.add_route('GET', '/jinja2_exc', test_jinja2_exc,
                          name='test_jinja2_exc')
 
-    handler = app.make_handler()
-    srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
-    log.debug("Server started at http://127.0.0.1:9000")
-    return srv, handler
+    return app
 
 
 loop = asyncio.get_event_loop()
-srv, handler = loop.run_until_complete(init(loop))
-try:
-    loop.run_forever()
-except KeyboardInterrupt:
-    loop.run_until_complete(handler.finish_connections())
+app = loop.run_until_complete(init(loop))
+web.run_app(app, host='127.0.0.1', port=9000)
