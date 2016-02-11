@@ -1,7 +1,6 @@
 import asyncio
 import json
 import logging
-import os
 import sys
 
 from pathlib import Path
@@ -24,8 +23,8 @@ sys.path.insert(0, parent)
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-templates = os.path.join(PROJECT_ROOT, 'templates')
+PROJECT_ROOT = Path(__file__).parent
+templates = PROJECT_ROOT / 'templates'
 
 
 def json_renderer(func):
@@ -98,7 +97,7 @@ def init(loop):
     app = web.Application(loop=loop)
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
-    loader = jinja2.FileSystemLoader([templates])
+    loader = jinja2.FileSystemLoader([str(templates)])
     aiohttp_jinja2.setup(app, loader=loader)
 
     if aiohttp_mako:
@@ -114,10 +113,8 @@ def init(loop):
         app.router.add_route('GET', '/mako_exc', test_mako_exc,
                              name='test_mako_exc')
 
-    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(templates))
-
     # static view
-    app.router.add_static('/static', os.path.join(PROJECT_ROOT, 'static'))
+    app.router.add_static('/static', PROJECT_ROOT / 'static')
 
     app.router.add_route('GET', '/redirect', test_redirect,
                          name='test_redirect')

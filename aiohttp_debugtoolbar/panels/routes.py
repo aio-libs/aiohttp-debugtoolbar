@@ -1,6 +1,5 @@
 import inspect
 
-from aiohttp.web_urldispatcher import PlainRoute, DynamicRoute, StaticRoute
 from .base import DebugPanel
 
 
@@ -25,19 +24,11 @@ class RoutesDebugPanel(DebugPanel):
         info = []
         router = request.app.router
 
-        for route in router._urls:
-            pattern = None
-            if isinstance(route, PlainRoute):
-                pattern = route._path
-            elif isinstance(route, DynamicRoute):
-                pattern = route._formatter
-            elif isinstance(route, StaticRoute):
-                pattern = route._prefix
-
+        for route in router.routes():
             info.append({
                 "name": route.name or '',
                 "method": route.method,
-                "pattern": pattern,
+                "info": sorted(route.get_info().items()),
                 "handler": repr(route.handler),
                 "source": inspect.getsource(route.handler)
             })
