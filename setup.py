@@ -1,11 +1,11 @@
-import codecs
 from setuptools import setup, find_packages
 import os
+import pathlib
 import re
 
 
-with codecs.open(os.path.join(os.path.abspath(os.path.dirname(
-        __file__)), 'aiohttp_debugtoolbar', '__init__.py'), 'r', 'latin1') as fp:
+with (pathlib.Path(__file__).parent /
+      'aiohttp_debugtoolbar' / '__init__.py').open() as fp:
     try:
         version = re.findall(r"^__version__ = '([^']+)'$", fp.read(), re.M)[0]
     except IndexError:
@@ -15,7 +15,7 @@ with codecs.open(os.path.join(os.path.abspath(os.path.dirname(
 def read(f):
     return open(os.path.join(os.path.dirname(__file__), f)).read().strip()
 
-install_requires = ['aiohttp>=0.18.0', 'aiohttp_jinja2']
+install_requires = ['aiohttp>=0.21.1', 'aiohttp_jinja2']
 tests_require = install_requires + ['nose']
 
 
