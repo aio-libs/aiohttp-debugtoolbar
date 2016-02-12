@@ -3,7 +3,7 @@
         <tr>
             <th>Route Name</th>
             <th>Method</th>
-            <th>Route Pattern</th>
+            <th>Route Info</th>
             <th>View Callable</th>
         </tr>
     </thead>
@@ -12,7 +12,13 @@
             <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
                 <td>{{ route_info['name'] }}</td>
                 <td>{{ route_info['method'] }}</td>
-                <td>{{ route_info['pattern'] }}</td>
+                <td>
+                  <ul>
+                  {% for name, value in route_info['info'] %}
+                    <li>{{ name }}: {{ value }}
+                  {% endfor %}
+                  </ul>
+                </td>
                 <td>
                   <div class="row">
                     <div class="col-md-11">{{ route_info['handler']|e }}</div>

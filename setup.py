@@ -12,8 +12,9 @@ with (pathlib.Path(__file__).parent /
         raise RuntimeError('Unable to determine version.')
 
 
-def read(f):
-    return open(os.path.join(os.path.dirname(__file__), f)).read().strip()
+def read(fname):
+    with (pathlib.Path(__file__).parent / fname).open() as f:
+        return f.read().strip()
 
 install_requires = ['aiohttp>=0.21.1', 'aiohttp_jinja2']
 tests_require = install_requires + ['nose']

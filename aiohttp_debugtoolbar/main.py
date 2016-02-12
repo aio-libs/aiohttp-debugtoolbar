@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import jinja2
 import aiohttp_jinja2
 
@@ -47,19 +48,20 @@ def setup(app, **kw):
     config.update(default_settings)
     config.update(kw)
 
-    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    APP_ROOT = Path(__file__).parent
     app[APP_KEY] = {}
     if middleware not in app.middlewares:
         app.middlewares.append(middleware)
 
-    templates_app = os.path.join(APP_ROOT, 'templates')
-    templates_panels = os.path.join(APP_ROOT, 'panels/templates')
+    templates_app = APP_ROOT / 'templates'
+    templates_panels = APP_ROOT / 'panels/templates'
 
     app[APP_KEY]['settings'] = config
-    loader = jinja2.FileSystemLoader([templates_app, templates_panels])
+    loader = jinja2.FileSystemLoader([str(templates_app),
+                                      str(templates_panels)])
     aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
-    static_location = os.path.join(APP_ROOT, 'static')
+    static_location = APP_ROOT / 'static'
 
     exc_handlers = ExceptionDebugView()
 
