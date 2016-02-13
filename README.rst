@@ -42,7 +42,8 @@ Install and Configuration
     $ pip install aiohttp_debugtoolbar
 
 
-In order to plug in ``aiohttp_debugtoolbar``, call ``aiohttp_debugtoolbar.setup`` on your app.
+In order to plug in ``aiohttp_debugtoolbar``, call
+``aiohttp_debugtoolbar.setup`` on your app.
 
 .. code:: python
 
@@ -121,11 +122,13 @@ Full Example
 
 Thanks!
 -------
-I've borrowed a lot of code from following projects. I highly recommend to check them out:
 
-* `pyramid_debugtoolbar <https://github.com/Pylons/pyramid_debugtoolbar>`_
-* `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_
-* `flask-debugtoolbar <https://github.com/mgood/flask-debugtoolbar>`_
+I've borrowed a lot of code from following projects. I highly
+recommend to check them out:
+
+* pyramid_debugtoolbar_
+* django-debug-toolbar_
+* flask-debugtoolbar_
 
 Play With Demo
 --------------
@@ -148,3 +151,5 @@ Requirements
 .. _aiomysql: https://github.com/aio-libs/aiomysql
 .. _aiohttp_jinja2: https://github.com/aio-libs/aiohttp_jinja2
 .. _pyramid_debugtoolbar: https://github.com/Pylons/pyramid_debugtoolbar
+.. _django-debug-toolbar: https://github.com/django-debug-toolbar/django-debug-toolbar
+.. _flask-debugtoolbar: https://github.com/mgood/flask-debugtoolbar
