@@ -138,8 +138,7 @@ https://github.com/aio-libs/aiohttp_debugtoolbar/tree/master/demo
 Requirements
 ------------
 
-* Python_ 3.3+
-* asyncio_ or Python_ 3.4+
+* Python_ 3.4+
 * aiohttp_
 * aiohttp_jinja2_
 
