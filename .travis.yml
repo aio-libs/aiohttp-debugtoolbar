@@ -8,10 +8,11 @@ install:
   - pip install --upgrade setuptools
   - pip install coveralls
   - pip install -Ur requirements-dev.txt
-  - python setup.py develop
+  - pip install -e .
 
 script:
-  make cov
+  - make cov
+  - python setup.py check -rms
 after_success:
   coveralls
 

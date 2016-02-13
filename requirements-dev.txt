@@ -6,3 +6,5 @@ flake8
 -e .
 aiohttp_jinja2
 aiohttp_mako
+docutils
+pygments
