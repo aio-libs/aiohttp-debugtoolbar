@@ -1,6 +1,8 @@
 CHANGES
 =======
-0.0.6 (XXXX-XX-XX)
+
+0.1.0 (2016-02-13)
+^^^^^^^^^^^^^^^^^^
 
 * Fixed python 3.5 support (Thanks @stormandco!)
 
@@ -11,6 +13,8 @@ CHANGES
 * Add middleware in setup method (Thanks @sloria!)
 
 * Fixed bug with interactive console
+
+* Fixed support for aiohttp>=0.21.1 
 
 
 0.0.5 (2015-09-13)
