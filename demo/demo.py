@@ -104,7 +104,7 @@ def init(loop):
         aiohttp_mako.setup(app, input_encoding='utf-8',
                            output_encoding='utf-8',
                            default_filters=['decode.utf8'],
-                           directories=[templates])
+                           directories=[str(templates)])
 
         @aiohttp_mako.template('error.mako')
         def test_mako_exc(request):
