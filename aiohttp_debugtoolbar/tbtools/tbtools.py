@@ -26,7 +26,8 @@ from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
 _coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
 _line_re = re.compile(r'^(.*?)$(?m)')
-_funcdef_re = re.compile(r'^(\s*def\s)|(.*(?<!\w)lambda(:|\s))|^(\s*@)')
+_funcdef_re = re.compile(r'^(\s*(?:async\s+?)?def\s)|'
+                         r'(.*(?<!\w)lambda(:|\s))|^(\s*@)')
 UTF8_COOKIE = '\xef\xbb\xbf'
 
 system_exceptions = (SystemExit, KeyboardInterrupt)
@@ -42,15 +43,6 @@ FRAME_HTML = '''\
       in <code class="function">%(function_name)s</code></h4>
   <pre>%(current_line)s</pre>
 </div>
-'''
-
-SOURCE_TABLE_HTML = '<table class=source>%s</table>'
-
-SOURCE_LINE_HTML = '''\
-<tr class="%(classes)s">
-  <td class=lineno>%(lineno)s</td>
-  <td>%(code)s</td>
-</tr>
 '''
 
 
@@ -81,33 +73,6 @@ def get_traceback(info, *, ignore_system_exceptions=False,
     if not show_hidden_frames:
         tb.filter_hidden_frames()
     return tb
-
-
-class Line(object):
-    """Helper for the source renderer."""
-    __slots__ = ('lineno', 'code', 'in_frame', 'current')
-
-    def __init__(self, lineno, code):
-        self.lineno = lineno
-        self.code = code
-        self.in_frame = False
-        self.current = False
-
-    def classes(self):
-        rv = ['line']
-        if self.in_frame:
-            rv.append('in-frame')
-        if self.current:
-            rv.append('current')
-        return rv
-    classes = property(classes)
-
-    def render(self):
-        return SOURCE_LINE_HTML % {
-            'classes': text_(' '.join(self.classes)),
-            'lineno': self.lineno,
-            'code': escape(self.code)
-        }
 
 
 class Traceback:
@@ -318,37 +283,22 @@ class Frame(object):
             'current_line': escape(self.current_line.strip())
         }
 
-    def get_annotated_lines(self):
-        """Helper function that returns lines with extra information."""
-        lines = [Line(idx + 1, x) for idx, x in enumerate(self.sourcelines)]
-
+    def get_in_frame_range(self):
         # find function definition and mark lines
         if hasattr(self.code, 'co_firstlineno'):
             lineno = self.code.co_firstlineno - 1
             while lineno > 0:
-                if _funcdef_re.match(lines[lineno].code):
+                if _funcdef_re.match(self.sourcelines[lineno]):
                     break
                 lineno -= 1
             try:
-                offset = len(inspect.getblock([x.code + '\n' for x
-                                               in lines[lineno:]]))
+                offset = len(inspect.getblock([x + '\n' for x
+                                               in self.sourcelines[lineno:]]))
             except TokenError:
                 offset = 0
-            for line in lines[lineno:lineno + offset]:
-                line.in_frame = True
 
-        # mark current line
-        try:
-            lines[self.lineno - 1].current = True
-        except IndexError:
-            pass
-
-        return lines
-
-    def render_source(self):
-        """Render the sourcecode."""
-        return SOURCE_TABLE_HTML % text_('\n'.join(line.render() for line in
-                                         self.get_annotated_lines()))
+            return (lineno, lineno + offset)
+        return None
 
     def eval(self, code, mode='single'):
         """Evaluate code in the context of the frame."""

@@ -1,4 +1,4 @@
-
+/* TODO: cleanup unused styles */
 input        { background-color: #fff; margin: 0; text-align: left;
                outline: none !important; }
 pre, code, table.source,
@@ -80,7 +80,7 @@ pre.console div.traceback pre.syntaxerror { background: #eeeeee; border: none;
 pre.console div.noframe-traceback pre.syntaxerror { margin-top: 0px; border: none; }
 
 pre.console div.box pre.repr { padding: 0; margin: 0; background-color: white; border: none; }
-pre.console div.box table { margin-top: 6px; }
+pre.console div.box table { margin-top: 6px; }
 pre.console div.box pre { border: none; }
 pre.console div.box pre.help { background-color: white; }
 pre.console div.box pre.help:hover { cursor: default; }
@@ -99,3 +99,9 @@ div.sourceview { overflow: auto; border: 1px solid #ccc; }
 
 div.traceback .btn { margin: 1px 4px 1px 0; }
 div.traceback span, div.explanation span { margin: 2px; }
+
+div.sourceview span.current {
+    display: inline-block;
+    width: 100%;
+    background-color: #ddd;
+}
