@@ -33,7 +33,8 @@ pyramid_debugtoolbar_require([
        */
       if (EVALEX)
         $('<button class="btn btn-xs btn-default pull-right">' +
-            '<span class="glyphicon glyphicon-console pull-right" aria-hidden="true"></span></button>')
+            '<span class="glyphicon glyphicon-console pull-right" ' +
+          'aria-hidden="true"></span></button>')
           .attr('title', 'Open an interactive python shell in this frame')
           .click(function() {
             consoleNode = openShell(consoleNode, target, frameID);
@@ -45,29 +46,48 @@ pyramid_debugtoolbar_require([
        * Show sourcecode
        */
       var sourceButton = $('<button class="btn btn-xs btn-default pull-right">' +
-            '<span class="glyphicon glyphicon-file pull-right" aria-hidden="true"></span></button>')
+            '<span class="glyphicon glyphicon-file pull-right" ' +
+        'aria-hidden="true"></span></button>')
         .attr('title', 'Display the sourcecode for this frame')
-        .click(function() {
+        .click(function () {
           if (!sourceView)
             $('h2', sourceView =
               $('<div class="box"><h2>View Source</h2><div class="sourceview">' +
-                '<table></table></div>')
+                '<pre></pre></div>')
                 .insertBefore('div.explanation'))
               .css('cursor', 'pointer')
-              .click(function() {
+              .click(function () {
                 sourceView.slideUp('fast');
               });
-         $.get(window.DEBUG_TOOLBAR_ROOT_PATH + '/source',
-                  {frm: frameID, token: window.DEBUGGER_TOKEN}, function(data) {
-            $('table', sourceView)
-              .replaceWith(data);
-            if (!sourceView.is(':visible'))
-              sourceView.slideDown('fast', function() {
+          $.get(window.DEBUG_TOOLBAR_ROOT_PATH + '/source',
+            {frm: frameID, token: window.DEBUGGER_TOKEN}, function (data) {
+              var dataLine;
+              var inFrame = data.inFrame;
+              inFrame[0]++;
+              if (inFrame !== null && inFrame[0] !== inFrame[1]) {
+                dataLine = '' + inFrame[0] + '-' + (inFrame[1]);
+                //if (data.line !== inFrame[0] && data.line !== inFrame[1]) {
+                  dataLine += (',' + data.line);
+                //}
+              } else {
+                dataLine = '' + data.line
+              }
+              var code = '<pre data-line="' + dataLine + '"><code id="pDebugTracebackSrc"' +
+                'class="language-python">'
+                + data.source + '</code></pre>';
+
+              $('pre', sourceView)
+                .replaceWith(code);
+
+              Prism.highlightElement(document.querySelector('#pDebugTracebackSrc'));
+
+              if (!sourceView.is(':visible'))
+                sourceView.slideDown('fast', function () {
+                  focusSourceBlock();
+                });
+              else
                 focusSourceBlock();
-              });
-            else
-              focusSourceBlock();
-          });
+            });
           return false;
         })
         .prependTo(target);
@@ -187,15 +207,15 @@ pyramid_debugtoolbar_require([
      * Focus the current block in the source view.
      */
     function focusSourceBlock() {
-      var tmp, line = $('table.source tr.current');
+      var tmp, line = $('pre code .line-highlight');
       for (var i = 0; i < 7; i++) {
         tmp = line.prev();
         if (!(tmp && tmp.is('.in-frame')))
-          break
+          break;
         line = tmp;
       }
       var container = $('div.sourceview');
-      container.scrollTop(line.offset().top);
+      $('html, body').scrollTop(line.offset().top);
     }
   });
   $.noConflict(true);
