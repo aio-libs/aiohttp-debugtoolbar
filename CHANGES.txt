@@ -1,6 +1,14 @@
 CHANGES
 -------
 
+0.1.1 (2016-02-21)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed a demo
+
+* Added syntax highlight in traceback view, switched highlighter from
+  highlight.js to prism.js #31
+
 0.1.0 (2016-02-13)
 ^^^^^^^^^^^^^^^^^^
 
