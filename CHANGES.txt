@@ -1,6 +1,12 @@
 CHANGES
 -------
 
+0.1.2 (YYYY-MM-DD)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed empty functions names in perfomance panel #43 (Thanks @kammala!)
+
+
 0.1.1 (2016-02-21)
 ^^^^^^^^^^^^^^^^^^
 
