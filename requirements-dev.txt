@@ -5,6 +5,6 @@ coverage==4.2
 flake8==3.0.4
 -e .
 aiohttp-jinja2==0.8.0
-aiohttp_mako
+aiohttp-mako==0.0.1
 docutils==0.12
 pygments==2.1.3
