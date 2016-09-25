@@ -4,7 +4,7 @@ pytest-cov
 coverage
 flake8
 -e .
-aiohttp_jinja2
+aiohttp-jinja2==0.8.0
 aiohttp_mako
 docutils==0.12
 pygments
