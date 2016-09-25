@@ -66,25 +66,23 @@ class DebugToolbar:
         css_path = request.app.router[STATIC_ROUTE_NAME].url(
             filename='css/toolbar_button.css')
 
+        toolbar_css = toolbar_css_template % {'css_path': css_path}
         toolbar_html = toolbar_html_template % {
             'button_style': button_style,
             'css_path': css_path,
             'toolbar_url': toolbar_url}
 
         toolbar_html = toolbar_html.encode(response.charset or 'utf-8')
+        toolbar_css = toolbar_css.encode(response.charset or 'utf-8')
+        response_html = replace_insensitive(
+            response_html, b'</head>', toolbar_css + b'</head>')
         response.body = replace_insensitive(
             response_html, b'</body>',
             toolbar_html + b'</body>')
+toolbar_css_template = """\
+<link rel="stylesheet" type="text/css" href="%(css_path)s">"""
 
 toolbar_html_template = """\
-<script type="text/javascript">
-    var fileref=document.createElement("link")
-    fileref.setAttribute("rel", "stylesheet")
-    fileref.setAttribute("type", "text/css")
-    fileref.setAttribute("href", "%(css_path)s")
-    document.getElementsByTagName("head")[0].appendChild(fileref)
-</script>
-
 <div id="pDebug">
     <div style="display: block; %(button_style)s" id="pDebugToolbarHandle">
         <a title="Show Toolbar" id="pShowToolBarButton"
