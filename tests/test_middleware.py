@@ -13,6 +13,7 @@ def test_render_toolbar_page(loop, create_server):
         return aiohttp_jinja2.render_template(
             'tplt.html', request,
             {'head': 'HEAD', 'text': 'text'})
+
     app, url = yield from create_server()
     app.router.add_route('GET', '/', handler)
 
@@ -24,6 +25,7 @@ def test_render_toolbar_page(loop, create_server):
                                       loop=loop, connector=conn)
     assert 200 == resp.status
     txt = yield from resp.text()
+    assert 'toolbar_button.css' in txt
     assert 'pDebugToolbarHandle' in txt
     resp.close()
 
