@@ -1,5 +1,4 @@
 import asyncio
-from aiohttp_session import get_session
 from pprint import saferepr
 
 from .base import DebugPanel
@@ -37,8 +36,9 @@ class RequestVarsDebugPanel(DebugPanel):
         # TODO: think about aiohttp_security
 
         # session to separate table
-        session = yield from get_session(request)
-        if not session.empty:
-            data.update({
-                'session': [(k, session[k]) for k in session],
-            })
+        if hasattr(request, 'session'):
+            session = request.session
+            if not session.empty:
+                data.update({
+                    'session': [(k, session[k]) for k in session],
+                })
