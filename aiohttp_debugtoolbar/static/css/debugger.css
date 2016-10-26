@@ -105,3 +105,8 @@ div.sourceview span.current {
     width: 100%;
     background-color: #ddd;
 }
+
+td.value {
+    word-break: break-all;
+    word-wrap: break-word;
+}

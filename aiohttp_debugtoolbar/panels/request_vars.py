@@ -1,4 +1,5 @@
 import asyncio
+from aiohttp_session import get_session
 from pprint import saferepr
 
 from .base import DebugPanel
@@ -32,10 +33,12 @@ class RequestVarsDebugPanel(DebugPanel):
             'cookies': [(k, request.cookies.get(k)) for k in request.cookies],
             'attrs': [(k, v) for k, v in request.items()],
         })
-        # TODO: think about adding aiohttp_sessions support as separate table
-        # and maybe aiohttp_security
 
-        # if hasattr(request, 'session'):
-        #     data.update({
-        #         'session': dictrepr(request.session),
-        #     })
+        # TODO: think about aiohttp_security
+
+        # session to separate table
+        session = yield from get_session(request)
+        if not session.empty:
+            data.update({
+                'session': [(k, session[k]) for k in session],
+            })
