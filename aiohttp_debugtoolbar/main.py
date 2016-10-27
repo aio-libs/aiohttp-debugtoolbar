@@ -89,7 +89,7 @@ def setup(app, **kw):
     app.router.add_route('GET', path_prefix + '/sse', views.sse,
                          name='debugtoolbar.sse')
 
-    app.router.add_route('GET', path_prefix + '/_debugtoolbar/{request_id}',
+    app.router.add_route('GET', path_prefix + '/{request_id}',
                          views.request_view, name='debugtoolbar.request')
     app.router.add_route('GET', path_prefix, views.request_view,
                          name='debugtoolbar.main')

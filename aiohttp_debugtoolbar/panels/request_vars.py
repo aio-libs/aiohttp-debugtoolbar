@@ -27,15 +27,18 @@ class RequestVarsDebugPanel(DebugPanel):
         request = self.request
         yield from request.post()
         data.update({
-            'get': [(k, request.GET.getall(k)) for k in request.GET],
-            'post': [(k, saferepr(v)) for k, v in request.POST.items()],
-            'cookies': [(k, request.cookies.get(k)) for k in request.cookies],
-            'attrs': [(k, v) for k, v in request.items()],
+            'get': [(k, request.GET.getall(k)) for k in sorted(request.GET)],
+            'post': [(k, saferepr(request.POST.getall(k)))
+                     for k in sorted(request.POST)],
+            'cookies': [(k, v) for k, v in sorted(request.cookies.items())],
+            'attrs': [(k, v) for k, v in sorted(request.items())],
         })
-        # TODO: think about adding aiohttp_sessions support as separate table
-        # and maybe aiohttp_security
 
-        # if hasattr(request, 'session'):
-        #     data.update({
-        #         'session': dictrepr(request.session),
-        #     })
+        # TODO: think about aiohttp_security
+
+        # session to separate table
+        session = request.get('aiohttp_session')
+        if session and not session.empty:
+            data.update({
+                'session': [(k, v) for k, v in sorted(session.items())],
+            })
