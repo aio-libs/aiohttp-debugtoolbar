@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 import pathlib
 import re
 
@@ -20,7 +19,7 @@ install_requires = ['aiohttp>=0.21.1', 'aiohttp_jinja2']
 tests_require = install_requires + ['nose']
 
 
-setup(name='aiohttp_debugtoolbar',
+setup(name='aiohttp-debugtoolbar',
       version=version,
       description=("debugtoolbar for aiohttp"),
       long_description='\n\n'.join((read('README.rst'), read('CHANGES.txt'))),
