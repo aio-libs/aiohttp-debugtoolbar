@@ -6,7 +6,7 @@ python:
 
 install:
   - pip install --upgrade setuptools
-  - pip install coveralls
+  - pip install codecov
   - pip install -Ur requirements-dev.txt
   - pip install -e .
 
@@ -17,7 +17,7 @@ script:
         python setup.py check -s;
     fi
 after_success:
-  coveralls
+  codecov
 
 env:
   matrix:
