@@ -46,7 +46,7 @@
                     <td>{{ '%.4f' % row['percall'] }}</td>
                     <td>{{ row['cumtime'] }}</td>
                     <td>{{ '%.4f' % row['percall_cum'] }}</td>
-                    <td title="{{ row['filename_long'] }}">{{ row['filename'] }}</td>
+                    <td title="{{ row['filename_long'] }}">{{ row['filename']|e }}</td>
                 </tr>
             {% endfor %}
         </tbody>

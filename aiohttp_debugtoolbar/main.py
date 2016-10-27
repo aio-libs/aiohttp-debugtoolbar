@@ -40,6 +40,7 @@ default_settings = {
     'button_style': '',
     'max_request_history': 100,
     'max_visible_requests': 10,
+    'path_prefix': '/_debugtoolbar',
 }
 
 
@@ -65,34 +66,33 @@ def setup(app, **kw):
 
     exc_handlers = ExceptionDebugView()
 
-    app.router.add_static('/_debugtoolbar/static', static_location,
+    path_prefix = config['path_prefix']
+    app.router.add_static(path_prefix + '/static', static_location,
                           name=STATIC_ROUTE_NAME)
 
-    app.router.add_route('GET', '/_debugtoolbar/source', exc_handlers.source,
+    app.router.add_route('GET', path_prefix + '/source', exc_handlers.source,
                          name='debugtoolbar.source')
-    app.router.add_route('GET', '/_debugtoolbar/execute', exc_handlers.execute,
+    app.router.add_route('GET', path_prefix + '/execute', exc_handlers.execute,
                          name='debugtoolbar.execute')
-    # app.router.add_route('GET', '/_debugtoolbar/console',
+    # app.router.add_route('GET', path_prefix + '/console',
     # exc_handlers.console,
     #                      name='debugtoolbar.console')
-    app.router.add_route('GET', '/_debugtoolbar/exception',
+    app.router.add_route('GET', path_prefix + '/exception',
                          exc_handlers.exception,
                          name='debugtoolbar.exception')
     # TODO: fix when sql will be ported
-    # app.router.add_route('GET', '_debugtoolbar/sqlalchemy/sql_select',
+    # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_select',
     #                      name='debugtoolbar.sql_select')
-    # app.router.add_route('GET', '_debugtoolbar/sqlalchemy/sql_explain',
+    # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_explain',
     #                      name='debugtoolbar.sql_explain')
 
-    app.router.add_route('GET', '/_debugtoolbar/sse', views.sse,
+    app.router.add_route('GET', path_prefix + '/sse', views.sse,
                          name='debugtoolbar.sse')
 
-    app.router.add_route('GET', '/_debugtoolbar/{request_id}',
+    app.router.add_route('GET', path_prefix + '/_debugtoolbar/{request_id}',
                          views.request_view, name='debugtoolbar.request')
-    app.router.add_route('GET', '/_debugtoolbar', views.request_view,
+    app.router.add_route('GET', path_prefix, views.request_view,
                          name='debugtoolbar.main')
-    app.router.add_route('GET', '/_debugtoolbar', views.request_view,
-                         name='debugtoolbar')
 
     def settings_opt(name):
         return app[APP_KEY]['settings'][name]

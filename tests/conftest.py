@@ -47,7 +47,13 @@ def create_server(loop, unused_port):
         setup(app, **kw)
         port = unused_port
 
-        tplt = "<html><body><h1>{{ head }}</h1>{{ text }}</body></html>"
+        tplt = """
+        <html>
+        <head></head>
+        <body>
+            <h1>{{ head }}</h1>{{ text }}
+        </body>
+        </html>"""
         loader = jinja2.DictLoader({'tplt.html': tplt})
         aiohttp_jinja2.setup(app, loader=loader)
 

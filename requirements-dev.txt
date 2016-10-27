@@ -1,10 +1,10 @@
-ipdb
-pytest
-pytest-cov
-coverage
-flake8
+ipdb==0.10.1
+pytest==3.0.3
+pytest-cov==2.4.0
+coverage==4.2
+flake8==3.0.4
 -e .
-aiohttp_jinja2
-aiohttp_mako
-docutils
-pygments
+aiohttp-jinja2==0.8.0
+aiohttp-mako==0.0.1
+docutils==0.12
+pygments==2.1.3

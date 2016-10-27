@@ -6,6 +6,10 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD license.
 """
+import aiohttp
+import aiohttp_jinja2
+import asyncio
+import pytest
 import re
 import sys
 import unittest
@@ -151,3 +155,27 @@ class Test_debug_help(unittest.TestCase):
 
         assert 'Help on list object' in x
         assert '__delitem__' in x
+
+
+@pytest.mark.run_loop
+def test_alternate_debug_path(loop, create_server):
+    @asyncio.coroutine
+    def handler(request):
+        return aiohttp_jinja2.render_template(
+            'tplt.html', request,
+            {'head': 'HEAD', 'text': 'text'})
+    path_prefix = '/arbitrary_path'
+    app, url = yield from create_server(path_prefix=path_prefix)
+    app.router.add_route('GET', '/', handler)
+
+    conn = aiohttp.TCPConnector(loop=loop, force_close=True)
+    cookie = {"pdtb_active": "pDebugPerformancePanel"}
+    resp = yield from aiohttp.request('GET', url + '/', cookies=cookie,
+                                      loop=loop, connector=conn)
+
+    url = url + path_prefix
+    resp = yield from aiohttp.request('GET', url, loop=loop, connector=conn)
+    yield from resp.text()
+    assert 200 == resp.status
+    resp.close()
+    conn.close()
