@@ -83,3 +83,12 @@ a.active {
     border-bottom-color:#fff;
     opacity:1.0;
 }
+
+/* tablesorter */
+.header { cursor: pointer; position: relative; }
+.header:before { position: absolute; right: 0; bottom: 40%; content: '▲'; font-size: 10px; color: #bbb; }
+.header:after { position: absolute; right: 0; bottom: 20%; content: '▼'; font-size: 10px; color: #bbb; }
+.headerSortUp:before { content: ''; }
+.headerSortUp:after { color: inherit; }
+.headerSortDown:before { color: inherit; }
+.headerSortDown:after { content: ''; }
