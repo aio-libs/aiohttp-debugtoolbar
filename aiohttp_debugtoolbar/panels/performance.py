@@ -119,7 +119,7 @@ class PerformanceDebugPanel(DebugPanel):
                     # Cumulative time
                     current['cumtime'] = info[3] * 1000
 
-                    # Quotient of the cumulative time divded by the number
+                    # Quotient of the cumulative time divided by the number
                     # of primitive calls.
                     if info[0]:
                         current['percall_cum'] = info[3] * 1000 / info[0]

@@ -14,7 +14,6 @@ HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 @asyncio.coroutine
 def middleware(app, handler):
-
     if APP_KEY not in app:
         raise RuntimeError('Please setup debug toolbar with '
                            'aiohttp_debugtoolbar.setup method')
@@ -32,7 +31,8 @@ def middleware(app, handler):
     def toolbar_middleware(request):
 
         # request['exc_history'] = exc_history
-        panel_classes = settings.get('panels', [])
+        panel_classes = (settings.get('panels', [])
+                         + settings.get('extra_panels', []))
         global_panel_classes = settings.get('global_panels', [])
         hosts = settings.get('hosts', [])
 
@@ -46,6 +46,7 @@ def middleware(app, handler):
         p = request.path
         starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
+        # FIXME: error when run trough unixsocket
         peername = request.transport.get_extra_info('peername')
         remote_host, remote_port = peername[:2]
 
@@ -123,7 +124,6 @@ def middleware(app, handler):
             # Intercept http redirect codes and display an html page with a
             # link to the target.
             if response.status in REDIRECT_CODES and response.location:
-
                 context = {'redirect_to': response.location,
                            'redirect_code': response.status}
 
@@ -150,7 +150,6 @@ def middleware(app, handler):
 
 # Deprecated, will drop it in 0.3+
 toolbar_middleware_factory = middleware
-
 
 toolbar_html_template = """\
 <script type="text/javascript">

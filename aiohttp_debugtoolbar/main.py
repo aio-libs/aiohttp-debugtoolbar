@@ -18,7 +18,6 @@ default_panel_names = [
     panels.LoggingPanel,
 ]
 
-
 default_global_panel_names = [
     panels.RoutesDebugPanel,
     panels.SettingsDebugPanel,
@@ -26,13 +25,13 @@ default_global_panel_names = [
     panels.VersionDebugPanel,
 ]
 
-
 default_settings = {
     'enabled': True,
     'intercept_exc': 'debug',  # display or debug or False
     'intercept_redirects': True,
     'panels': default_panel_names,
     'extra_panels': [],
+    'extra_templates': None,
     'global_panels': default_global_panel_names,
     'extra_global_panels': [],
     'hosts': ['127.0.0.1', '::1'],
@@ -59,7 +58,8 @@ def setup(app, **kw):
 
     app[APP_KEY]['settings'] = config
     loader = jinja2.FileSystemLoader([str(templates_app),
-                                      str(templates_panels)])
+                                      str(templates_panels),
+                                      config.get('extra_templates', None)])
     aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
     static_location = APP_ROOT / 'static'
