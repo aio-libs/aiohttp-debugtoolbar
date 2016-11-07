@@ -79,6 +79,7 @@ class Traceback:
     """Wraps a traceback."""
 
     def __init__(self, exc_type, exc_value, tb, app):
+        self._cache = {}
         self._app = app
         self.exc_type = exc_type
         self.exc_value = exc_value
@@ -242,10 +243,11 @@ class Traceback:
     id = property(lambda x: id(x))
 
 
-class Frame(object):
+class Frame:
     """A single frame in a traceback."""
 
     def __init__(self, exc_type, exc_value, tb, app):
+        self._cache = {}
         self._app = app
         self.lineno = tb.tb_lineno
         self.function_name = tb.tb_frame.f_code.co_name
