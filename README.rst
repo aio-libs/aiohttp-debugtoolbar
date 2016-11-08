@@ -1,10 +1,10 @@
 aiohttp_debugtoolbar
 ====================
-.. image:: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar.svg?branch=master
-    :target: https://travis-ci.org/aio-libs/aiohttp_debugtoolbar
+.. image:: https://travis-ci.org/aio-libs/aiohttp-debugtoolbar.svg?branch=master
+    :target: https://travis-ci.org/aio-libs/aiohttp-debugtoolbar
     :alt: |Build status|
-.. image:: https://coveralls.io/repos/aio-libs/aiohttp_debugtoolbar/badge.svg
-    :target: https://coveralls.io/r/aio-libs/aiohttp_debugtoolbar
+.. image:: https://codecov.io/gh/aio-libs/aiohttp-debugtoolbar/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/aio-libs/aiohttp-debugtoolbar
     :alt: |Coverage status|
 
 
