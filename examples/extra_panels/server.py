@@ -5,16 +5,42 @@ import aiohttp_jinja2
 import pathlib
 
 from aiohttp import web
-from .extra_pgsql import RequestPgDebugPanel
-from .extra_redis import RequestRedisDebugPanel
+
+# extra panels
+import sys
+try:
+    import aiopg
+    from extra_pgsql import RequestPgDebugPanel
+except ImportError:
+    print("Module aiopg not installed")
+
+try:
+    from aioredis import create_pool
+    from extra_redis import RequestRedisDebugPanel
+except ImportError:
+    print("Module aioredis not installed")
 
 PATH_PARENT = pathlib.Path(__file__).parent
 
 
 @aiohttp_jinja2.template('index.html')
-def basic_handler(request):
-    # TODO: add testing for PgSQL
-    # TODO: add testing for Redis
+async def basic_handler(request):
+    # testing for PgSQL
+    if 'db' in request.app:
+        async with request.app['db'].acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute("SELECT 1")
+                ret = []
+                async for row in cur:
+                    ret.append(row)
+                assert ret == [(1,)]
+
+    # testing for Redis
+    if 'redis' in request.app:
+        with (await request.app['redis']) as redis:
+            await redis.set('TEST', 'VAR', expire=5)
+            assert b'VAR' == await redis.get('TEST')
+
     return {'title': 'example aiohttp_debugtoolbar!',
             'text': 'Hello aiohttp_debugtoolbar!',
             'app': request.app}
@@ -26,13 +52,32 @@ def exception_handler(request):
 
 
 @asyncio.coroutine
+def close_pg(app):
+    app['db'].close()
+    yield from app['db'].wait_closed()
+
+
+@asyncio.coroutine
+def close_redis(app):
+    app['redis'].close()
+    yield from app['redis'].wait_closed()
+
+
+@asyncio.coroutine
 def init(loop):
     # add aiohttp_debugtoolbar middleware to you application
     app = web.Application(loop=loop)
+
+    extra_panels = []
+    if 'aiopg' in sys.modules:
+        extra_panels.append(RequestPgDebugPanel)
+    if 'aioredis' in sys.modules:
+        extra_panels.append(RequestRedisDebugPanel)
+
     # install aiohttp_debugtoolbar
     aiohttp_debugtoolbar.setup(
         app,
-        extra_panels=[RequestPgDebugPanel, RequestRedisDebugPanel],
+        extra_panels=extra_panels,
         extra_templates=str(PATH_PARENT / 'extra_tpl'))
 
     template = """
@@ -56,6 +101,21 @@ def init(loop):
     # init routes for index page, and page with error
     app.router.add_route('GET', '/', basic_handler, name='index')
     app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
+
+    if 'aiopg' in sys.modules:
+        # create connection to the database
+        dsn = 'host={host} dbname={db} user={user} password={passw} '.format(
+            db='postgres', user='developer', passw='1', host='localhost')
+        app['db'] = yield from aiopg.create_pool(
+            dsn, loop=loop, minsize=1, maxsize=2)
+        # Correct PostgreSQL shutdown
+        app.on_cleanup.append(close_pg)
+
+    if 'aioredis' in sys.modules:
+        # create redis pool
+        app['redis'] = yield from create_pool(('127.0.0.1', '6379'))
+        # Correct Redis shutdown
+        app.on_cleanup.append(close_redis)
 
     handler = app.make_handler()
     srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
