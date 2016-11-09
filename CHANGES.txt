@@ -1,10 +1,16 @@
 CHANGES
 -------
 
-0.1.4 (XXXX-XX-XX)
+0.2.0 (2016-11-08)
+^^^^^^^^^^^^^^^^^^
+
+* Refactor test suite
+
+0.1.4 (2016-11-07)
 ^^^^^^^^^^^^^^^^^^
 
 * Rename to aiohttp-debugtoolbar
+* Fix imcompatibility with aiohttp==1.1
 
 0.1.3 (2016-10-27)
 ^^^^^^^^^^^^^^^^^^
