@@ -43,14 +43,10 @@ def test_extra_panel(loop, create_server):
 
     class TestExtraPanel(DebugPanel):
         name = 'aioTestExtraPanel'
-        has_content = True
+        has_content = False
         template = 'test.jinja2'
         title = name
         nav_title = title
-        _original_func = None
-
-        def __init__(self, request):
-            super().__init__(request)
 
         @asyncio.coroutine
         def process_response(self, response):

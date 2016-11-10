@@ -8,6 +8,7 @@ from aiohttp import web
 
 # extra panels
 import sys
+
 try:
     import aiopg
     from extra_pgsql import RequestPgDebugPanel
@@ -24,22 +25,26 @@ PATH_PARENT = pathlib.Path(__file__).parent
 
 
 @aiohttp_jinja2.template('index.html')
-async def basic_handler(request):
+@asyncio.coroutine
+def basic_handler(request):
     # testing for PgSQL
     if 'db' in request.app:
-        async with request.app['db'].acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute("SELECT 1")
-                ret = []
-                async for row in cur:
-                    ret.append(row)
-                assert ret == [(1,)]
+        conn = yield from request.app['db'].acquire()
+        cur = yield from conn.cursor()
+
+        yield from cur.execute("SELECT 1")
+        ret = []
+        for row in cur:
+            ret.append(row)
+        assert ret == [(1,)]
+
+        yield from request.app['db'].release(conn)
 
     # testing for Redis
     if 'redis' in request.app:
-        with (await request.app['redis']) as redis:
-            await redis.set('TEST', 'VAR', expire=5)
-            assert b'VAR' == await redis.get('TEST')
+        with (yield from request.app['redis']) as redis:
+            yield from redis.set('TEST', 'VAR', expire=5)
+            assert b'VAR' == (yield from redis.get('TEST'))
 
     return {'title': 'example aiohttp_debugtoolbar!',
             'text': 'Hello aiohttp_debugtoolbar!',

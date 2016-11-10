@@ -2,12 +2,9 @@ import asyncio
 import functools
 import time
 import inspect
-from pprint import pformat
 
 from aiohttp_debugtoolbar.panels.base import DebugPanel
-
 from aioredis import RedisConnection
-
 
 __all__ = ['RequestRedisDebugPanel']
 
@@ -17,14 +14,10 @@ class RequestRedisDebugPanel(DebugPanel):
     A panel to display cache requests.
     """
     name = 'Redis'
-    has_content = True
+    has_content = False
     template = 'request_redis.jinja2'
     title = 'Redis'
     nav_title = title
-    _original_func = None
-
-    def __init__(self, request):
-        super().__init__(request)
 
     @asyncio.coroutine
     def process_response(self, response):
@@ -37,19 +30,22 @@ class RequestRedisDebugPanel(DebugPanel):
             }.items(),
             'queries': [(k, v) for k, v in enumerate(self._queries)],
         })
+        if self._queries:
+            self.has_content = True
 
     def _wrap_handler(self, handler):
 
         def wrapper(func):
             @functools.wraps(func)
-            async def wrapped(*args, **kwargs):
+            @asyncio.coroutine
+            def wrapped(*args, **kwargs):
                 start = time.time()
 
                 if asyncio.iscoroutinefunction(func):
                     coro = func
                 else:
                     coro = asyncio.coroutine(func)
-                context = await coro(*args, **kwargs)
+                context = yield from coro(*args, **kwargs)
 
                 called_from = []
                 for stack in inspect.stack()[1:]:
