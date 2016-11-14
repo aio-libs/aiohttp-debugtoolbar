@@ -79,6 +79,8 @@ class DebugToolbar:
         response.body = replace_insensitive(
             response_html, b'</body>',
             toolbar_html + b'</body>')
+
+
 toolbar_css_template = """\
 <link rel="stylesheet" type="text/css" href="%(css_path)s">"""
 
