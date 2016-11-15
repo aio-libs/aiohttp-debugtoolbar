@@ -1,9 +1,7 @@
 import asyncio
-import pytest
 import aiohttp_jinja2
 import pathlib
 from aiohttp_debugtoolbar.panels.base import DebugPanel
-from aiohttp import ClientSession
 
 
 @asyncio.coroutine
