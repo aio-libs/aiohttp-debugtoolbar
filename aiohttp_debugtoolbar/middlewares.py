@@ -39,7 +39,7 @@ def middleware(app, handler):
         show_on_exc_only = settings.get('show_on_exc_only')
         intercept_redirects = settings['intercept_redirects']
 
-        root_url = request.app.router['debugtoolbar.main'].url()
+        root_url = app.router['debugtoolbar.main'].url()
         exclude_prefixes = settings.get('exclude_prefixes')
         exclude = [root_url] + exclude_prefixes
 
