@@ -1,7 +1,12 @@
 # Some simple testing tasks (sorry, UNIX only).
 
 flake:
-	flake8 --exclude=pep492 aiohttp_debugtoolbar tests demo examples
+	flake8 --exclude=pep492 aiohttp_debugtoolbar tests
+
+	@if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then \
+	    flake8 examples demo && \
+            python setup.py check -rms; \
+	fi
 
 test: flake
 	py.test -s ./tests/
