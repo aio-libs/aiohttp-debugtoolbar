@@ -1,6 +1,13 @@
 CHANGES
 -------
 
+0.3.0 (2016-11-18)
+^^^^^^^^^^^^^^^^^^
+
+* Fixed middleware route finding when using sub-apps #65
+
+* Add examples for extra panels: pgsql & redis monitor #59
+
 0.2.0 (2016-11-08)
 ^^^^^^^^^^^^^^^^^^
 
