@@ -9,6 +9,6 @@ aiohttp-mako==0.1.0
 docutils==0.12
 pygments==2.1.3
 aiohttp==1.1.4
-yarl==0.7.0
+yarl==0.7.1
 multidict==2.1.2
 pytest-aiohttp
