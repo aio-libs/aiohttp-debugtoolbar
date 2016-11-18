@@ -34,7 +34,7 @@ default_settings = {
     'intercept_redirects': True,
     'panels': default_panel_names,
     'extra_panels': [],
-    'extra_templates': None,
+    'extra_templates': [],
     'global_panels': default_global_panel_names,
     'extra_global_panels': [],
     'hosts': ['127.0.0.1', '::1'],
@@ -58,11 +58,13 @@ def setup(app, **kw):
 
     templates_app = APP_ROOT / 'templates'
     templates_panels = APP_ROOT / 'panels/templates'
+    extra_tpl_path = config.get('extra_templates', [])
+    if isinstance(extra_tpl_path, str):
+        extra_tpl_path = [extra_tpl_path]
 
     app[APP_KEY]['settings'] = config
-    loader = jinja2.FileSystemLoader([str(templates_app),
-                                      str(templates_panels),
-                                      config.get('extra_templates', None)])
+    loader = jinja2.FileSystemLoader(
+        [str(templates_app), str(templates_panels)] + list(extra_tpl_path))
     aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
     static_location = APP_ROOT / 'static'

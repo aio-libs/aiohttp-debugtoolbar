@@ -1,0 +1,59 @@
+{% if timing_rows %}
+<table class="table table-striped">
+    <colgroup>
+        <col style="width:20%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Resource</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in timing_rows %}
+            <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }}">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Cache statistics are empty.</p>
+{% endif %}
+
+<h4>Commands</h4>
+{% if queries %}
+<table class="table table-striped">
+    <colgroup>
+        <col style="width:5%"/>
+        <col style="width:10%"/>
+        <col style="width:10%"/>
+        <col/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Time</th>
+            <th>Key</th>
+            <th>Params</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in queries %}
+        <tr class="{{ loop.index%2 and 'pDebugEven' or 'pDebugOdd' }} {{ value['return'] and ' ' or 'text-muted' }}">
+            <td>#{{ (key + 1) }}</td>
+            <td>{{ value['elapsed'] }}</td>
+            <td><b>{{ value['command'] }}:</b> {{ value['key'] }}</td>
+            <td class="value"><b>{{ value['called_from'] }}</b><br />
+                {{ value['params'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No queries</p>
+{% endif %}
+
+
