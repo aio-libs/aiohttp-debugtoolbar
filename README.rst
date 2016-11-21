@@ -1,4 +1,4 @@
-aiohttp_debugtoolbar
+aiohttp-debugtoolbar
 ====================
 .. image:: https://travis-ci.org/aio-libs/aiohttp-debugtoolbar.svg?branch=master
     :target: https://travis-ci.org/aio-libs/aiohttp-debugtoolbar

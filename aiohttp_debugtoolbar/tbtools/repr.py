@@ -83,6 +83,7 @@ class _Helper(object):
             text = paragraphs[0]
         sys.stdout._write(HELP_HTML % {'title': title, 'text': text})
 
+
 helper = _Helper()
 
 

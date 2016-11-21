@@ -10,6 +10,7 @@ from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
     ToolbarStorage, ExceptionHistory
 from .views import ExceptionDebugView
 
+
 default_panel_names = [
     panels.HeaderDebugPanel,
     panels.PerformanceDebugPanel,
@@ -18,12 +19,14 @@ default_panel_names = [
     panels.LoggingPanel,
 ]
 
+
 default_global_panel_names = [
     panels.RoutesDebugPanel,
     panels.SettingsDebugPanel,
     panels.MiddlewaresDebugPanel,
     panels.VersionDebugPanel,
 ]
+
 
 default_settings = {
     'enabled': True,
