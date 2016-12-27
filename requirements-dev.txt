@@ -11,4 +11,4 @@ pygments==2.1.3
 aiohttp==1.2.0
 yarl==0.8.1
 multidict==2.1.4
-pytest-aiohttp
+pytest-aiohttp==0.1.3
