@@ -15,8 +15,6 @@ def read(fname):
     with (pathlib.Path(__file__).parent / fname).open() as f:
         return f.read().strip()
 
-install_requires = ['aiohttp>=0.21.1', 'aiohttp_jinja2']
-
 
 setup(name='aiohttp-debugtoolbar',
       version=version,
