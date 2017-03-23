@@ -27,7 +27,7 @@ class RequestVarsDebugPanel(DebugPanel):
         request = self.request
         yield from request.post()
         data.update({
-            'get': [(k, request.query.getall(k)) 
+            'get': [(k, request.query.getall(k))
                     for k in sorted(request.query)],
             'post': [(k, saferepr(request.post().getall(k)))
                      for k in sorted(request.post())],
