@@ -9,7 +9,7 @@ install:
 - pip install -U setuptools
 - pip install -Ur requirements-dev.txt
 - pip install -e .
-- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then pip install -U uvleep; fi
+- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then pip install -U uvloop; fi
 
 script:
 - make cov
