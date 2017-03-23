@@ -163,7 +163,7 @@ def test_process_stream_response(create_server, test_client):
     def handler(request):
         response = web.StreamResponse(status=200)
         response.content_type = 'text/html'
-        response.start(request)
+        yield from response.prepare(request)
         response.write(b'text')
         return response
 
