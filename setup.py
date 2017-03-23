@@ -16,12 +16,11 @@ def read(fname):
         return f.read().strip()
 
 install_requires = ['aiohttp>=0.21.1', 'aiohttp_jinja2']
-tests_require = install_requires + ['nose']
 
 
 setup(name='aiohttp-debugtoolbar',
       version=version,
-      description=("debugtoolbar for aiohttp"),
+      description='debugtoolbar for aiohttp',
       long_description='\n\n'.join((read('README.rst'), read('CHANGES.txt'))),
       classifiers=[
           'License :: OSI Approved :: Apache Software License',
@@ -31,12 +30,13 @@ setup(name='aiohttp-debugtoolbar',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Topic :: Internet :: WWW/HTTP'],
-      author="Nikolay Novik",
-      author_email="nickolainovik@gmail.com",
+      author='Nikolay Novik',
+      author_email='nickolainovik@gmail.com',
       url='https://github.com/aio-libs/aiohttp_debugtoolbar',
       license='Apache 2',
       packages=find_packages(),
-      install_requires=install_requires,
-      tests_require=tests_require,
-      test_suite='nose.collector',
+      install_requires=[
+          'aiohttp>=0.21.1',
+          'aiohttp_jinja2'
+      ],
       include_package_data=True)

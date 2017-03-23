@@ -31,8 +31,8 @@ def middleware(app, handler):
     def toolbar_middleware(request):
 
         # request['exc_history'] = exc_history
-        panel_classes = (settings.get('panels', [])
-                         + settings.get('extra_panels', []))
+        panel_classes = (settings.get('panels', []) +
+                         settings.get('extra_panels', []))
         global_panel_classes = settings.get('global_panels', [])
         hosts = settings.get('hosts', [])
 
