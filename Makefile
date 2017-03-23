@@ -9,13 +9,13 @@ flake:
 	fi
 
 test: flake
-	py.test -s ./tests/
+	pytest -s ./tests/
 
 vtest:
-	py.test -s -v ./tests/
+	pytest -s -v ./tests/
 
 cov cover coverage: flake
-	py.test -s -v  --cov-report term --cov-report html --cov aiohttp_debugtoolbar ./tests
+	pytest -s --cov-report term --cov-report html --cov aiohttp_debugtoolbar
 	@echo "open file://`pwd`/htmlcov/index.html"
 
 clean:
