@@ -9,16 +9,10 @@ install:
 - pip install -U setuptools
 - pip install -Ur requirements-dev.txt
 - pip install -e .
-- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then \
-    pip install -U uvleep
-  fi
+- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then pip install -U uvleep; fi
 
 script:
 - make cov
-- python setup.py check -rm
-- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then
-      python setup.py check -s;
-  fi
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
