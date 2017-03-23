@@ -1,29 +1,23 @@
 language: python
 sudo: false
 python:
-  - 3.4
-  - 3.5
-  - nightly
+- 3.4
+- 3.5
+- 3.6
 
 install:
-  - pip install --upgrade setuptools
-  - pip install codecov
-  - pip install -Ur requirements-dev.txt
-  - pip install -e .
+- pip install -U setuptools
+- pip install -Ur requirements-dev.txt
+- pip install -e .
 
 script:
-  - make cov
-  - python setup.py check -rm
-  - if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then
-        python setup.py check -s;
-    fi
+- make cov
+- python setup.py check -rm
+- if python -c "import sys; sys.exit(sys.version_info < (3,5))"; then
+      python setup.py check -s;
+  fi
 after_success:
-  codecov
-
-env:
-  matrix:
-    - PYTHONASYNCIODEBUG=x
-    - PYTHONASYNCIODEBUG=
+- bash <(curl -s https://codecov.io/bash)
 
 deploy:
   provider: pypi
