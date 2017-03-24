@@ -6,15 +6,15 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD license.
 """
-import aiohttp_jinja2
-import asyncio
 import re
 import sys
 
+import aiohttp_jinja2
+
+from aiohttp_debugtoolbar.tbtools import text_
 from aiohttp_debugtoolbar.tbtools.console import HTMLStringO
 from aiohttp_debugtoolbar.tbtools.repr import (debug_repr, DebugReprGenerator,
                                                dump, helper)
-from aiohttp_debugtoolbar.tbtools import text_
 
 
 def test_debug_repr():
@@ -61,21 +61,21 @@ def test_debug_repr():
         pass
 
     tmp = debug_repr(MyList([1, 2]))
-    assert tmp == \
-           '<span class="module">test_debug.</span>MyList([' \
-           '<span class="number">1</span>, <span class="number">2</span>])'
+    assert tmp == '<span class="module">test_debug.</span>' \
+                  'MyList([<span class="number">1</span>, ' \
+                  '<span class="number">2</span>]) '
 
     result = debug_repr(re.compile(r'foo\d'))
-    assert result == \
-           're.compile(<span class="string regex">r\'foo\\d\'</span>)'
+    assert result == 're.compile(<span ' \
+                     'class="string regex">r\'foo\\d\'</span>)'
     result = debug_repr(re.compile(text_(r'foo\d')))
     assert result == 're.compile(<span class="string regex">r' \
                      '\'foo\\d\'</span>)'
 
-    assert debug_repr(frozenset('x')) == \
-           'frozenset([<span class="string">\'x\'</span>])'
-    assert debug_repr(set('x')) == \
-           'set([<span class="string">\'x\'</span>])'
+    assert debug_repr(frozenset('x')) == 'frozenset([<span ' \
+                                         'class="string">\'x\'</span>])'
+    assert debug_repr(set('x')) == 'set([<span class=' \
+                                   '"string">\'x\'</span>])'
 
     a = [1]
     a.append(a)

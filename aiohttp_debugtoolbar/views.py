@@ -128,7 +128,8 @@ class ExceptionDebugView:
         # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
         # def console(self, request):
         #     self._validate_token(request)
-        #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
+        #     static_path = request.app.router[STATIC_ROUTE_NAME]\
+        #         .url(filename='')
         #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
         #     token = request.GET.get('token')
         #     tb = await self._get_tb(request)

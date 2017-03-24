@@ -1,10 +1,10 @@
-import asyncio
 import sys
 
-import pytest
-import jinja2
 import aiohttp_jinja2
+import jinja2
+import pytest
 from aiohttp import web
+
 from aiohttp_debugtoolbar import setup
 
 
