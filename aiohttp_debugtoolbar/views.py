@@ -1,10 +1,8 @@
-import asyncio
 import json
-import aiohttp_jinja2
 
+import aiohttp_jinja2
 from aiohttp import web
 
-# from .tbtools.console import _ConsoleFrame
 from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
 
 
@@ -46,7 +44,6 @@ def request_view(request):
 
 
 class ExceptionDebugView:
-
     def _validate_token(self, request):
         exc_history = self._exception_history(request)
         token = request.GET.get('token')
@@ -67,38 +64,34 @@ class ExceptionDebugView:
             frm = int(frm)
         return frm
 
-    @asyncio.coroutine
-    def _get_tb(self, request):
-        yield from request.read()
+    async def _get_tb(self, request):
+        await request.read()
         tb = request.GET.get('tb')
         if not tb:
-            yield from request.post()
+            await request.post()
             tb = request.POST.get('tb')
         if tb is not None:
             tb = int(tb)
         return tb
 
-    @asyncio.coroutine
-    def _get_cmd(self, request):
-        yield from request.read()
+    async def _get_cmd(self, request):
+        await request.read()
         cmd = request.GET.get('cmd')
         if not cmd:
-            yield from request.post()
+            await request.post()
             cmd = request.POST.get('cmd')
         return cmd
 
-    @asyncio.coroutine
-    def exception(self, request):
+    async def exception(self, request):
         self._validate_token(request)
-        tb_id = yield from self._get_tb(request)
+        tb_id = await self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
         body = tb.render_full(request).encode('utf-8', 'replace')
         response = web.Response(status=200)
         response.body = body
         return response
 
-    @asyncio.coroutine
-    def source(self, request):
+    async def source(self, request):
         self._validate_token(request)
         exc_history = self._exception_history(request)
         _frame = self._get_frame(request)
@@ -116,14 +109,13 @@ class ExceptionDebugView:
                                     content_type='application/json')
         return web.HTTPBadRequest()
 
-    @asyncio.coroutine
-    def execute(self, request):
+    async def execute(self, request):
         self._validate_token(request)
 
         _exc_history = self._exception_history(request)
         if _exc_history.eval_exc:
             exc_history = _exc_history
-            cmd = yield from self._get_cmd(request)
+            cmd = await self._get_cmd(request)
             frame = self._get_frame(request)
             if frame is not None and cmd is not None:
                 frame = exc_history.frames.get(frame)
@@ -132,35 +124,34 @@ class ExceptionDebugView:
                     return web.Response(text=result, content_type='text/html')
         return web.HTTPBadRequest()
 
-    # TODO: figure out how to enable console mode on frontend
-    # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
-    # def console(self, request):
-    #     self._validate_token(request)
-    #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
-    #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
-    #     token = request.GET.get('token')
-    #     tb = yield from self._get_tb(request)
-    #
-    #     _exc_history = self._exception_history(request)
-    #     vars = {
-    #         'evalex': _exc_history.eval_exc and 'true' or 'false',
-    #         'console': 'true',
-    #         'title': 'Console',
-    #         'traceback_id': tb or -1,
-    #         'root_path': root_path,
-    #         'static_path': static_path,
-    #         'token': token,
-    #         }
-    #     if 0 not in _exc_history.frames:
-    #         _exc_history.frames[0] = _ConsoleFrame({})
-    #     return vars
+        # TODO: figure out how to enable console mode on frontend
+        # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
+        # def console(self, request):
+        #     self._validate_token(request)
+        #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
+        #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
+        #     token = request.GET.get('token')
+        #     tb = await self._get_tb(request)
+        #
+        #     _exc_history = self._exception_history(request)
+        #     vars = {
+        #         'evalex': _exc_history.eval_exc and 'true' or 'false',
+        #         'console': 'true',
+        #         'title': 'Console',
+        #         'traceback_id': tb or -1,
+        #         'root_path': root_path,
+        #         'static_path': static_path,
+        #         'token': token,
+        #         }
+        #     if 0 not in _exc_history.frames:
+        #         _exc_history.frames[0] = _ConsoleFrame({})
+        #     return vars
 
 
 U_SSE_PAYLOAD = "id: {0}\nevent: new_request\ndata: {1}\n\n"
 
 
-@asyncio.coroutine
-def sse(request):
+async def sse(request):
     response = web.Response(status=200)
     response.content_type = 'text/event-stream'
     history = request.app[APP_KEY]['request_history']

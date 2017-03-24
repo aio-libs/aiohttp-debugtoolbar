@@ -16,9 +16,7 @@ def pytest_ignore_collect(path, config):
 
 @pytest.fixture
 def create_server(loop, unused_port):
-
-    @asyncio.coroutine
-    def create(*, debug=False, ssl_ctx=None, **kw):
+    async def create(*, debug=False, ssl_ctx=None, **kw):
         app = web.Application(loop=loop)
         setup(app, **kw)
 

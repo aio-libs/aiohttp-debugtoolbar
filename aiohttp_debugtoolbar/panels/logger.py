@@ -1,14 +1,12 @@
-import asyncio
-from collections import deque
 import datetime
 import logging
+from collections import deque
 
 from .base import DebugPanel
 from ..utils import format_fname
 
 
 class RequestTrackingHandler(logging.Handler):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._records = deque(maxlen=1000)
@@ -22,7 +20,6 @@ class RequestTrackingHandler(logging.Handler):
 
 
 class LoggingPanel(DebugPanel):
-
     name = 'logging'
     template = 'logger.jinja2'
     title = 'Log Messages'
@@ -43,8 +40,7 @@ class LoggingPanel(DebugPanel):
         context_switcher.add_context_out(self._uninstall_handler)
         return handler
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         records = []
         for record in self._log_handler.records:
             records.append({

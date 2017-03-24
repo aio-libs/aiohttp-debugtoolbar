@@ -26,15 +26,14 @@ class RequestHandler(object):
 
     def _wrapper(self, func):
         @functools.wraps(func)
-        @asyncio.coroutine
-        def wrapped(*args, **kwargs):
+        async def wrapped(*args, **kwargs):
             start = time.time()
 
             if asyncio.iscoroutinefunction(func):
                 coro = func
             else:
                 coro = asyncio.coroutine(func)
-            context = yield from coro(*args, **kwargs)
+            context = await coro(*args, **kwargs)
 
             called_from = []
             for stack in inspect.stack()[1:]:
@@ -87,8 +86,7 @@ class RequestPgDebugPanel(DebugPanel):
             return True
         return False
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         self.data = data = {}
         data.update({
             'timing_rows': {

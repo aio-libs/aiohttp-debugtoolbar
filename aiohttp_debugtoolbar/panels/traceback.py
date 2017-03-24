@@ -1,11 +1,9 @@
-import asyncio
 import re
 
 from .base import DebugPanel
 from ..tbtools.tbtools import Traceback
-from ..utils import escape, APP_KEY, STATIC_ROUTE_NAME
 from ..utils import ROOT_ROUTE_NAME
-
+from ..utils import escape, APP_KEY, STATIC_ROUTE_NAME
 
 __all__ = ['TracebackPanel']
 
@@ -26,8 +24,7 @@ class TracebackPanel(DebugPanel):
             return True
         return False
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         if not self.has_content:
             return
         traceback = self._request['pdbt_tb']
