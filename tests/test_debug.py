@@ -38,11 +38,11 @@ def test_debug_repr():
         '<span class="number">18</span>, <span class="number">19</span>]'
     )
     assert debug_repr({}) == '{}'
-    assert debug_repr({'foo': 42}) == \
-           '{<span class="pair"><span class="key">' \
-           '<span class="string">\'foo\'' \
-           '</span></span>: <span class="value"><span class="number">42' \
-           '</span></span></span>}'
+    assert debug_repr({'foo': 42}) == '{<span class="pair"><span '\
+                                      'class="key"><span class="string">'\
+                                      '\'foo\'</span></span>: <span '\
+                                      'class="value"><span class="number">42'\
+                                      '</span></span></span>}'
     result = debug_repr((1, b'zwei', text_('drei')))
     expected = (
         '(<span class="number">1</span>, <span class="string">b\''
