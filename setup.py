@@ -36,7 +36,7 @@ setup(name='aiohttp-debugtoolbar',
       license='Apache 2',
       packages=find_packages(),
       install_requires=[
-          'aiohttp>=0.21.1',
+          'aiohttp>=2.0.7',
           'aiohttp_jinja2'
       ],
       include_package_data=True)
