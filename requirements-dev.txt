@@ -8,7 +8,7 @@ aiohttp-jinja2==0.13.0
 aiohttp-mako==0.3.0
 docutils==0.13.1
 pygments==2.2.0
-aiohttp==2.1.0
+aiohttp==2.2.0
 yarl==0.10.3
 multidict==2.1.6
 pytest-aiohttp==0.1.3
