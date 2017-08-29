@@ -6,7 +6,12 @@ aiohttp-debugtoolbar
 .. image:: https://codecov.io/gh/aio-libs/aiohttp-debugtoolbar/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/aio-libs/aiohttp-debugtoolbar
     :alt: |Coverage status|
-
+.. image:: https://img.shields.io/pypi/v/aiohttp-debugtoolbar.svg
+    :target: https://pypi.python.org/pypi/aiohttp-debugtoolbar
+    :alt: PyPI
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+    :target: https://gitter.im/aio-libs/Lobby
+    :alt: Chat on Gitter
 
 **aiohttp_debugtoolbar** provides a debug toolbar for your aiohttp_
 web application.  Library is port of pyramid_debugtoolbar_ and
