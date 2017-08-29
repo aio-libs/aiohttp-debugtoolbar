@@ -66,6 +66,24 @@ def test_intercept_redirect(create_server, test_client):
 
 
 @asyncio.coroutine
+def test_no_location_no_intercept(create_server, test_client):
+
+    @asyncio.coroutine
+    def handler(request):
+        return web.Response(text="no location", status=301)
+
+    app = yield from create_server()
+    app.router.add_route('GET', '/', handler)
+    client = yield from test_client(app)
+
+    resp = yield from client.get('/', allow_redirects=False)
+    txt = yield from resp.text()
+    assert 301 == resp.status
+    assert 'location' not in resp.headers
+    assert 'no location' in txt
+
+
+@asyncio.coroutine
 def test_intercept_redirects_disabled(create_server, test_client):
     @asyncio.coroutine
     def handler(request):
