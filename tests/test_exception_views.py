@@ -1,21 +1,17 @@
-import asyncio
-
 from aiohttp_debugtoolbar import APP_KEY
 
 
-@asyncio.coroutine
-def test_view_source(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_view_source(create_server, test_client):
+    async def handler(request):
         raise NotImplementedError
 
-    app = yield from create_server()
+    app = await create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = await test_client(app)
 
     # make sure that exception page rendered
-    resp = yield from client.get('/')
-    txt = yield from resp.text()
+    resp = await client.get('/')
+    txt = await resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' in txt
 
@@ -26,23 +22,21 @@ def test_view_source(create_server, test_client):
         source_url = '/_debugtoolbar/source?frm={}&token={}'.format(
             frame_id, token)
         exc_history = app[APP_KEY]['exc_history']
-        resp = yield from client.get(source_url)
-        yield from resp.text()
+        resp = await client.get(source_url)
+        await resp.text()
         assert resp.status == 200
 
 
-@asyncio.coroutine
-def test_view_execute(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_view_execute(create_server, test_client):
+    async def handler(request):
         raise NotImplementedError
 
-    app = yield from create_server()
+    app = await create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = await test_client(app)
     # make sure that exception page rendered
-    resp = yield from client.get('/')
-    txt = yield from resp.text()
+    resp = await client.get('/')
+    txt = await resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' in txt
 
@@ -53,38 +47,36 @@ def test_view_execute(create_server, test_client):
     execute_url = '/_debugtoolbar/execute'
     for frame_id in exc_history.frames:
         params = {'frm': frame_id, 'token': token}
-        resp = yield from client.get(source_url, params=params)
-        yield from resp.text()
+        resp = await client.get(source_url, params=params)
+        await resp.text()
         assert resp.status == 200
 
         params = {'frm': frame_id, 'token': token,
                   'cmd': 'dump(object)'}
-        resp = yield from client.get(execute_url, params=params)
-        yield from resp.text()
+        resp = await client.get(execute_url, params=params)
+        await resp.text()
         assert resp.status == 200
 
     # wrong token
     params = {'frm': frame_id, 'token': 'x', 'cmd': 'dump(object)'}
-    resp = yield from client.get(execute_url, params=params)
+    resp = await client.get(execute_url, params=params)
     assert resp.status == 400
     # no token at all
     params = {'frm': frame_id, 'cmd': 'dump(object)'}
-    resp = yield from client.get(execute_url, params=params)
+    resp = await client.get(execute_url, params=params)
     assert resp.status == 400
 
 
-@asyncio.coroutine
-def test_view_exception(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_view_exception(create_server, test_client):
+    async def handler(request):
         raise NotImplementedError
 
-    app = yield from create_server()
+    app = await create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = await test_client(app)
     # make sure that exception page rendered
-    resp = yield from client.get('/')
-    txt = yield from resp.text()
+    resp = await client.get('/')
+    txt = await resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' in txt
 
@@ -95,7 +87,7 @@ def test_view_exception(create_server, test_client):
     url = '/_debugtoolbar/exception?tb={}&token={}'.format(
         tb_id, token)
 
-    resp = yield from client.get(url)
-    yield from resp.text()
+    resp = await client.get(url)
+    await resp.text()
     assert resp.status == 200
     assert '<div class="debugger">' in txt

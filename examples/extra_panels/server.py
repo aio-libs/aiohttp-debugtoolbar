@@ -25,51 +25,46 @@ PATH_PARENT = pathlib.Path(__file__).parent
 
 
 @aiohttp_jinja2.template('index.html')
-@asyncio.coroutine
-def basic_handler(request):
+async def basic_handler(request):
     # testing for PgSQL
     if 'db' in request.app:
-        conn = yield from request.app['db'].acquire()
-        cur = yield from conn.cursor()
+        conn = await request.app['db'].acquire()
+        cur = await conn.cursor()
 
-        yield from cur.execute("SELECT 1")
+        await cur.execute("SELECT 1")
         ret = []
         for row in cur:
             ret.append(row)
         assert ret == [(1,)]
 
-        yield from request.app['db'].release(conn)
+        await request.app['db'].release(conn)
 
     # testing for Redis
     if 'redis' in request.app:
-        with (yield from request.app['redis']) as redis:
-            yield from redis.set('TEST', 'VAR', expire=5)
-            assert b'VAR' == (yield from redis.get('TEST'))
+        with (await request.app['redis']) as redis:
+            await redis.set('TEST', 'VAR', expire=5)
+            assert b'VAR' == (await redis.get('TEST'))
 
     return {'title': 'example aiohttp_debugtoolbar!',
             'text': 'Hello aiohttp_debugtoolbar!',
             'app': request.app}
 
 
-@asyncio.coroutine
-def exception_handler(request):
+async def exception_handler(request):
     raise NotImplementedError
 
 
-@asyncio.coroutine
-def close_pg(app):
+async def close_pg(app):
     app['db'].close()
-    yield from app['db'].wait_closed()
+    await app['db'].wait_closed()
 
 
-@asyncio.coroutine
-def close_redis(app):
+async def close_redis(app):
     app['redis'].close()
-    yield from app['redis'].wait_closed()
+    await app['redis'].wait_closed()
 
 
-@asyncio.coroutine
-def init(loop):
+async def init(loop):
     # add aiohttp_debugtoolbar middleware to you application
     app = web.Application(loop=loop)
 
@@ -111,19 +106,19 @@ def init(loop):
         # create connection to the database
         dsn = 'host={host} dbname={db} user={user} password={passw} '.format(
             db='postgres', user='developer', passw='1', host='localhost')
-        app['db'] = yield from aiopg.create_pool(
+        app['db'] = await aiopg.create_pool(
             dsn, loop=loop, minsize=1, maxsize=2)
         # Correct PostgreSQL shutdown
         app.on_cleanup.append(close_pg)
 
     if 'aioredis' in sys.modules:
         # create redis pool
-        app['redis'] = yield from create_pool(('127.0.0.1', '6379'))
+        app['redis'] = await create_pool(('127.0.0.1', '6379'))
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 
     handler = app.make_handler()
-    srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
+    srv = await loop.create_server(handler, '127.0.0.1', 9000)
     print("Server started at http://127.0.0.1:9000")
     return srv, handler
 

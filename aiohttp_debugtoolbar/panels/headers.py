@@ -1,4 +1,3 @@
-import asyncio
 from .base import DebugPanel
 
 __all__ = ['HeaderDebugPanel']
@@ -19,8 +18,7 @@ class HeaderDebugPanel(DebugPanel):
         self._request_headers = [(k, v) for k, v in
                                  sorted(request.headers.items())]
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         response_headers = [(k, v) for k, v in
                             sorted(response.headers.items())]
         self.data = {'request_headers': self._request_headers,

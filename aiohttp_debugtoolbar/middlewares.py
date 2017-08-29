@@ -1,10 +1,10 @@
-import asyncio
 import sys
+
 import aiohttp_jinja2
 from aiohttp import web
 
-from .toolbar import DebugToolbar
 from .tbtools.tbtools import get_traceback
+from .toolbar import DebugToolbar
 from .utils import addr_in, REDIRECT_CODES, APP_KEY, TEMPLATE_KEY, hexlify, \
     ContextSwitcher
 
@@ -12,8 +12,7 @@ __all__ = ['toolbar_middleware_factory', 'middleware']
 HTML_TYPES = ('text/html', 'application/xhtml+xml')
 
 
-@asyncio.coroutine
-def middleware(app, handler):
+async def middleware(app, handler):
     if APP_KEY not in app:
         raise RuntimeError('Please setup debug toolbar with '
                            'aiohttp_debugtoolbar.setup method')
@@ -27,8 +26,7 @@ def middleware(app, handler):
     if not app[APP_KEY]['settings']['enabled']:
         return handler
 
-    @asyncio.coroutine
-    def toolbar_middleware(request):
+    async def toolbar_middleware(request):
 
         # request['exc_history'] = exc_history
         panel_classes = (settings.get('panels', []) +
@@ -54,7 +52,7 @@ def middleware(app, handler):
 
         # TODO: rethink access policy by host
         if starts_with_excluded or not addr_in(last_proxy_addr, hosts):
-            return (yield from handler(request))
+            await handler(request)
 
         toolbar = DebugToolbar(request, panel_classes, global_panel_classes)
         _handler = handler
@@ -64,7 +62,7 @@ def middleware(app, handler):
             _handler = panel.wrap_handler(_handler, context_switcher)
 
         try:
-            response = yield from context_switcher(_handler(request))
+            response = await context_switcher(_handler(request))
         except (web.HTTPSuccessful, web.HTTPRedirection,
                 web.HTTPClientError) as e:
             # TODO: fix dirty hack
@@ -108,7 +106,7 @@ def middleware(app, handler):
                     body=body, status=500,
                     content_type='text/html')
 
-                yield from toolbar.process_response(request, response)
+                await toolbar.process_response(request, response)
 
                 request['id'] = str((id(request)))
                 toolbar.status = response.status
@@ -132,7 +130,7 @@ def middleware(app, handler):
                     app_key=TEMPLATE_KEY)
                 response = _response
 
-        yield from toolbar.process_response(request, response)
+        await toolbar.process_response(request, response)
         request['id'] = hexlify(id(request))
 
         # Don't store the favicon.ico request

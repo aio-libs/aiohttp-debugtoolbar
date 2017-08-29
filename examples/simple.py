@@ -1,9 +1,10 @@
 import asyncio
-import jinja2
-import aiohttp_debugtoolbar
-import aiohttp_jinja2
 
+import aiohttp_jinja2
+import jinja2
 from aiohttp import web
+
+import aiohttp_debugtoolbar
 
 
 @aiohttp_jinja2.template('index.html')
@@ -13,13 +14,11 @@ def basic_handler(request):
             'app': request.app}
 
 
-@asyncio.coroutine
-def exception_handler(request):
+async def exception_handler(request):
     raise NotImplementedError
 
 
-@asyncio.coroutine
-def init(loop):
+async def init(loop):
     # add aiohttp_debugtoolbar middleware to you application
     app = web.Application(loop=loop)
     # install aiohttp_debugtoolbar
@@ -48,7 +47,7 @@ def init(loop):
     app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
 
     handler = app.make_handler()
-    srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
+    srv = await loop.create_server(handler, '127.0.0.1', 9000)
     print("Server started at http://127.0.0.1:9000")
     return srv, handler
 

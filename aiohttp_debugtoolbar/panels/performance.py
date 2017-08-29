@@ -15,13 +15,10 @@ except ImportError:  # pragma: no cover
     pstats = None  # will fail on braindead Debian systems that package pstats
     # separately from python for god-knows-what-reason
 
-
-import asyncio
 import time
 
 from .base import DebugPanel
 from ..utils import format_fname
-
 
 __all__ = ['PerformanceDebugPanel']
 
@@ -50,12 +47,12 @@ class PerformanceDebugPanel(DebugPanel):
 
     def _wrap_timer_handler(self, handler):
         if self.has_resource:
-            @asyncio.coroutine
-            def resource_timer_handler(request):
+
+            async def resource_timer_handler(request):
                 _start_time = time.time()
                 self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
                 try:
-                    result = yield from handler(request)
+                    result = await handler(request)
                 except:
                     raise
                 finally:
@@ -66,11 +63,10 @@ class PerformanceDebugPanel(DebugPanel):
 
             return resource_timer_handler
 
-        @asyncio.coroutine
-        def noresource_timer_handler(request):
+        async def noresource_timer_handler(request):
             _start_time = time.time()
             try:
-                result = yield from handler(request)
+                result = await handler(request)
             except:
                 raise
             finally:
@@ -83,12 +79,11 @@ class PerformanceDebugPanel(DebugPanel):
         if not self.is_active:
             return handler
 
-        @asyncio.coroutine
-        def profile_handler(request):
+        async def profile_handler(request):
             try:
                 self.profiler.enable()
                 try:
-                    result = yield from handler(request)
+                    result = await handler(request)
                 finally:
                     self.profiler.disable()
             except:
@@ -152,8 +147,7 @@ class PerformanceDebugPanel(DebugPanel):
         return getattr(self._end_rusage, name) - getattr(self._start_rusage,
                                                          name)
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         vars = {'timing_rows': None, 'stats': None, 'function_calls': []}
         if self.has_resource:
             utime = 1000 * self._elapsed_ru('ru_utime')

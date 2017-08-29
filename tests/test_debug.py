@@ -6,15 +6,15 @@
     :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD license.
 """
-import aiohttp_jinja2
-import asyncio
 import re
 import sys
 
+import aiohttp_jinja2
+
+from aiohttp_debugtoolbar.tbtools import text_
 from aiohttp_debugtoolbar.tbtools.console import HTMLStringO
 from aiohttp_debugtoolbar.tbtools.repr import (debug_repr, DebugReprGenerator,
                                                dump, helper)
-from aiohttp_debugtoolbar.tbtools import text_
 
 
 def test_debug_repr():
@@ -38,11 +38,11 @@ def test_debug_repr():
         '<span class="number">18</span>, <span class="number">19</span>]'
     )
     assert debug_repr({}) == '{}'
-    assert debug_repr({'foo': 42}) == \
-        '{<span class="pair"><span class="key">' \
-        '<span class="string">\'foo\''\
-        '</span></span>: <span class="value"><span class="number">42' \
-        '</span></span></span>}'
+    assert debug_repr({'foo': 42}) == '{<span class="pair"><span '\
+                                      'class="key"><span class="string">'\
+                                      '\'foo\'</span></span>: <span '\
+                                      'class="value"><span class="number">42'\
+                                      '</span></span></span>}'
     result = debug_repr((1, b'zwei', text_('drei')))
     expected = (
         '(<span class="number">1</span>, <span class="string">b\''
@@ -53,27 +53,29 @@ def test_debug_repr():
     class Foo(object):
         def __repr__(self):
             return '<Foo 42>'
+
     assert debug_repr(Foo()) == '<span class="object">&lt;Foo 42&gt;' \
                                 '</span>'
 
     class MyList(list):
         pass
+
     tmp = debug_repr(MyList([1, 2]))
-    assert tmp == \
-        '<span class="module">test_debug.</span>MyList([' \
-        '<span class="number">1</span>, <span class="number">2</span>])'
+    assert tmp == '<span class="module">test_debug.</span>' \
+                  'MyList([<span class="number">1</span>, ' \
+                  '<span class="number">2</span>]) '
 
     result = debug_repr(re.compile(r'foo\d'))
-    assert result == \
-        're.compile(<span class="string regex">r\'foo\\d\'</span>)'
+    assert result == 're.compile(<span ' \
+                     'class="string regex">r\'foo\\d\'</span>)'
     result = debug_repr(re.compile(text_(r'foo\d')))
     assert result == 're.compile(<span class="string regex">r' \
                      '\'foo\\d\'</span>)'
 
-    assert debug_repr(frozenset('x')) == \
-        'frozenset([<span class="string">\'x\'</span>])'
-    assert debug_repr(set('x')) == \
-        'set([<span class="string">\'x\'</span>])'
+    assert debug_repr(frozenset('x')) == 'frozenset([<span ' \
+                                         'class="string">\'x\'</span>])'
+    assert debug_repr(set('x')) == 'set([<span class=' \
+                                   '"string">\'x\'</span>])'
 
     a = [1]
     a.append(a)
@@ -150,21 +152,20 @@ def test_debug_help():
     assert '__delitem__' in x
 
 
-@asyncio.coroutine
-def test_alternate_debug_path(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_alternate_debug_path(create_server, test_client):
+    async def handler(request):
         return aiohttp_jinja2.render_template(
             'tplt.html', request,
             {'head': 'HEAD', 'text': 'text'})
+
     path_prefix = '/arbitrary_path'
-    app = yield from create_server(path_prefix=path_prefix)
+    app = await create_server(path_prefix=path_prefix)
     app.router.add_route('GET', '/', handler)
 
     cookie = {"pdtb_active": "pDebugPerformancePanel"}
-    client = yield from test_client(app, cookies=cookie)
-    resp = yield from client.get('/')
+    client = await test_client(app, cookies=cookie)
+    resp = await client.get('/')
 
-    resp = yield from client.get(path_prefix)
-    yield from resp.text()
+    resp = await client.get(path_prefix)
+    await resp.text()
     assert 200 == resp.status
