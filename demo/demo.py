@@ -1,5 +1,4 @@
 import asyncio
-import json
 import logging
 import sys
 
@@ -23,52 +22,28 @@ sys.path.insert(0, parent)
 log = logging.getLogger(__file__)
 
 
-def json_renderer(func):
-    assert asyncio.iscoroutinefunction(func), func
-
-    @asyncio.coroutine
-    def wrapper(request):
-        response = web.HTTPOk()
-        context = yield from func(request)
-        try:
-            text = json.dumps(context)
-        except TypeError:
-            raise RuntimeError("{!r} result {!r} is not serializable".format(
-                func, context))
-        response.content_type = 'application/json'
-        response.text = text
-        return response
-
-    return wrapper
-
-
-@asyncio.coroutine
-def exc(request):
+async def exc(request):
     log.error('NotImplementedError exception handler')
     raise NotImplementedError
 
 
 @aiohttp_jinja2.template('ajax.jinja2')
-def test_ajax(request):
+async def test_ajax(request):
     return {'app': request.app}
 
 
-@json_renderer
-@asyncio.coroutine
-def call_ajax(request):
+async def call_ajax(request):
     log.info('call_ajax handler')
-    return {'ajax': 'success'}
+    return web.json_resonse({'ajax': 'success'})
 
 
-@asyncio.coroutine
-def test_redirect(request):
+async def test_redirect(request):
     log.info('redirect handler')
     raise web.HTTPSeeOther(location='/')
 
 
 @aiohttp_jinja2.template('index.jinja2')
-@asyncio.coroutine
-def test_page(request):
+async def test_page(request):
     title = 'Aiohttp Debugtoolbar'
 
     log.info('Info logger fon index page')
@@ -84,12 +59,11 @@ def test_page(request):
 
 
 @aiohttp_jinja2.template('error.jinja2')
-def test_jinja2_exc(request):
+async def test_jinja2_exc(request):
     return {'title': 'Test jinja2 template exceptions'}
 
 
-@asyncio.coroutine
-def init(loop):
+async def init(loop):
     logging.basicConfig(level=logging.DEBUG)
     PROJECT_ROOT = Path(__file__).parent
     templates = PROJECT_ROOT / 'templates'
