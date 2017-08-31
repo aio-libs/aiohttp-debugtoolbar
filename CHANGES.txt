@@ -1,7 +1,7 @@
 CHANGES
 -------
 
-0.4.1 (YYYY-MM-DD)
+0.4.1 (2017-08-30)
 ^^^^^^^^^^^^^^^^^^
 
 * Fixed issue with redirects without location header #174
