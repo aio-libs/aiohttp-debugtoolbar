@@ -4,7 +4,7 @@ pytest-cov==2.5.1
 coverage==4.4.1
 flake8==3.4.1
 -e .
-aiohttp-jinja2==0.13.0
+aiohttp-jinja2==0.14.0
 aiohttp-mako==0.3.0
 docutils==0.14
 pygments==2.2.0
