@@ -1,5 +1,5 @@
 ipdb==0.10.3
-pytest==3.2.2
+pytest==3.2.3
 pytest-cov==2.5.1
 coverage==4.4.1
 flake8==3.4.1
