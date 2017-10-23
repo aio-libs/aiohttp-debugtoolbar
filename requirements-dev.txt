@@ -2,7 +2,7 @@ ipdb==0.10.3
 pytest==3.2.3
 pytest-cov==2.5.1
 coverage==4.4.1
-flake8==3.4.1
+flake8==3.5.0
 -e .
 aiohttp-jinja2==0.14.0
 aiohttp-mako==0.3.0
