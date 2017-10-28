@@ -56,7 +56,7 @@ class PerformanceDebugPanel(DebugPanel):
                 self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
                 try:
                     result = yield from handler(request)
-                except:
+                except BaseException:
                     raise
                 finally:
                     self._end_rusage = resource.getrusage(resource.RUSAGE_SELF)
@@ -71,7 +71,7 @@ class PerformanceDebugPanel(DebugPanel):
             _start_time = time.time()
             try:
                 result = yield from handler(request)
-            except:
+            except BaseException:
                 raise
             finally:
                 self.total_time = (time.time() - _start_time) * 1000
@@ -91,7 +91,7 @@ class PerformanceDebugPanel(DebugPanel):
                     result = yield from handler(request)
                 finally:
                     self.profiler.disable()
-            except:
+            except BaseException:
                 raise
             finally:
                 stats = pstats.Stats(self.profiler)
