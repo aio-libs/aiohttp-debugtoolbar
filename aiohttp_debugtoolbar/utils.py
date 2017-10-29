@@ -133,7 +133,7 @@ def escape(s, quote=False):
     if isinstance(s, bytes):
         try:
             s.decode('ascii')
-        except:
+        except UnicodeDecodeError:
             s = s.decode('utf-8', 'replace')
     s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
     if quote:
