@@ -13,4 +13,4 @@ yarl==0.15.0
 multidict==3.3.2
 pytest-aiohttp==0.2.0
 pytest-sugar==0.9.0
-pytest-timeout==1.2.0
+pytest-timeout==1.2.1
