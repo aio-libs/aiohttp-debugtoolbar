@@ -1,7 +1,7 @@
 ipdb==0.10.3
 pytest==3.4.0
 pytest-cov==2.5.1
-coverage==4.4.2
+coverage==4.5
 flake8==3.5.0
 -e .
 aiohttp-jinja2==0.14.0
