@@ -9,11 +9,12 @@ install:
 - pip install -Ur requirements-dev.txt
 - pip install -e .
 - pip install -U uvloop
+- pip install codecov
 
 script:
 - make cov
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+- codecov
 
 deploy:
   provider: pypi
