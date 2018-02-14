@@ -25,12 +25,12 @@ class RequestVarsDebugPanel(DebugPanel):
     def process_response(self, response):
         self.data = data = {}
         request = self.request
-        yield from request.post()
+        post_data = yield from request.post()
         data.update({
             'get': [(k, request.query.getall(k))
                     for k in sorted(request.query)],
-            'post': [(k, saferepr(request.post().getall(k)))
-                     for k in sorted(request.post())],
+            'post': [(k, saferepr(post_data.getall(k)))
+                     for k in sorted(post_data)],
             'cookies': [(k, v) for k, v in sorted(request.cookies.items())],
             'attrs': [(k, v) for k, v in sorted(request.items())],
         })

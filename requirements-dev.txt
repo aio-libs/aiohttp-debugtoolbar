@@ -11,6 +11,6 @@ pygments==2.2.0
 yarl==1.1.0
 multidict==4.1.0
 pytest-aiohttp==0.3.0
-pytest-sugar==0.9.0
+pytest-sugar==0.9.1
 pytest-timeout==1.2.1
 -e .
