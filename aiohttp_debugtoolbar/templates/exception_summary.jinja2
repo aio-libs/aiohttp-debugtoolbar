@@ -1,5 +1,5 @@
 <div class="{{ classes }}">
   {{ title }}
-  <ul>{{ frames }}</ul>
-  {{ description }}
+  <ul>{{ frames|safe }}</ul>
+  {{ description|safe }}
 </div>
