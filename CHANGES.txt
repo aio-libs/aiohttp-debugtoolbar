@@ -1,9 +1,12 @@
 CHANGES
 -------
 
-0.4.2 (YYYY-MM-YY)
+0.5.0 (2018-02-14)
 ^^^^^^^^^^^^^^^^^^
 
+* Add safe filter to render_content #195
+
+* Adopt to aiohtp 3.0
 
 0.4.1 (2017-08-30)
 ^^^^^^^^^^^^^^^^^^

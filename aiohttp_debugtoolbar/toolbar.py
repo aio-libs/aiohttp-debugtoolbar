@@ -59,11 +59,11 @@ class DebugToolbar:
         settings = request.app[APP_KEY]['settings']
         response_html = response.body
         route = request.app.router['debugtoolbar.request']
-        toolbar_url = route.url(parts={'request_id': request['id']})
+        toolbar_url = route.url_for(request_id=request['id'])
 
         button_style = settings['button_style']
 
-        css_path = request.app.router[STATIC_ROUTE_NAME].url(
+        css_path = request.app.router[STATIC_ROUTE_NAME].url_for(
             filename='css/toolbar_button.css')
 
         toolbar_css = toolbar_css_template % {'css_path': css_path}

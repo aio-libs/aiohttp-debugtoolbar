@@ -196,14 +196,15 @@ class Traceback:
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
-        static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
-        root_path = request.app.router[ROOT_ROUTE_NAME].url()
+        static_path = request.app.router[STATIC_ROUTE_NAME].url_for(
+            filename='')
+        root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
         exc = escape(self.exception)
         summary = self.render_summary(request.app, include_title=False)
         token = request.app[APP_KEY]['pdtb_token']
         qs = {'token': token, 'tb': str(self.id)}
 
-        url = request.app.router[EXC_ROUTE_NAME].url(query=qs)
+        url = request.app.router[EXC_ROUTE_NAME].url_for().with_query(qs)
         evalex = request.app[APP_KEY]['exc_history'].eval_exc
 
         vars = {

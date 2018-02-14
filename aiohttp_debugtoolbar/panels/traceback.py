@@ -59,8 +59,8 @@ class TracebackPanel(DebugPanel):
 
     def render_vars(self, request):
         static_path = self._request.app.router[STATIC_ROUTE_NAME] \
-            .url(filename='')
-        root_path = self.request.app.router[ROOT_ROUTE_NAME].url()
+            .url_for(filename='')
+        root_path = self.request.app.router[ROOT_ROUTE_NAME].url_for()
         return {
             'static_path': static_path,
             'root_path': root_path

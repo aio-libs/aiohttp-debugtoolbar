@@ -27,8 +27,8 @@ def request_view(request):
     panels = toolbar.panels if toolbar else []
     global_panels = toolbar.global_panels if toolbar else []
 
-    static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
-    root_path = request.app.router[ROOT_ROUTE_NAME].url()
+    static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename='')
+    root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
 
     button_style = settings.get('button_style', '')
     max_visible_requests = settings['max_visible_requests']
@@ -49,7 +49,7 @@ class ExceptionDebugView:
 
     def _validate_token(self, request):
         exc_history = self._exception_history(request)
-        token = request.GET.get('token')
+        token = request.query.get('token')
 
         if exc_history is None:
             raise web.HTTPBadRequest(text='No exception history')
@@ -62,7 +62,7 @@ class ExceptionDebugView:
         return request.app[APP_KEY]['exc_history']
 
     def _get_frame(self, request):
-        frm = request.GET.get('frm')
+        frm = request.query.get('frm')
         if frm is not None:
             frm = int(frm)
         return frm
@@ -70,7 +70,7 @@ class ExceptionDebugView:
     @asyncio.coroutine
     def _get_tb(self, request):
         yield from request.read()
-        tb = request.GET.get('tb')
+        tb = request.query.get('tb')
         if not tb:
             yield from request.post()
             tb = request.POST.get('tb')
@@ -81,7 +81,7 @@ class ExceptionDebugView:
     @asyncio.coroutine
     def _get_cmd(self, request):
         yield from request.read()
-        cmd = request.GET.get('cmd')
+        cmd = request.query.get('cmd')
         if not cmd:
             yield from request.post()
             cmd = request.POST.get('cmd')
@@ -138,7 +138,7 @@ class ExceptionDebugView:
     #     self._validate_token(request)
     #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
     #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
-    #     token = request.GET.get('token')
+    #     token = request.query.get('token')
     #     tb = yield from self._get_tb(request)
     #
     #     _exc_history = self._exception_history(request)

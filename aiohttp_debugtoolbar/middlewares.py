@@ -39,11 +39,11 @@ def middleware(app, handler):
         show_on_exc_only = settings.get('show_on_exc_only')
         intercept_redirects = settings['intercept_redirects']
 
-        root_url = app.router['debugtoolbar.main'].url()
+        root_url = app.router['debugtoolbar.main'].url_for().raw_path
         exclude_prefixes = settings.get('exclude_prefixes')
         exclude = [root_url] + exclude_prefixes
 
-        p = request.path
+        p = request.raw_path
         starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
         # FIXME: error when run trough unixsocket

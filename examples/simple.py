@@ -33,7 +33,7 @@ def init(loop):
         <body>
             <h1>{{ text }}</h1>
             <p>
-              <a href="{{ app.router['exc_example'].url() }}">
+              <a href="{{ app.router['exc_example'].url_for() }}">
               Exception example</a>
             </p>
         </body>

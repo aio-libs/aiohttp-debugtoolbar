@@ -60,3 +60,4 @@ target/
 # vim
 *.swp
 
+.pytest_cache
