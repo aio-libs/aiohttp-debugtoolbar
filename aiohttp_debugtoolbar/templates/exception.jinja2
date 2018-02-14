@@ -30,7 +30,7 @@
       <pre class= "errormsg">{{ exception }}</pre>
     </div>
     <h2 class="traceback">Traceback <small>(most recent call last)</small></h2>
-    {{ summary }}
+    {{ summary|safe }}
     <div class="plain">
       <p>
         <input type="hidden" name="language" value="pytb">
