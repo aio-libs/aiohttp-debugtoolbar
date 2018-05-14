@@ -13,5 +13,5 @@ pytest-aiohttp==0.3.0
 pytest-cov==2.5.1
 pytest-sugar==0.9.1
 pytest-timeout==1.2.1
-yarl==1.2.3
+yarl==1.2.4
 -e .
