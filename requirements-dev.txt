@@ -1,4 +1,4 @@
-aiohttp==3.3.2
+aiohttp==3.4.2
 aiohttp-jinja2==1.0.0
 aiohttp-mako==0.3.0
 attrs==18.1.0
