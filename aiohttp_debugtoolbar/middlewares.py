@@ -53,7 +53,7 @@ def middleware(app, handler):
         last_proxy_addr = remote_host
 
         # TODO: rethink access policy by host
-        if settings.get('check_ip'):
+        if settings.get('check_host'):
             if starts_with_excluded or not addr_in(last_proxy_addr, hosts):
                 return (yield from handler(request))
 

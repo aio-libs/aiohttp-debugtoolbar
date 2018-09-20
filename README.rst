@@ -129,7 +129,7 @@ Supported options
 - intercept_redirects: If True, intercept redirect and display an intermediate page with a link to the redirect page. By default is set to True.
 - hosts: The list of allow hosts. By default is set to ['127.0.0.1', '::1'].
 - exclude_prefixes: The list of forbidden hosts. By default is set to [].
-- check_ip: If False, disable the host check and display debugtoolbar for any host. By default is set to True.
+- check_host: If False, disable the host check and display debugtoolbar for any host. By default is set to True.
 - max_request_history: The max value for storing requests. By default is set to 100.
 - max_visible_requests: The max value of display requests. By default is set to 10.
 - path_prefix: The prefix of path to debugtoolbar. By default is set to '/_debugtoolbar'.
