@@ -117,7 +117,7 @@ Full Example
     web.run_app(app, host='127.0.0.1', port=9000)
 
 Settings
--------
+--------
 .. code:: python
 
     aiohttp_debugtoolbar.setup(app, hosts=['172.19.0.1', ])
@@ -133,7 +133,7 @@ Supported options
 - max_request_history: The max value for storing requests. By default is set to 100.
 - max_visible_requests: The max value of display requests. By default is set to 10.
 - path_prefix: The prefix of path to debugtoolbar. By default is set to '/_debugtoolbar'.
-        
+
 
 Thanks!
 -------
