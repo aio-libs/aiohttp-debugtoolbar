@@ -1,5 +1,5 @@
 aiohttp==3.4.4
-aiohttp-jinja2==1.0.0
+aiohttp-jinja2==1.1.0
 aiohttp-mako==0.3.0
 attrs==18.2.0
 coverage==4.5.1
@@ -8,7 +8,7 @@ flake8==3.5.0
 ipdb==0.11
 multidict==4.4.2
 pygments==2.2.0
-pytest==3.8.1
+pytest==3.8.2
 pytest-aiohttp==0.3.0
 pytest-cov==2.6.0
 pytest-sugar==0.9.1
