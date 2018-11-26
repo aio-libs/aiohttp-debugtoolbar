@@ -6,7 +6,7 @@ coverage==4.5.2
 docutils==0.14
 flake8==3.6.0
 ipdb==0.11
-multidict==4.4.2
+multidict==4.5.1
 pygments==2.2.0
 pytest==3.9.1
 pytest-aiohttp==0.3.0
