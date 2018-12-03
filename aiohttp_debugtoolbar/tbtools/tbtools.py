@@ -174,12 +174,13 @@ class Traceback:
                               '</small>')
 
         for frame in self.frames:
+            txt = frame.info
+            if not txt:
+                txt = text_(' title="%s"' % escape(frame.info))
+            if not txt:
+                txt = text_('')
             frames.append(
-                text_('<li%s>%s') % (
-                    frame.info and text_(' title="%s"' % escape(frame.info)) or
-                    text_(''),
-                    frame.render()
-                ))
+                text_('<li%s>%s') % (txt, frame.render()))
 
         if self.is_syntax_error:
             description_wrapper = text_('<pre class=syntaxerror>%s</pre>')
