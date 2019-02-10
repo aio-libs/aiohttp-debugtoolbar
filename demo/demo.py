@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import sys
 
@@ -63,7 +62,7 @@ async def test_jinja2_exc(request):
     return {'title': 'Test jinja2 template exceptions'}
 
 
-async def init():
+def main():
     logging.basicConfig(level=logging.DEBUG)
     PROJECT_ROOT = Path(__file__).parent
     templates = PROJECT_ROOT / 'templates'
@@ -103,9 +102,9 @@ async def init():
     app.router.add_route('GET', '/jinja2_exc', test_jinja2_exc,
                          name='test_jinja2_exc')
 
-    return app
+    web.run_app(app, host='127.0.0.1', port=9000)
 
 
-loop = asyncio.get_event_loop()
-app = loop.run_until_complete(init())
-web.run_app(app, host='127.0.0.1', port=9000)
+if __name__ == '__main__':
+
+    main()
