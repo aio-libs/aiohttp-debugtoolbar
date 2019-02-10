@@ -63,12 +63,12 @@ async def test_jinja2_exc(request):
     return {'title': 'Test jinja2 template exceptions'}
 
 
-async def init(loop):
+async def init():
     logging.basicConfig(level=logging.DEBUG)
     PROJECT_ROOT = Path(__file__).parent
     templates = PROJECT_ROOT / 'templates'
 
-    app = web.Application(loop=loop)
+    app = web.Application()
 
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
     loader = jinja2.FileSystemLoader([str(templates)])
@@ -107,5 +107,5 @@ async def init(loop):
 
 
 loop = asyncio.get_event_loop()
-app = loop.run_until_complete(init(loop))
+app = loop.run_until_complete(init())
 web.run_app(app, host='127.0.0.1', port=9000)
