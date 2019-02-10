@@ -7,11 +7,11 @@
     </head>
     <body>
         <h1>AJAX Test</h1>
-        This page makes an AJAX request every 15 seconds.<br/><br/>
+        This page makes an AJAX request every 5 seconds.<br/><br/>
         <script>
             $(document).ready(function () {
-                function _call() { $.get("{{ajax_url}}"); }
-                setInterval(_call, 15000);
+                function _call() { $.post(window.location); }
+                setInterval(_call, 5000);
             });
         </script>
     </body>
