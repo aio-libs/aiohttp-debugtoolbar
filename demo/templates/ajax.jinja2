@@ -10,7 +10,7 @@
         This page makes an AJAX request every 15 seconds.<br/><br/>
         <script>
             $(document).ready(function () {
-                function _call() { $.get('${app.router['call_ajax'].url()}'); }
+                function _call() { $.get("{{ajax_url}}"); }
                 setInterval(_call, 15000);
             });
         </script>

@@ -28,12 +28,12 @@ async def exc(request):
 
 @aiohttp_jinja2.template('ajax.jinja2')
 async def test_ajax(request):
-    return {'app': request.app}
+    return {'ajax_url': request.app.router['call_ajax'].url_for()}
 
 
 async def call_ajax(request):
     log.info('call_ajax handler')
-    return web.json_resonse({'ajax': 'success'})
+    return web.json_response({'ajax': 'success'})
 
 
 async def test_redirect(request):
