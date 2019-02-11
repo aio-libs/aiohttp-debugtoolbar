@@ -1,11 +1,15 @@
-import asyncio
 import sys
+from pathlib import Path
 
-import pytest
-import jinja2
 import aiohttp_jinja2
+import jinja2
+import pytest
 from aiohttp import web
+
 from aiohttp_debugtoolbar import setup
+
+
+DEFAULT_TEMPLATE_DIR = Path(__file__).parent / 'templates'
 
 
 def pytest_ignore_collect(path, config):
@@ -17,21 +21,11 @@ def pytest_ignore_collect(path, config):
 @pytest.fixture
 def create_server(aiohttp_unused_port):
 
-    @asyncio.coroutine
-    def create(*, debug=False, ssl_ctx=None, **kw):
+    def create(**kwargs):
         app = web.Application()
-        setup(app, **kw)
-
-        tplt = """
-        <html>
-        <head></head>
-        <body>
-            <h1>{{ head }}</h1>{{ text }}
-        </body>
-        </html>"""
-        loader = jinja2.DictLoader({'tplt.html': tplt})
+        setup(app, **kwargs)
+        loader = jinja2.FileSystemLoader(str(DEFAULT_TEMPLATE_DIR))
         aiohttp_jinja2.setup(app, loader=loader)
-
         return app
 
     return create

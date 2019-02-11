@@ -7,7 +7,6 @@
     :license: BSD license.
 """
 import aiohttp_jinja2
-import asyncio
 import re
 import sys
 
@@ -150,21 +149,19 @@ def test_debug_help():
     assert '__delitem__' in x
 
 
-@asyncio.coroutine
-def test_alternate_debug_path(create_server, aiohttp_client):
-    @asyncio.coroutine
-    def handler(request):
-        return aiohttp_jinja2.render_template(
-            'tplt.html', request,
-            {'head': 'HEAD', 'text': 'text'})
+async def test_alternate_debug_path(create_server, aiohttp_client):
+    @aiohttp_jinja2.template('default.jinja2')
+    async def handler(request):
+        return {'head': 'HEAD', 'text': 'text'}
+
     path_prefix = '/arbitrary_path'
-    app = yield from create_server(path_prefix=path_prefix)
+    app = create_server(path_prefix=path_prefix)
     app.router.add_route('GET', '/', handler)
 
     cookie = {"pdtb_active": "pDebugPerformancePanel"}
-    client = yield from aiohttp_client(app, cookies=cookie)
-    resp = yield from client.get('/')
+    client = await aiohttp_client(app, cookies=cookie)
+    resp = await client.get('/')
 
-    resp = yield from client.get(path_prefix)
-    yield from resp.text()
+    resp = await client.get(path_prefix)
+    await resp.text()
     assert 200 == resp.status
