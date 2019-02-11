@@ -4,14 +4,14 @@ from aiohttp_debugtoolbar import APP_KEY
 
 
 @asyncio.coroutine
-def test_view_source(create_server, test_client):
+def test_view_source(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         raise NotImplementedError
 
     app = yield from create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = yield from aiohttp_client(app)
 
     # make sure that exception page rendered
     resp = yield from client.get('/')
@@ -32,14 +32,14 @@ def test_view_source(create_server, test_client):
 
 
 @asyncio.coroutine
-def test_view_execute(create_server, test_client):
+def test_view_execute(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         raise NotImplementedError
 
     app = yield from create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = yield from aiohttp_client(app)
     # make sure that exception page rendered
     resp = yield from client.get('/')
     txt = yield from resp.text()
@@ -74,14 +74,14 @@ def test_view_execute(create_server, test_client):
 
 
 @asyncio.coroutine
-def test_view_exception(create_server, test_client):
+def test_view_exception(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         raise NotImplementedError
 
     app = yield from create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = yield from aiohttp_client(app)
     # make sure that exception page rendered
     resp = yield from client.get('/')
     txt = yield from resp.text()

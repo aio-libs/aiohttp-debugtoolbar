@@ -5,7 +5,7 @@ from aiohttp_debugtoolbar.panels.base import DebugPanel
 
 
 @asyncio.coroutine
-def test_request_vars_panel(create_server, test_client):
+def test_request_vars_panel(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         return aiohttp_jinja2.render_template(
@@ -16,7 +16,7 @@ def test_request_vars_panel(create_server, test_client):
     app.router.add_route('GET', '/', handler)
     # add cookie to request
     cookie = {"aiodtb_cookie": "aioDebugRequestPanel_Cookie"}
-    client = yield from test_client(app, cookies=cookie)
+    client = yield from aiohttp_client(app, cookies=cookie)
     resp = yield from client.get('/')
     assert 200 == resp.status
     txt = yield from resp.text()
@@ -31,7 +31,7 @@ def test_request_vars_panel(create_server, test_client):
 
 
 @asyncio.coroutine
-def test_extra_panel(create_server, test_client):
+def test_extra_panel(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         return aiohttp_jinja2.render_template(
@@ -58,7 +58,7 @@ def test_extra_panel(create_server, test_client):
         extra_templates=str(parent_path / 'tpl'))
     app.router.add_route('GET', '/', handler)
     # make sure that toolbar button present on apps page
-    client = yield from test_client(app)
+    client = yield from aiohttp_client(app)
     resp = yield from client.get('/')
     assert 200 == resp.status
     txt = yield from resp.text()

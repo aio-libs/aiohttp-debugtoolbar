@@ -5,14 +5,14 @@ from aiohttp_debugtoolbar import APP_KEY
 
 
 @asyncio.coroutine
-def test_sse(create_server, test_client):
+def test_sse(create_server, aiohttp_client):
     @asyncio.coroutine
     def handler(request):
         raise NotImplementedError
 
     app = yield from create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = yield from aiohttp_client(app)
     # make sure that exception page rendered
     resp = yield from client.get('/')
     txt = yield from resp.text()
