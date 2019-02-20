@@ -12,14 +12,12 @@ try:
 except ImportError:
     aiohttp_mako = None
 
-
 PROJECT_ROOT = Path(__file__).parent
 TEMPLATE_DIR = PROJECT_ROOT / 'templates'
 
 
 @aiohttp_jinja2.template('index.jinja2')
 async def index(request):
-
     log.info('Info logger fon index page')
     log.debug('Debug logger fon index page')
     log.critical('Critical logger fon index page')
@@ -58,34 +56,38 @@ def mako_exception(request):
 
 
 def main():
-
     app = web.Application()
     aiohttp_debugtoolbar.setup(app, intercept_exc='debug')
 
     loader = jinja2.FileSystemLoader([str(TEMPLATE_DIR)])
     aiohttp_jinja2.setup(app, loader=loader)
 
-    app.router.add_get('/', index, name=index.__name__)
-    app.router.add_get('/ajax', ajax, name=ajax.__name__)
-    app.router.add_post('/ajax', ajax, name=ajax.__name__)
-    app.router.add_get('/redirect', redirect, name=redirect.__name__)
-    app.router.add_get('/exception', exception, name=exception.__name__)
-    app.router.add_get('/jinja2_exc', jinja2_exception, name=jinja2_exception.__name__)
-    app.router.add_static('/static', PROJECT_ROOT / 'static')
+    routes = [
+        web.get('/', index, name='index'),
+        web.get('/redirect', redirect, name='redirect'),
+        web.get('/exception', exception, name='exception'),
+        web.get('/jinja2_exc', jinja2_exception, name='jinja2_exception'),
+        web.get('/ajax', ajax, name='ajax'),
+        web.post('/ajax', ajax, name='ajax'),
+        web.static('/static', PROJECT_ROOT / 'static'),
+    ]
 
     if aiohttp_mako:
-        aiohttp_mako.setup(app, input_encoding='utf-8',
-                           output_encoding='utf-8',
-                           default_filters=['decode.utf8'],
-                           directories=[str(TEMPLATE_DIR)])
+        mako_cfg = {
+            'input_encoding': 'utf-8',
+            'output_encoding': 'utf-8',
+            'default_filters': ['decode.utf8'],
+            'directories': [str(TEMPLATE_DIR)],
+        }
+        aiohttp_mako.setup(app, **mako_cfg)
+        route = web.get('/mako_exc', mako_exception, name='mako_exception')
+        routes.append(route)
 
-        app.router.add_get('/mako_exc', mako_exception, name=mako_exception.__name__)
-
+    app.add_routes(routes)
     web.run_app(app, host='127.0.0.1', port=9000)
 
 
 if __name__ == '__main__':
-
     log = logging.getLogger(__file__)
     logging.basicConfig(level=logging.DEBUG)
 
