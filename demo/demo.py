@@ -65,12 +65,12 @@ def main():
     loader = jinja2.FileSystemLoader([str(TEMPLATE_DIR)])
     aiohttp_jinja2.setup(app, loader=loader)
 
-    app.router.add_get('/', index, name='index')
-    app.router.add_get('/ajax', ajax, name='ajax')
-    app.router.add_post('/ajax', ajax, name='ajax')
-    app.router.add_get('/redirect', redirect, name='redirect')
-    app.router.add_get('/exception', exception, name='exception')
-    app.router.add_get('/jinja2_exc', jinja2_exception, name='jinja2_exception')
+    app.router.add_get('/', index, name=index.__name__)
+    app.router.add_get('/ajax', ajax, name=ajax.__name__)
+    app.router.add_post('/ajax', ajax, name=ajax.__name__)
+    app.router.add_get('/redirect', redirect, name=redirect.__name__)
+    app.router.add_get('/exception', exception, name=exception.__name__)
+    app.router.add_get('/jinja2_exc', jinja2_exception, name=jinja2_exception.__name__)
     app.router.add_static('/static', PROJECT_ROOT / 'static')
 
     if aiohttp_mako:
@@ -79,7 +79,7 @@ def main():
                            default_filters=['decode.utf8'],
                            directories=[str(TEMPLATE_DIR)])
 
-        app.router.add_get('/mako_exc', mako_exception, name='mako_exception')
+        app.router.add_get('/mako_exc', mako_exception, name=mako_exception.__name__)
 
     web.run_app(app, host='127.0.0.1', port=9000)
 
