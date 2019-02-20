@@ -57,7 +57,8 @@ async def test_extra_panel(create_server, aiohttp_client):
     assert 'pDebugToolbarHandle' in txt
 
     # check template from extra_templates
-    assert 'extra_panel.jinja2' in app['aiohttp_debugtoolbar_jinja2'].list_templates()
+    templates = app['aiohttp_debugtoolbar_jinja2'].list_templates()
+    assert 'extra_panel.jinja2' in templates
 
     # make sure that debug toolbar page working and extra panel exists
     resp = await client.get('/_debugtoolbar')
