@@ -1,7 +1,7 @@
 aiohttp==3.6.2
 aiohttp-jinja2==1.1.2
 aiohttp-mako==0.4.0
-attrs==18.2.0
+attrs==19.2.0
 coverage==4.5.2
 docutils==0.14
 flake8==3.6.0
