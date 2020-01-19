@@ -194,3 +194,34 @@ def test_process_stream_response(create_server, test_client):
     payload = yield from resp.read()
     assert 200 == resp.status
     assert payload == b'text'
+
+
+@asyncio.coroutine
+def test_performance_panel_with_handler(create_server, test_client):
+
+    async def handler(request):
+        return web.HTTPOk()
+
+    app = yield from create_server()
+    app.router.add_route('GET', '/', handler)
+    client = yield from test_client(app)
+
+    resp = yield from client.get('/')
+    print('with handler', resp)
+    assert 200 == resp.status
+
+
+@asyncio.coroutine
+def test_performance_panel_with_cbv(create_server, test_client):
+
+    class TestView(web.View):
+        async def get(self):
+            return web.HTTPOk()
+
+    app = yield from create_server()
+    app.router.add_view('/', TestView)
+    client = yield from test_client(app)
+
+    resp = yield from client.get('/')
+    print('with cbv', resp)
+    assert 200 == resp.status
