@@ -18,6 +18,9 @@ except ImportError:  # pragma: no cover
 
 import asyncio
 import time
+import inspect
+
+from aiohttp.abc import AbstractView
 
 from .base import DebugPanel
 from ..utils import format_fname
@@ -140,6 +143,9 @@ class PerformanceDebugPanel(DebugPanel):
         return profile_handler
 
     def wrap_handler(self, handler, context_switcher):
+        if inspect.isclass(handler) and issubclass(handler, AbstractView):
+            handler.__iter__ = handler.__await__
+        print(handler)
         handler = self._wrap_profile_handler(handler)
         handler = self._wrap_timer_handler(handler)
         return handler
