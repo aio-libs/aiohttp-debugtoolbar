@@ -145,7 +145,6 @@ class PerformanceDebugPanel(DebugPanel):
     def wrap_handler(self, handler, context_switcher):
         if inspect.isclass(handler) and issubclass(handler, AbstractView):
             handler.__iter__ = handler.__await__
-        print(handler)
         handler = self._wrap_profile_handler(handler)
         handler = self._wrap_timer_handler(handler)
         return handler

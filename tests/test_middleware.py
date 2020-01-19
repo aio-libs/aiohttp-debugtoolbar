@@ -207,7 +207,6 @@ def test_performance_panel_with_handler(create_server, test_client):
     client = yield from test_client(app)
 
     resp = yield from client.get('/')
-    print('with handler', resp)
     assert 200 == resp.status
 
 
@@ -223,5 +222,4 @@ def test_performance_panel_with_cbv(create_server, test_client):
     client = yield from test_client(app)
 
     resp = yield from client.get('/')
-    print('with cbv', resp)
     assert 200 == resp.status
