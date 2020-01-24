@@ -39,6 +39,8 @@ default_settings = {
     'extra_global_panels': [],
     'hosts': ['127.0.0.1', '::1'],
     'exclude_prefixes': [],
+    # disable host check
+    'check_host': True,
     'button_style': '',
     'max_request_history': 100,
     'max_visible_requests': 10,
