@@ -1,4 +1,3 @@
-import asyncio
 import sys
 
 import pytest
@@ -15,11 +14,10 @@ def pytest_ignore_collect(path, config):
 
 
 @pytest.fixture
-def create_server(loop, unused_port):
+def create_server(aiohttp_unused_port):
 
-    @asyncio.coroutine
-    def create(*, debug=False, ssl_ctx=None, **kw):
-        app = web.Application(loop=loop)
+    async def create(*, debug=False, ssl_ctx=None, **kw):
+        app = web.Application()
         setup(app, **kw)
 
         tplt = """

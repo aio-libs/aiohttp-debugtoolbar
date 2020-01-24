@@ -1,4 +1,3 @@
-import asyncio
 import re
 
 from .base import DebugPanel
@@ -26,8 +25,7 @@ class TracebackPanel(DebugPanel):
             return True
         return False
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         if not self.has_content:
             return
         traceback = self._request['pdbt_tb']

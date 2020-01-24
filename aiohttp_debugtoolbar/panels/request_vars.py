@@ -1,4 +1,3 @@
-import asyncio
 from pprint import saferepr
 
 from .base import DebugPanel
@@ -21,11 +20,10 @@ class RequestVarsDebugPanel(DebugPanel):
     def __init__(self, request):
         super().__init__(request)
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         self.data = data = {}
         request = self.request
-        post_data = yield from request.post()
+        post_data = await request.post()
         data.update({
             'get': [(k, request.query.getall(k))
                     for k in sorted(request.query)],

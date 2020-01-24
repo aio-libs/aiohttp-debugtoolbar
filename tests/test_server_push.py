@@ -1,21 +1,18 @@
-import asyncio
 import json
 
 from aiohttp_debugtoolbar import APP_KEY
 
 
-@asyncio.coroutine
-def test_sse(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_sse(create_server, aiohttp_client):
+    async def handler(request):
         raise NotImplementedError
 
-    app = yield from create_server()
+    app = await create_server()
     app.router.add_route('GET', '/', handler)
-    client = yield from test_client(app)
+    client = await aiohttp_client(app)
     # make sure that exception page rendered
-    resp = yield from client.get('/')
-    txt = yield from resp.text()
+    resp = await client.get('/')
+    txt = await resp.text()
     assert 500 == resp.status
     assert '<div class="debugger">' in txt
 
@@ -24,8 +21,8 @@ def test_sse(create_server, test_client):
     request_id = history[0][0]
 
     url = '/_debugtoolbar/sse'
-    resp = yield from client.get(url)
-    data = yield from resp.text()
+    resp = await client.get(url)
+    data = await resp.text()
     data = data.strip()
 
     # split and check EventSource data
