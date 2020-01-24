@@ -98,22 +98,22 @@ def test_object_dumping():
     drg = DebugReprGenerator()
     out = drg.dump_object(Foo())
     assert re.search('Details for', out)
-    assert re.search('<th>x.*<span class="number">42</span>', out)
-    assert re.search('<th>y.*<span class="number">23</span>', out)
-    assert re.search('<th>z.*<span class="number">15</span>', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
+    assert re.search('(?s)<th>z.*<span class="number">15</span>', out)
 
     out = drg.dump_object({'x': 42, 'y': 23})
     assert re.search('Contents of', out)
-    assert re.search('<th>x.*<span class="number">42</span>', out)
-    assert re.search('<th>y.*<span class="number">23</span>', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
 
     out = drg.dump_object({'x': 42, 'y': 23, 23: 11})
     assert not re.search('Contents of', out)
 
     out = drg.dump_locals({'x': 42, 'y': 23})
     assert re.search('Local variables in frame', out)
-    assert re.search('<th>x.*<span class="number">42</span>', out)
-    assert re.search('<th>y.*<span class="number">23</span>', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
 
 
 def test_debug_dump():
