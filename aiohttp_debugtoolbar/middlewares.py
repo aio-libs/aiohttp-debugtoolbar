@@ -51,8 +51,9 @@ async def middleware(request, handler):
     last_proxy_addr = remote_host
 
     # TODO: rethink access policy by host
-    if starts_with_excluded or not addr_in(last_proxy_addr, hosts):
-        return await handler(request)
+    if settings.get('check_host'):
+        if starts_with_excluded or not addr_in(last_proxy_addr, hosts):
+            return await handler(request)
 
     toolbar = DebugToolbar(request, panel_classes, global_panel_classes)
     _handler = handler
