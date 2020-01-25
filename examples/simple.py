@@ -47,4 +47,4 @@ async def init(loop):
     return app
 
 
-web.run(init(), '127.0.0.1', 9000)
+web.run_app(init(), host='127.0.0.1', port=9000)

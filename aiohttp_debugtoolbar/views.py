@@ -128,12 +128,12 @@ class ExceptionDebugView:
 
     # TODO: figure out how to enable console mode on frontend
     # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
-    # def console(self, request):
+    # async def console(self, request):
     #     self._validate_token(request)
     #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
     #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
     #     token = request.query.get('token')
-    #     tb = yield from self._get_tb(request)
+    #     tb = await self._get_tb(request)
     #
     #     _exc_history = self._exception_history(request)
     #     vars = {

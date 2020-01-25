@@ -142,7 +142,7 @@ def escape(s, quote=False):
 
 
 class ContextSwitcher:
-    """This object is alternative to *yield from*. It is useful in cases
+    """This object is alternative to *await*. It is useful in cases
     when you need to track context switches inside coroutine.
 
     see: https://www.python.org/dev/peps/pep-0380/#formal-semantics
