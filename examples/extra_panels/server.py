@@ -1,4 +1,3 @@
-import asyncio
 import jinja2
 import aiohttp_debugtoolbar
 import aiohttp_jinja2
@@ -25,25 +24,24 @@ PATH_PARENT = pathlib.Path(__file__).parent
 
 
 @aiohttp_jinja2.template('index.html')
-@asyncio.coroutine
-def basic_handler(request):
+async def basic_handler(request):
     # testing for PgSQL
     if 'db' in request.app:
-        conn = yield from request.app['db'].acquire()
-        cur = yield from conn.cursor()
+        conn = await request.app['db'].acquire()
+        cur = await conn.cursor()
 
-        yield from cur.execute("SELECT 1")
+        await cur.execute("SELECT 1")
         ret = []
         for row in cur:
             ret.append(row)
         assert ret == [(1,)]
 
-        yield from request.app['db'].release(conn)
+        await request.app['db'].release(conn)
 
     # testing for Redis
     if 'redis' in request.app:
-        with (yield from request.app['redis']) as redis:
-            yield from redis.set('TEST', 'VAR', expire=5)
+        with (await request.app['redis']) as redis:
+            await redis.set('TEST', 'VAR', expire=5)
             assert b'VAR' == (yield from redis.get('TEST'))
 
     return {'title': 'example aiohttp_debugtoolbar!',
@@ -51,27 +49,23 @@ def basic_handler(request):
             'app': request.app}
 
 
-@asyncio.coroutine
-def exception_handler(request):
+async def exception_handler(request):
     raise NotImplementedError
 
 
-@asyncio.coroutine
-def close_pg(app):
+async def close_pg(app):
     app['db'].close()
-    yield from app['db'].wait_closed()
+    await app['db'].wait_closed()
 
 
-@asyncio.coroutine
-def close_redis(app):
+async def close_redis(app):
     app['redis'].close()
-    yield from app['redis'].wait_closed()
+    await app['redis'].wait_closed()
 
 
-@asyncio.coroutine
-def init(loop):
+async def init():
     # add aiohttp_debugtoolbar middleware to you application
-    app = web.Application(loop=loop)
+    app = web.Application()
 
     extra_panels = []
     if 'aiopg' in sys.modules:
@@ -112,7 +106,7 @@ def init(loop):
         dsn = 'host={host} dbname={db} user={user} password={passw} '.format(
             db='postgres', user='developer', passw='1', host='localhost')
         app['db'] = yield from aiopg.create_pool(
-            dsn, loop=loop, minsize=1, maxsize=2)
+            dsn, minsize=1, maxsize=2)
         # Correct PostgreSQL shutdown
         app.on_cleanup.append(close_pg)
 
@@ -122,15 +116,7 @@ def init(loop):
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 
-    handler = app.make_handler()
-    srv = yield from loop.create_server(handler, '127.0.0.1', 9000)
-    print("Server started at http://127.0.0.1:9000")
-    return srv, handler
+    return app
 
 
-loop = asyncio.get_event_loop()
-srv, handler = loop.run_until_complete(init(loop))
-try:
-    loop.run_forever()
-except KeyboardInterrupt:
-    loop.run_until_complete(handler.finish_connections())
+web.run_app(init(), host='127.0.0.1', port=9000)

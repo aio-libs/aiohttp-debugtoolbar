@@ -1,4 +1,3 @@
-import asyncio
 from collections import deque
 import datetime
 import logging
@@ -43,8 +42,7 @@ class LoggingPanel(DebugPanel):
         context_switcher.add_context_out(self._uninstall_handler)
         return handler
 
-    @asyncio.coroutine
-    def process_response(self, response):
+    async def process_response(self, response):
         records = []
         for record in self._log_handler.records:
             records.append({

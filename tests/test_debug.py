@@ -7,7 +7,6 @@
     :license: BSD license.
 """
 import aiohttp_jinja2
-import asyncio
 import re
 import sys
 
@@ -99,22 +98,22 @@ def test_object_dumping():
     drg = DebugReprGenerator()
     out = drg.dump_object(Foo())
     assert re.search('Details for', out)
-    assert re.search('<th>x.*<span class="number">42</span>(?s)', out)
-    assert re.search('<th>y.*<span class="number">23</span>(?s)', out)
-    assert re.search('<th>z.*<span class="number">15</span>(?s)', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
+    assert re.search('(?s)<th>z.*<span class="number">15</span>', out)
 
     out = drg.dump_object({'x': 42, 'y': 23})
     assert re.search('Contents of', out)
-    assert re.search('<th>x.*<span class="number">42</span>(?s)', out)
-    assert re.search('<th>y.*<span class="number">23</span>(?s)', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
 
     out = drg.dump_object({'x': 42, 'y': 23, 23: 11})
     assert not re.search('Contents of', out)
 
     out = drg.dump_locals({'x': 42, 'y': 23})
     assert re.search('Local variables in frame', out)
-    assert re.search('<th>x.*<span class="number">42</span>(?s)', out)
-    assert re.search('<th>y.*<span class="number">23</span>(?s)', out)
+    assert re.search('(?s)<th>x.*<span class="number">42</span>', out)
+    assert re.search('(?s)<th>y.*<span class="number">23</span>', out)
 
 
 def test_debug_dump():
@@ -150,21 +149,19 @@ def test_debug_help():
     assert '__delitem__' in x
 
 
-@asyncio.coroutine
-def test_alternate_debug_path(create_server, test_client):
-    @asyncio.coroutine
-    def handler(request):
+async def test_alternate_debug_path(create_server, aiohttp_client):
+    async def handler(request):
         return aiohttp_jinja2.render_template(
             'tplt.html', request,
             {'head': 'HEAD', 'text': 'text'})
     path_prefix = '/arbitrary_path'
-    app = yield from create_server(path_prefix=path_prefix)
+    app = await create_server(path_prefix=path_prefix)
     app.router.add_route('GET', '/', handler)
 
     cookie = {"pdtb_active": "pDebugPerformancePanel"}
-    client = yield from test_client(app, cookies=cookie)
-    resp = yield from client.get('/')
+    client = await aiohttp_client(app, cookies=cookie)
+    resp = await client.get('/')
 
-    resp = yield from client.get(path_prefix)
-    yield from resp.text()
+    resp = await client.get(path_prefix)
+    await resp.text()
     assert 200 == resp.status

@@ -3,10 +3,11 @@ sudo: false
 python:
 - 3.5
 - 3.6
+- 3.7
 
 install:
 - pip install -U setuptools
-- pip install -Ur requirements-dev.txt
+- pip install -r requirements-dev.txt
 - pip install -e .
 - pip install -U uvloop
 - pip install codecov
@@ -25,4 +26,4 @@ deploy:
   on:
     tags: true
     all_branches: true
-    python: 3.5
+    python: 3.7

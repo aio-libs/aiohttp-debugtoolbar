@@ -8,6 +8,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -61,4 +62,7 @@ target/
 *.swp
 
 .pytest_cache
+<<<<<<< HEAD
 .python-version
+=======
+>>>>>>> b32a82ee01dcc2d96a18cf00e5a6a614d880a724
