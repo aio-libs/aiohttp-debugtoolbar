@@ -6,7 +6,7 @@ coverage==5.3
 docutils==0.16
 flake8==3.8.4
 multidict==5.0.0
-pygments==2.3.1
+pygments==2.7.2
 pytest==4.6.9
 pytest-aiohttp==0.3.0
 pytest-cov==2.8.1
