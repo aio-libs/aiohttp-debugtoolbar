@@ -25,7 +25,7 @@ from ..utils import escape
 from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
 _coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
-_line_re = re.compile(r'^(.*?)$(?m)')
+_line_re = re.compile(r'^(.*?)$', re.M)
 _funcdef_re = re.compile(r'^(\s*(?:async\s+?)?def\s)|'
                          r'(.*(?<!\w)lambda(:|\s))|^(\s*@)')
 UTF8_COOKIE = '\xef\xbb\xbf'
