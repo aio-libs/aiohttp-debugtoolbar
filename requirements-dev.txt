@@ -4,7 +4,7 @@ aiohttp-mako==0.4.0
 attrs==20.3.0
 coverage==5.4
 docutils==0.16
-flake8==3.6.0
+flake8==3.8.4
 multidict==4.5.2
 pygments==2.3.1
 pytest==4.6.9
