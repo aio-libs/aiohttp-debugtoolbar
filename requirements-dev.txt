@@ -5,7 +5,7 @@ attrs==20.3.0
 coverage==5.4
 docutils==0.16
 flake8==3.8.4
-multidict==4.5.2
+multidict==5.1.0
 pygments==2.3.1
 pytest==4.6.9
 pytest-aiohttp==0.3.0
