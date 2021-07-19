@@ -7,7 +7,7 @@ docutils==0.17.1
 flake8==3.9.2
 multidict==5.1.0
 pygments==2.9.0
-pytest==4.6.9
+pytest==6.2.4
 pytest-aiohttp==0.3.0
 pytest-cov==2.8.1
 pytest-sugar==0.9.2
