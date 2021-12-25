@@ -154,7 +154,8 @@ async def middleware(request, handler):
 
     # Don't store the favicon.ico request
     # it's requested by the browser automatically
-    if not "/favicon.ico" == request.path:
+    # Also ignore requests for debugtoolbar itself.
+    if request.path != "/favicon.ico" and not request.path.startswith(settings["path_prefix"]):
         request_history.put(request['id'], toolbar)
 
     if not show_on_exc_only and response.content_type in HTML_TYPES:
