@@ -34,7 +34,7 @@ async def test_sse(create_server, aiohttp_client):
     if sys.version_info >= (3, 9):
         payload_json = payload_raw.removeprefix("data: ")
     else:
-        payload_json = payload_raw.strip("data: ")
+        payload_json = payload_raw.strip("data: ")  # noqa: B005
     payload = json.loads(payload_json)
     expected = [
         [

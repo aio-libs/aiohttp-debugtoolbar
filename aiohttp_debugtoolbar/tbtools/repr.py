@@ -103,7 +103,7 @@ class DebugReprGenerator:
     def __init__(self):
         self._stack = []
 
-    def _sequence_repr_maker(left, right, base=object()):  # noqa: B902,B008
+    def _sequence_repr_maker(left, right, base=object()):  # noqa: B008, B902
         def proxy(self, obj, recursive):
             if recursive:
                 return _add_subclass_info(left + "..." + right, obj, base)
