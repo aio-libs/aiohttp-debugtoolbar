@@ -27,7 +27,7 @@ async def test_sse(create_server, aiohttp_client):
 
     # split and check EventSource data
     event_id, event, payload_raw = data.split("\n")
-    assert event_id == "id: {}".format(request_id)
+    assert event_id == f"id: {request_id}"
     assert event == "event: new_request"
 
     payload_json = payload_raw.strip("data: ")

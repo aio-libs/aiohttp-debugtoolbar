@@ -1,10 +1,8 @@
 import re
 
-from .base import DebugPanel
 from ..tbtools.tbtools import Traceback
-from ..utils import escape, APP_KEY, STATIC_ROUTE_NAME
-from ..utils import ROOT_ROUTE_NAME
-
+from ..utils import APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME, escape
+from .base import DebugPanel
 
 __all__ = ["TracebackPanel"]
 
@@ -54,7 +52,7 @@ class TracebackPanel(DebugPanel):
         }
 
     def render_content(self, request):
-        return super(TracebackPanel, self).render_content(request)
+        return super().render_content(request)
 
     def render_vars(self, request):
         static_path = self._request.app.router[STATIC_ROUTE_NAME].url_for(filename="")

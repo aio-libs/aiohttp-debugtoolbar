@@ -1,16 +1,17 @@
 import sys
+
 import aiohttp_jinja2
 from aiohttp import web
 
-from .toolbar import DebugToolbar
 from .tbtools.tbtools import get_traceback
+from .toolbar import DebugToolbar
 from .utils import (
-    addr_in,
-    REDIRECT_CODES,
     APP_KEY,
+    REDIRECT_CODES,
     TEMPLATE_KEY,
-    hexlify,
     ContextSwitcher,
+    addr_in,
+    hexlify,
 )
 
 __all__ = ["toolbar_middleware_factory", "middleware"]
@@ -131,7 +132,7 @@ async def middleware(request, handler):
 
             await toolbar.process_response(request, response)
 
-            request["id"] = str((id(request)))
+            request["id"] = str(id(request))
             toolbar.status = response.status
 
             request_history.put(request["id"], toolbar)

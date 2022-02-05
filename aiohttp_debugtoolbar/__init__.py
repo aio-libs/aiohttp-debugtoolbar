@@ -1,5 +1,5 @@
-from .middlewares import toolbar_middleware_factory, middleware
-from .main import setup, APP_KEY
+from .main import APP_KEY, setup
+from .middlewares import middleware, toolbar_middleware_factory
 
 __version__ = "0.6.0"
 

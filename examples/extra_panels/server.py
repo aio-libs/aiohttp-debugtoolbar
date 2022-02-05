@@ -1,12 +1,11 @@
-import jinja2
-import aiohttp_debugtoolbar
-import aiohttp_jinja2
 import pathlib
+import sys
 
+import aiohttp_jinja2
+import jinja2
 from aiohttp import web
 
-# extra panels
-import sys
+import aiohttp_debugtoolbar
 
 try:
     import aiopg

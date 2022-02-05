@@ -1,10 +1,10 @@
-import sys
 import platform
-import pkg_resources
+import sys
 from operator import itemgetter
 
-from .base import DebugPanel
+import pkg_resources
 
+from .base import DebugPanel
 
 __all__ = ["VersionDebugPanel"]
 
@@ -61,4 +61,4 @@ class VersionDebugPanel(DebugPanel):
         return platform.platform()
 
     def get_platform(self):
-        return "Python %s on %s" % (sys.version, self._get_platform_name())
+        return f"Python {sys.version} on {self._get_platform_name()}"

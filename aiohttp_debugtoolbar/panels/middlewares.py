@@ -1,5 +1,5 @@
-from .base import DebugPanel
 from ..utils import STATIC_ROUTE_NAME
+from .base import DebugPanel
 
 __all__ = ["MiddlewaresDebugPanel"]
 

@@ -1,6 +1,8 @@
 from urllib.parse import unquote as url_unquote
+
 from aiohttp.web import Response
-from .utils import replace_insensitive, STATIC_ROUTE_NAME, APP_KEY
+
+from .utils import APP_KEY, STATIC_ROUTE_NAME, replace_insensitive
 
 
 __all__ = ["DebugToolbar"]

@@ -1,22 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-    werkzeug.debug.console
-    ~~~~~~~~~~~~~~~~~~~~~~
+"""werkzeug.debug.console
 
-    Interactive console support.
+Interactive console support.
 
-    :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
-    :license: BSD.
+:copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
+:license: BSD.
 """
-import sys
 import code
+import sys
 import threading
 
 from types import CodeType
 
-from .repr import debug_repr, dump, helper
 from ..utils import escape
-
+from .repr import debug_repr, dump, helper
 
 _local = threading.local()
 
@@ -63,7 +59,7 @@ class HTMLStringO:
         self._write(escape("".join(x)))
 
 
-class ThreadedStream(object):
+class ThreadedStream:
     """Thread-local wrapper for sys.stdout for the interactive console."""
 
     def push():
@@ -119,7 +115,7 @@ _displayhook = sys.displayhook
 sys.displayhook = ThreadedStream.displayhook
 
 
-class _ConsoleLoader(object):
+class _ConsoleLoader:
     def __init__(self):
         self._storage = {}
 

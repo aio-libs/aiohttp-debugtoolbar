@@ -1,5 +1,7 @@
-import aiohttp_jinja2
 import pathlib
+
+import aiohttp_jinja2
+
 from aiohttp_debugtoolbar.panels.base import DebugPanel
 
 

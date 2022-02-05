@@ -1,21 +1,20 @@
 import os
 from pathlib import Path
-import jinja2
-import aiohttp_jinja2
 
-from . import views
-from . import panels
+import aiohttp_jinja2
+import jinja2
+
+from . import panels, views
 from .middlewares import middleware
 from .utils import (
     APP_KEY,
-    TEMPLATE_KEY,
     STATIC_ROUTE_NAME,
-    hexlify,
-    ToolbarStorage,
+    TEMPLATE_KEY,
     ExceptionHistory,
+    ToolbarStorage,
+    hexlify,
 )
 from .views import ExceptionDebugView
-
 
 default_panel_names = [
     panels.HeaderDebugPanel,

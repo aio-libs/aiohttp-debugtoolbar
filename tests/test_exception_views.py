@@ -19,7 +19,7 @@ async def test_view_source(create_server, aiohttp_client):
     exc_history = app[APP_KEY]["exc_history"]
 
     for frame_id in exc_history.frames:
-        source_url = "/_debugtoolbar/source?frm={}&token={}".format(frame_id, token)
+        source_url = f"/_debugtoolbar/source?frm={frame_id}&token={token}"
         exc_history = app[APP_KEY]["exc_history"]
         resp = await client.get(source_url)
         await resp.text()
@@ -82,7 +82,7 @@ async def test_view_exception(create_server, aiohttp_client):
     exc_history = app[APP_KEY]["exc_history"]
 
     tb_id = list(exc_history.tracebacks.keys())[0]
-    url = "/_debugtoolbar/exception?tb={}&token={}".format(tb_id, token)
+    url = f"/_debugtoolbar/exception?tb={tb_id}&token={token}"
 
     resp = await client.get(url)
     await resp.text()

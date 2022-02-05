@@ -1,8 +1,7 @@
 from operator import itemgetter
 
-from .base import DebugPanel
 from ..utils import APP_KEY
-
+from .base import DebugPanel
 
 __all__ = ["SettingsDebugPanel"]
 

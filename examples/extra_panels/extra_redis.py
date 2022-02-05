@@ -1,14 +1,15 @@
 import functools
-import time
 import inspect
+import time
+
+from aioredis import RedisConnection
 
 from aiohttp_debugtoolbar.panels.base import DebugPanel
-from aioredis import RedisConnection
 
 __all__ = ["RequestRedisDebugPanel"]
 
 
-class RequestHandler(object):
+class RequestHandler:
     def __init__(self):
         self._queries = []
         self._total_time = 0
@@ -33,7 +34,7 @@ class RequestHandler(object):
             called_from = []
             for stack in inspect.stack()[1:]:
                 called_from.append(
-                    "/{0}:{1}".format("/".join(stack[1].split("/")[-3:]), stack[2])
+                    "/{}:{}".format("/".join(stack[1].split("/")[-3:]), stack[2])
                 )
                 if len(called_from) >= 2:
                     break

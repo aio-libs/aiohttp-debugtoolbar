@@ -1,6 +1,6 @@
 import os
 
-from aiohttp_debugtoolbar.utils import escape, format_fname, addr_in
+from aiohttp_debugtoolbar.utils import addr_in, escape, format_fname
 
 
 def test_escape():

@@ -18,9 +18,8 @@ except ImportError:  # pragma: no cover
 
 import time
 
-from .base import DebugPanel
 from ..utils import format_fname
-
+from .base import DebugPanel
 
 __all__ = ["PerformanceDebugPanel"]
 

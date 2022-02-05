@@ -2,7 +2,6 @@ import inspect
 
 from .base import DebugPanel
 
-
 __all__ = ["RoutesDebugPanel"]
 
 

@@ -1,26 +1,22 @@
-# -*- coding: utf-8 -*-
+"""werkzeug.debug.repr
+
+This module implements object representations for debugging purposes.
+Unlike the default repr these reprs expose a lot more information and
+produce HTML instead of ASCII.
+
+Together with the CSS and JavaScript files of the debugger this gives
+a colorful and more compact output.
+
+:copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
+:license: BSD.
 """
-    werkzeug.debug.repr
-    ~~~~~~~~~~~~~~~~~~~
-
-    This module implements object representations for debugging purposes.
-    Unlike the default repr these reprs expose a lot more information and
-    produce HTML instead of ASCII.
-
-    Together with the CSS and JavaScript files of the debugger this gives
-    a colorful and more compact output.
-
-    :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
-    :license: BSD.
-"""
-import sys
 import re
-from traceback import format_exception_only
+import sys
 from collections import deque
+from traceback import format_exception_only
 
 from ..tbtools import text_
 from ..utils import escape
-
 
 missing = object()
 _paragraph_re = re.compile(r"(?:\r\n|\r|\n){2,}")
@@ -59,7 +55,7 @@ def dump(obj=missing):
     sys.stdout._write(rv)
 
 
-class _Helper(object):
+class _Helper:
     """Displays an HTML version of the normal help, for the interactive
     debugger only because it requires a patched sys.stdout.
     """
@@ -98,11 +94,11 @@ def _add_subclass_info(inner, obj, bases):
     module = ""
 
     if obj.__class__.__module__ not in ("builtins", "__builtin__", "exceptions"):
-        module = '<span class="module">%s.</span>' % obj.__class__.__module__
-    return "%s%s(%s)" % (module, obj.__class__.__name__, inner)
+        module = f'<span class="module">{obj.__class__.__module__}.</span>'
+    return f"{module}{obj.__class__.__name__}({inner})"
 
 
-class DebugReprGenerator(object):
+class DebugReprGenerator:
     def __init__(self):
         self._stack = []
 
@@ -261,7 +257,7 @@ class DebugReprGenerator(object):
         html_items = []
         for key, value in items:
             html_items.append(
-                '<tr><th>%s<td><pre class="repr">%s</pre>' % (escape(key), value)
+                f'<tr><th>{escape(key)}<td><pre class="repr">{value}</pre>'
             )
         if not html_items:
             html_items.append("<tr><td><em>Nothing</em>")

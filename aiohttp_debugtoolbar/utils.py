@@ -2,7 +2,6 @@ import binascii
 import ipaddress
 import os
 import sys
-
 from collections import deque
 from itertools import islice
 
@@ -28,7 +27,7 @@ class ToolbarStorage(deque):
     """Deque for storing Toolbar objects."""
 
     def __init__(self, max_elem):
-        super(ToolbarStorage, self).__init__([], max_elem)
+        super().__init__([], max_elem)
 
     def get(self, request_id, default=None):
         dict_ = dict(self)

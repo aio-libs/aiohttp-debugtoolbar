@@ -1,29 +1,30 @@
-# -*- coding: utf-8 -*-
-"""
-    werkzeug.debug.tbtools
-    ~~~~~~~~~~~~~~~~~~~~~~
+"""werkzeug.debug.tbtools
 
-    This module provides various traceback related utility functions.
+This module provides various traceback related utility functions.
 
-    :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
-    :license: BSD.
+:copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
+:license: BSD.
 """
-import re
-import os
-import sys
-import inspect
-import traceback
 import codecs
+import inspect
+import os
+import re
+import sys
+import traceback
 from tokenize import TokenError
 
 from aiohttp.helpers import reify
-from .console import Console
 
 from ..tbtools import text_
-from ..utils import render, STATIC_ROUTE_NAME, APP_KEY
-from ..utils import escape
-from ..utils import ROOT_ROUTE_NAME
-from ..utils import EXC_ROUTE_NAME
+from ..utils import (
+    APP_KEY,
+    EXC_ROUTE_NAME,
+    ROOT_ROUTE_NAME,
+    STATIC_ROUTE_NAME,
+    escape,
+    render,
+)
+from .console import Console
 
 _coding_re = re.compile(r"coding[:=]\s*([-\w.]+)")
 _line_re = re.compile(r"^(.*?)$", re.M)
@@ -341,7 +342,7 @@ class Frame:
         if source is None:
             try:
                 f = open(self.filename)
-            except IOError:
+            except OSError:
                 return []
             try:
                 source = f.read()

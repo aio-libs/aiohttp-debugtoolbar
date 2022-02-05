@@ -1,8 +1,9 @@
-import pytest
 import aiohttp_jinja2
-import aiohttp_debugtoolbar
+import pytest
 from aiohttp import web
 from aiohttp.test_utils import make_mocked_request
+
+import aiohttp_debugtoolbar
 
 
 async def test_render_toolbar_page(create_server, aiohttp_client):

@@ -1,10 +1,10 @@
 import json
-import aiohttp_jinja2
 
+import aiohttp_jinja2
 from aiohttp import web
 
 # from .tbtools.console import _ConsoleFrame
-from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
+from .utils import APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME, TEMPLATE_KEY
 
 
 @aiohttp_jinja2.template("toolbar.jinja2", app_key=TEMPLATE_KEY)

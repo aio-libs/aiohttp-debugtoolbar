@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
-"""
-    werkzeug.debug test
-    ~~~~~~~~~~~~~~~~~~~
+"""werkzeug.debug test
 
-    :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
-    :license: BSD license.
+:copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
+:license: BSD license.
 """
-import aiohttp_jinja2
+
 import re
 import sys
 
+import aiohttp_jinja2
+
+from aiohttp_debugtoolbar.tbtools import text_
 from aiohttp_debugtoolbar.tbtools.console import HTMLStringO
 from aiohttp_debugtoolbar.tbtools.repr import (
     debug_repr,
@@ -17,7 +17,6 @@ from aiohttp_debugtoolbar.tbtools.repr import (
     dump,
     helper,
 )
-from aiohttp_debugtoolbar.tbtools import text_
 
 
 def test_debug_repr():
@@ -59,7 +58,7 @@ def test_debug_repr():
 
     assert result == expected
 
-    class Foo(object):
+    class Foo:
         def __repr__(self):
             return "<Foo 42>"
 
@@ -88,7 +87,7 @@ def test_debug_repr():
     a.append(a)
     assert debug_repr(a) == '[<span class="number">1</span>, [...]]'
 
-    class Foo(object):
+    class Foo:
         def __repr__(self):
             1 / 0
 
@@ -98,7 +97,7 @@ def test_debug_repr():
 
 
 def test_object_dumping():
-    class Foo(object):
+    class Foo:
         x = 42
         y = 23
 
