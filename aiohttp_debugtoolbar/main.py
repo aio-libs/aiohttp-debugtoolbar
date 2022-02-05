@@ -1,6 +1,11 @@
 import secrets
+import sys
 from pathlib import Path
-from typing import Iterable, Literal, Sequence, Type, TypedDict, Union
+from typing import Iterable, Sequence, Type, Union
+if sys.version_info >= (3, 8):
+    from typing import Literal, TypedDict
+else:
+    from typing_extensions import Literal, TypedDict
 
 import aiohttp_jinja2
 import jinja2
