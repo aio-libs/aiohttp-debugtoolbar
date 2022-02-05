@@ -63,7 +63,8 @@ def replace_insensitive(string, target, replacement):
     no_case = string.lower()
     index = no_case.rfind(target.lower())
     if index >= 0:
-        return string[:index] + replacement + string[index + len(target):]
+        start = index + len(target)
+        return string[:index] + replacement + string[start:]
     else:  # no results so return the original string
         return string
 
