@@ -10,6 +10,14 @@ from .logger import LoggingPanel
 
 
 # flake8
-(HeaderDebugPanel, PerformanceDebugPanel, SettingsDebugPanel, TracebackPanel,
- MiddlewaresDebugPanel, VersionDebugPanel, RoutesDebugPanel,
- RequestVarsDebugPanel, LoggingPanel)
+(
+    HeaderDebugPanel,
+    PerformanceDebugPanel,
+    SettingsDebugPanel,
+    TracebackPanel,
+    MiddlewaresDebugPanel,
+    VersionDebugPanel,
+    RoutesDebugPanel,
+    RequestVarsDebugPanel,
+    LoggingPanel,
+)

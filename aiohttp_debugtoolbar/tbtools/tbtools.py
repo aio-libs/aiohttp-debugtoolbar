@@ -24,11 +24,13 @@ from ..utils import render, STATIC_ROUTE_NAME, APP_KEY
 from ..utils import escape
 from ..utils import ROOT_ROUTE_NAME
 from ..utils import EXC_ROUTE_NAME
-_coding_re = re.compile(r'coding[:=]\s*([-\w.]+)')
-_line_re = re.compile(r'^(.*?)$', re.M)
-_funcdef_re = re.compile(r'^(\s*(?:async\s+?)?def\s)|'
-                         r'(.*(?<!\w)lambda(:|\s))|^(\s*@)')
-UTF8_COOKIE = '\xef\xbb\xbf'
+
+_coding_re = re.compile(r"coding[:=]\s*([-\w.]+)")
+_line_re = re.compile(r"^(.*?)$", re.M)
+_funcdef_re = re.compile(
+    r"^(\s*(?:async\s+?)?def\s)|" r"(.*(?<!\w)lambda(:|\s))|^(\s*@)"
+)
+UTF8_COOKIE = "\xef\xbb\xbf"
 
 system_exceptions = (SystemExit, KeyboardInterrupt)
 try:
@@ -36,32 +38,38 @@ try:
 except NameError:
     pass
 
-FRAME_HTML = '''\
+FRAME_HTML = """\
 <div class="frame" id="frame-%(id)d">
   <h4>File <cite class="filename">"%(filename)s"</cite>,
       line <em class="line">%(lineno)s</em>,
       in <code class="function">%(function_name)s</code></h4>
   <pre>%(current_line)s</pre>
 </div>
-'''
+"""
 
 
-def get_current_traceback(*, ignore_system_exceptions=False,
-                          show_hidden_frames=False, skip=0, exc, app):
+def get_current_traceback(
+    *, ignore_system_exceptions=False, show_hidden_frames=False, skip=0, exc, app
+):
     """Get the current exception info as `Traceback` object.  Per default
     calling this method will reraise system exceptions such as generator exit,
     system exit or others.  This behavior can be disabled by passing `False`
     to the function as first parameter.
     """
     info = sys.exc_info()
-    return get_traceback(info,
-                         ignore_system_exceptions=ignore_system_exceptions,
-                         show_hidden_frames=show_hidden_frames, skip=skip,
-                         exc=exc, app=app)
+    return get_traceback(
+        info,
+        ignore_system_exceptions=ignore_system_exceptions,
+        show_hidden_frames=show_hidden_frames,
+        skip=skip,
+        exc=exc,
+        app=app,
+    )
 
 
-def get_traceback(info, *, ignore_system_exceptions=False,
-                  show_hidden_frames=False, skip=0, exc, app):
+def get_traceback(
+    info, *, ignore_system_exceptions=False, show_hidden_frames=False, skip=0, exc, app
+):
     exc_type, exc_value, tb = info
     if ignore_system_exceptions and exc_type in system_exceptions:
         raise exc
@@ -85,8 +93,8 @@ class Traceback:
         self.exc_value = exc_value
         if not isinstance(exc_type, str):
             exception_type = exc_type.__name__
-            if exc_type.__module__ not in ('__builtin__', 'exceptions'):
-                exception_type = exc_type.__module__ + '.' + exception_type
+            if exc_type.__module__ not in ("__builtin__", "exceptions"):
+                exception_type = exc_type.__module__ + "." + exception_type
         else:
             exception_type = exc_type
         self.exception_type = exception_type
@@ -107,18 +115,18 @@ class Traceback:
         hidden = False
         for frame in self.frames:
             hide = frame.hide
-            if hide in ('before', 'before_and_this'):
+            if hide in ("before", "before_and_this"):
                 new_frames = []
                 hidden = False
-                if hide == 'before_and_this':
+                if hide == "before_and_this":
                     continue
-            elif hide in ('reset', 'reset_and_this'):
+            elif hide in ("reset", "reset_and_this"):
                 hidden = False
-                if hide == 'reset_and_this':
+                if hide == "reset_and_this":
                     continue
-            elif hide in ('after', 'after_and_this'):
+            elif hide in ("after", "after_and_this"):
                 hidden = True
-                if hide == 'after_and_this':
+                if hide == "after_and_this":
                     continue
             elif hide or hidden:
                 continue
@@ -126,7 +134,7 @@ class Traceback:
 
         # if we only have one frame and that frame is from the codeop
         # module, remove it.
-        if len(new_frames) == 1 and self.frames[0].module == 'codeop':
+        if len(new_frames) == 1 and self.frames[0].module == "codeop":
             del self.frames[:]
 
         # if the last frame is missing something went terrible wrong :(
@@ -136,12 +144,13 @@ class Traceback:
     def is_syntax_error(self):
         """Is it a syntax error?"""
         return isinstance(self.exc_value, SyntaxError)
+
     is_syntax_error = property(is_syntax_error)
 
     def exception(self):
         """String representation of the exception."""
         buf = traceback.format_exception_only(self.exc_type, self.exc_value)
-        return ''.join(buf).strip()
+        return "".join(buf).strip()
 
     exception = property(exception)
 
@@ -149,8 +158,9 @@ class Traceback:
         """Log the ASCII traceback into a file object."""
         if logfile is None:
             logfile = sys.stderr
-        tb = self.plaintext.encode('utf-8', 'replace').rstrip() + '\n'
+        tb = self.plaintext.encode("utf-8", "replace").rstrip() + "\n"
         logfile.write(tb)
+
     # TODO: Looks like dead code
     # def paste(self, lodgeit_url):
     #     """Create a paste and return the paste id."""
@@ -160,87 +170,84 @@ class Traceback:
 
     def render_summary(self, app, include_title=True):
         """Render the traceback for the interactive console."""
-        title = ''
+        title = ""
         frames = []
-        classes = ['traceback']
+        classes = ["traceback"]
         if not self.frames:
-            classes.append('noframe-traceback')
+            classes.append("noframe-traceback")
 
         if include_title:
             if self.is_syntax_error:
-                title = text_('Syntax Error')
+                title = text_("Syntax Error")
             else:
-                title = text_('Traceback <small>(most recent call last)'
-                              '</small>')
+                title = text_("Traceback <small>(most recent call last)" "</small>")
 
         for frame in self.frames:
             txt = frame.info
             if not txt:
                 txt = text_(' title="%s"' % escape(frame.info))
             if not txt:
-                txt = text_('')
-            frames.append(
-                text_('<li%s>%s') % (txt, frame.render()))
+                txt = text_("")
+            frames.append(text_("<li%s>%s") % (txt, frame.render()))
 
         if self.is_syntax_error:
-            description_wrapper = text_('<pre class=syntaxerror>%s</pre>')
+            description_wrapper = text_("<pre class=syntaxerror>%s</pre>")
         else:
-            description_wrapper = text_('<blockquote>%s</blockquote>')
+            description_wrapper = text_("<blockquote>%s</blockquote>")
         vars = {
-            'classes': text_(' '.join(classes)),
-            'title': title and text_('<h3 class="traceback">%s</h3>'
-                                     % title) or text_(''),
-            'frames': text_('\n'.join(frames)),
-            'description': description_wrapper % escape(self.exception),
+            "classes": text_(" ".join(classes)),
+            "title": title
+            and text_('<h3 class="traceback">%s</h3>' % title)
+            or text_(""),
+            "frames": text_("\n".join(frames)),
+            "description": description_wrapper % escape(self.exception),
         }
-        return render('exception_summary.jinja2', app, vars)
+        return render("exception_summary.jinja2", app, vars)
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
-        static_path = request.app.router[STATIC_ROUTE_NAME].url_for(
-            filename='')
+        static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename="")
         root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
         exc = escape(self.exception)
         summary = self.render_summary(request.app, include_title=False)
-        token = request.app[APP_KEY]['pdtb_token']
-        qs = {'token': token, 'tb': str(self.id)}
+        token = request.app[APP_KEY]["pdtb_token"]
+        qs = {"token": token, "tb": str(self.id)}
 
         url = request.app.router[EXC_ROUTE_NAME].url_for().with_query(qs)
-        evalex = request.app[APP_KEY]['exc_history'].eval_exc
+        evalex = request.app[APP_KEY]["exc_history"].eval_exc
 
         vars = {
-            'evalex': evalex and 'true' or 'false',
-            'console': 'false',
-            'lodgeit_url': escape(lodgeit_url),
-            'title': exc,
-            'exception': exc,
-            'exception_type': escape(self.exception_type),
-            'summary': summary,
-            'plaintext': self.plaintext,
-            'plaintext_cs': re.sub('-{2,}', '-', self.plaintext),
-            'traceback_id': self.id,
-            'static_path': static_path,
-            'token': token,
-            'root_path': root_path,
-            'url': url,
+            "evalex": evalex and "true" or "false",
+            "console": "false",
+            "lodgeit_url": escape(lodgeit_url),
+            "title": exc,
+            "exception": exc,
+            "exception_type": escape(self.exception_type),
+            "summary": summary,
+            "plaintext": self.plaintext,
+            "plaintext_cs": re.sub("-{2,}", "-", self.plaintext),
+            "traceback_id": self.id,
+            "static_path": static_path,
+            "token": token,
+            "root_path": root_path,
+            "url": url,
         }
-        return render('exception.jinja2', request.app, vars, request=request)
+        return render("exception.jinja2", request.app, vars, request=request)
 
     def generate_plaintext_traceback(self):
         """Like the plaintext attribute but returns a generator"""
-        yield text_('Traceback (most recent call last):')
+        yield text_("Traceback (most recent call last):")
         for frame in self.frames:
-            yield text_('  File "%s", line %s, in %s' % (
-                frame.filename,
-                frame.lineno,
-                frame.function_name
-            ))
-            yield text_('    ' + frame.current_line.strip())
-        yield text_(self.exception, 'utf-8')
+            yield text_(
+                '  File "%s", line %s, in %s'
+                % (frame.filename, frame.lineno, frame.function_name)
+            )
+            yield text_("    " + frame.current_line.strip())
+        yield text_(self.exception, "utf-8")
 
     @reify
     def plaintext(self):
-        return text_('\n'.join(self.generate_plaintext_traceback()))
+        return text_("\n".join(self.generate_plaintext_traceback()))
 
     id = property(lambda x: id(x))
 
@@ -257,60 +264,61 @@ class Frame:
         self.globals = tb.tb_frame.f_globals
 
         fn = inspect.getsourcefile(tb) or inspect.getfile(tb)
-        if fn[-4:] in ('.pyo', '.pyc'):
+        if fn[-4:] in (".pyo", ".pyc"):
             fn = fn[:-1]
         # if it's a file on the file system resolve the real filename.
         if os.path.isfile(fn):
             fn = os.path.realpath(fn)
         self.filename = fn
-        self.module = self.globals.get('__name__')
-        self.loader = self.globals.get('__loader__')
+        self.module = self.globals.get("__name__")
+        self.loader = self.globals.get("__loader__")
         self.code = tb.tb_frame.f_code
 
         # support for paste's traceback extensions
-        self.hide = self.locals.get('__traceback_hide__', False)
-        info = self.locals.get('__traceback_info__')
+        self.hide = self.locals.get("__traceback_hide__", False)
+        info = self.locals.get("__traceback_info__")
         if info is not None:
             try:
                 info = str(info)
             except UnicodeError:
-                info = str(info).decode('utf-8', 'replace')
+                info = str(info).decode("utf-8", "replace")
         self.info = info
 
     def render(self):
         """Render a single frame in a traceback."""
         return FRAME_HTML % {
-            'id': self.id,
-            'filename': escape(self.filename),
-            'lineno': self.lineno,
-            'function_name': escape(self.function_name),
-            'current_line': escape(self.current_line.strip())
+            "id": self.id,
+            "filename": escape(self.filename),
+            "lineno": self.lineno,
+            "function_name": escape(self.function_name),
+            "current_line": escape(self.current_line.strip()),
         }
 
     def get_in_frame_range(self):
         # find function definition and mark lines
-        if hasattr(self.code, 'co_firstlineno'):
+        if hasattr(self.code, "co_firstlineno"):
             lineno = self.code.co_firstlineno - 1
             while lineno > 0:
                 if _funcdef_re.match(self.sourcelines[lineno]):
                     break
                 lineno -= 1
             try:
-                offset = len(inspect.getblock([x + '\n' for x
-                                               in self.sourcelines[lineno:]]))
+                offset = len(
+                    inspect.getblock([x + "\n" for x in self.sourcelines[lineno:]])
+                )
             except TokenError:
                 offset = 0
 
             return (lineno, lineno + offset)
         return None
 
-    def eval(self, code, mode='single'):
+    def eval(self, code, mode="single"):
         """Evaluate code in the context of the frame."""
         if isinstance(code, str):
             if isinstance(code, str):
-                code = UTF8_COOKIE + code.encode('utf-8')
-            code = compile(code, '<interactive>', mode)
-        if mode != 'exec':
+                code = UTF8_COOKIE + code.encode("utf-8")
+            code = compile(code, "<interactive>", mode)
+        if mode != "exec":
             return eval(code, self.globals, self.locals)
         exec(code, self.globals, self.locals)
 
@@ -321,9 +329,9 @@ class Frame:
         source = None
         if self.loader is not None:
             try:
-                if hasattr(self.loader, 'get_source'):
+                if hasattr(self.loader, "get_source"):
                     source = self.loader.get_source(self.module)
-                elif hasattr(self.loader, 'get_source_by_code'):
+                elif hasattr(self.loader, "get_source_by_code"):
                     source = self.loader.get_source_by_code(self.code)
             except Exception:
                 # we munch the exception so that we don't cause troubles
@@ -346,7 +354,7 @@ class Frame:
 
         # yes. it should be ascii, but we don't want to reject too many
         # characters in the debugger if something breaks
-        charset = 'utf-8'
+        charset = "utf-8"
         if source.startswith(UTF8_COOKIE):
             source = source[3:]
         else:
@@ -362,16 +370,16 @@ class Frame:
         try:
             codecs.lookup(charset)
         except LookupError:
-            charset = 'utf-8'
+            charset = "utf-8"
 
-        return source.decode(charset, 'replace').splitlines()
+        return source.decode(charset, "replace").splitlines()
 
     @property
     def current_line(self):
         try:
             return self.sourcelines[self.lineno - 1]
         except IndexError:
-            return text_('')
+            return text_("")
 
     @reify
     def console(self):

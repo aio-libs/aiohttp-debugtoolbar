@@ -5,11 +5,13 @@ import aiohttp_jinja2
 from aiohttp import web
 
 
-@aiohttp_jinja2.template('index.html')
+@aiohttp_jinja2.template("index.html")
 def basic_handler(request):
-    return {'title': 'example aiohttp_debugtoolbar!',
-            'text': 'Hello aiohttp_debugtoolbar!',
-            'app': request.app}
+    return {
+        "title": "example aiohttp_debugtoolbar!",
+        "text": "Hello aiohttp_debugtoolbar!",
+        "app": request.app,
+    }
 
 
 async def exception_handler(request):
@@ -37,14 +39,14 @@ async def init(loop):
     </html>
     """
     # install jinja2 templates
-    loader = jinja2.DictLoader({'index.html': template})
+    loader = jinja2.DictLoader({"index.html": template})
     aiohttp_jinja2.setup(app, loader=loader)
 
     # init routes for index page, and page with error
-    app.router.add_route('GET', '/', basic_handler, name='index')
-    app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
+    app.router.add_route("GET", "/", basic_handler, name="index")
+    app.router.add_route("GET", "/exc", exception_handler, name="exc_example")
 
     return app
 
 
-web.run_app(init(), host='127.0.0.1', port=9000)
+web.run_app(init(), host="127.0.0.1", port=9000)

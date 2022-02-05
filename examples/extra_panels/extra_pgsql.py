@@ -5,7 +5,7 @@ import inspect
 from aiohttp_debugtoolbar.panels.base import DebugPanel
 from aiopg.cursor import Cursor
 
-__all__ = ['RequestPgDebugPanel']
+__all__ = ["RequestPgDebugPanel"]
 
 
 class RequestHandler(object):
@@ -32,21 +32,23 @@ class RequestHandler(object):
 
             called_from = []
             for stack in inspect.stack()[1:]:
-                called_from.append("/{0}:{1}".format(
-                    "/".join(stack[1].split('/')[-3:]), stack[2]))
+                called_from.append(
+                    "/{0}:{1}".format("/".join(stack[1].split("/")[-3:]), stack[2])
+                )
                 if len(called_from) >= 2:
                     break
 
             elapsed = time.time() - start
             arg = {
-                'query': args[1].strip().replace(
-                    "\n", "<br>").replace(
-                    "\t", "&nbsp;&nbsp;").replace(
-                    "    ", "&nbsp;&nbsp;"),
-                'params': args[2] if len(args) > 2 else [],
-                'other': dict(kwargs),
-                'elapsed': '%0.3f sec' % elapsed,
-                'called_from': "<br/>".join(reversed(called_from)),
+                "query": args[1]
+                .strip()
+                .replace("\n", "<br>")
+                .replace("\t", "&nbsp;&nbsp;")
+                .replace("    ", "&nbsp;&nbsp;"),
+                "params": args[2] if len(args) > 2 else [],
+                "other": dict(kwargs),
+                "elapsed": "%0.3f sec" % elapsed,
+                "called_from": "<br/>".join(reversed(called_from)),
             }
             self._queries.append(arg)
             self._total_time += elapsed
@@ -66,9 +68,10 @@ class RequestPgDebugPanel(DebugPanel):
     """
     A panel to display SQL queries.
     """
-    name = 'PgSQL'
-    template = 'request_pgsql.jinja2'
-    title = 'PgSQL Queries'
+
+    name = "PgSQL"
+    template = "request_pgsql.jinja2"
+    title = "PgSQL Queries"
     nav_title = title
 
     def __init__(self, request):
@@ -77,20 +80,21 @@ class RequestPgDebugPanel(DebugPanel):
 
     @property
     def has_content(self):
-        if self.data.get('queries'):
+        if self.data.get("queries"):
             return True
         return False
 
     async def process_response(self, response):
         self.data = data = {}
-        data.update({
-            'timing_rows': {
-                'Total time': '%0.3f sec' % self._handler.total_time,
-                'Total': len(self._handler.queries),
-            }.items(),
-            'queries': [(k, v)
-                        for k, v in enumerate(self._handler.queries)],
-        })
+        data.update(
+            {
+                "timing_rows": {
+                    "Total time": "%0.3f sec" % self._handler.total_time,
+                    "Total": len(self._handler.queries),
+                }.items(),
+                "queries": [(k, v) for k, v in enumerate(self._handler.queries)],
+            }
+        )
 
     def _install_handler(self):
         self._handler.on()

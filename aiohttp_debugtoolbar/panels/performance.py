@@ -22,7 +22,7 @@ from .base import DebugPanel
 from ..utils import format_fname
 
 
-__all__ = ['PerformanceDebugPanel']
+__all__ = ["PerformanceDebugPanel"]
 
 
 class PerformanceDebugPanel(DebugPanel):
@@ -32,14 +32,15 @@ class PerformanceDebugPanel(DebugPanel):
     It will display the time a request took and, optionally, the
     cProfile output.
     """
-    name = 'Performance'
+
+    name = "Performance"
     user_activate = True
     stats = None
     function_calls = None
     has_resource = bool(resource)
     has_content = bool(pstats and profile)
-    template = 'performance.jinja2'
-    title = 'Performance'
+    template = "performance.jinja2"
+    title = "Performance"
     nav_title = title
 
     def __init__(self, request):
@@ -49,6 +50,7 @@ class PerformanceDebugPanel(DebugPanel):
 
     def _wrap_timer_handler(self, handler):
         if self.has_resource:
+
             async def resource_timer_handler(request):
                 _start_time = time.time()
                 self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
@@ -92,40 +94,40 @@ class PerformanceDebugPanel(DebugPanel):
             finally:
                 stats = pstats.Stats(self.profiler)
                 function_calls = []
-                flist = stats.sort_stats('cumulative').fcn_list
+                flist = stats.sort_stats("cumulative").fcn_list
                 for func in flist:
                     current = {}
                     info = stats.stats[func]
 
                     # Number of calls
                     if info[0] != info[1]:
-                        current['ncalls'] = '%d/%d' % (info[1], info[0])
+                        current["ncalls"] = "%d/%d" % (info[1], info[0])
                     else:
-                        current['ncalls'] = info[1]
+                        current["ncalls"] = info[1]
 
                     # Total time
-                    current['tottime'] = info[2] * 1000
+                    current["tottime"] = info[2] * 1000
 
                     # Quotient of total time divided by number of calls
                     if info[1]:
-                        current['percall'] = info[2] * 1000 / info[1]
+                        current["percall"] = info[2] * 1000 / info[1]
                     else:
-                        current['percall'] = 0
+                        current["percall"] = 0
 
                     # Cumulative time
-                    current['cumtime'] = info[3] * 1000
+                    current["cumtime"] = info[3] * 1000
 
                     # Quotient of the cumulative time divided by the number
                     # of primitive calls.
                     if info[0]:
-                        current['percall_cum'] = info[3] * 1000 / info[0]
+                        current["percall_cum"] = info[3] * 1000 / info[0]
                     else:
-                        current['percall_cum'] = 0
+                        current["percall_cum"] = 0
 
                     # Filename
                     filename = pstats.func_std_string(func)
-                    current['filename_long'] = filename
-                    current['filename'] = format_fname(filename)
+                    current["filename_long"] = filename
+                    current["filename"] = format_fname(filename)
                     function_calls.append(current)
 
                 self.stats = stats
@@ -142,19 +144,18 @@ class PerformanceDebugPanel(DebugPanel):
 
     @property
     def nav_subtitle(self):
-        return '%0.2fms' % (self.total_time)
+        return "%0.2fms" % (self.total_time)
 
     def _elapsed_ru(self, name):
-        return getattr(self._end_rusage, name) - getattr(self._start_rusage,
-                                                         name)
+        return getattr(self._end_rusage, name) - getattr(self._start_rusage, name)
 
     async def process_response(self, response):
-        vars = {'timing_rows': None, 'stats': None, 'function_calls': []}
+        vars = {"timing_rows": None, "stats": None, "function_calls": []}
         if self.has_resource:
-            utime = 1000 * self._elapsed_ru('ru_utime')
-            stime = 1000 * self._elapsed_ru('ru_stime')
-            vcsw = self._elapsed_ru('ru_nvcsw')
-            ivcsw = self._elapsed_ru('ru_nivcsw')
+            utime = 1000 * self._elapsed_ru("ru_utime")
+            stime = 1000 * self._elapsed_ru("ru_stime")
+            vcsw = self._elapsed_ru("ru_nvcsw")
+            ivcsw = self._elapsed_ru("ru_nivcsw")
             # minflt = self._elapsed_ru('ru_minflt')
             # majflt = self._elapsed_ru('ru_majflt')
 
@@ -173,12 +174,11 @@ class PerformanceDebugPanel(DebugPanel):
 
             # TODO l10n on values
             rows = (
-                ('User CPU time', '%0.3f msec' % utime),
-                ('System CPU time', '%0.3f msec' % stime),
-                ('Total CPU time', '%0.3f msec' % (utime + stime)),
-                ('Elapsed time', '%0.3f msec' % self.total_time),
-                ('Context switches', '%d voluntary, %d involuntary' % (
-                    vcsw, ivcsw)),
+                ("User CPU time", "%0.3f msec" % utime),
+                ("System CPU time", "%0.3f msec" % stime),
+                ("Total CPU time", "%0.3f msec" % (utime + stime)),
+                ("Elapsed time", "%0.3f msec" % self.total_time),
+                ("Context switches", "%d voluntary, %d involuntary" % (vcsw, ivcsw)),
                 # (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
                 # rss, srss, urss + usrss)),
                 # (_('Page faults'), '%d no i/o, %d requiring i/o' % (
@@ -186,8 +186,8 @@ class PerformanceDebugPanel(DebugPanel):
                 # (_('Disk operations'), '%d in, %d out, %d swapout' % (
                 # blkin, blkout, swap)),
             )
-            vars['timing_rows'] = rows
+            vars["timing_rows"] = rows
         if self.is_active:
-            vars['stats'] = self.stats
-            vars['function_calls'] = self.function_calls
+            vars["stats"] = self.stats
+            vars["function_calls"] = self.function_calls
         self.data = vars

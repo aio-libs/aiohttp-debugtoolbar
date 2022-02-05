@@ -6,8 +6,14 @@ import aiohttp_jinja2
 from . import views
 from . import panels
 from .middlewares import middleware
-from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
-    ToolbarStorage, ExceptionHistory
+from .utils import (
+    APP_KEY,
+    TEMPLATE_KEY,
+    STATIC_ROUTE_NAME,
+    hexlify,
+    ToolbarStorage,
+    ExceptionHistory,
+)
 from .views import ExceptionDebugView
 
 
@@ -29,22 +35,22 @@ default_global_panel_names = [
 
 
 default_settings = {
-    'enabled': True,
-    'intercept_exc': 'debug',  # display or debug or False
-    'intercept_redirects': True,
-    'panels': default_panel_names,
-    'extra_panels': [],
-    'extra_templates': [],
-    'global_panels': default_global_panel_names,
-    'extra_global_panels': [],
-    'hosts': ['127.0.0.1', '::1'],
-    'exclude_prefixes': [],
+    "enabled": True,
+    "intercept_exc": "debug",  # display or debug or False
+    "intercept_redirects": True,
+    "panels": default_panel_names,
+    "extra_panels": [],
+    "extra_templates": [],
+    "global_panels": default_global_panel_names,
+    "extra_global_panels": [],
+    "hosts": ["127.0.0.1", "::1"],
+    "exclude_prefixes": [],
     # disable host check
-    'check_host': True,
-    'button_style': '',
-    'max_request_history': 100,
-    'max_visible_requests': 10,
-    'path_prefix': '/_debugtoolbar',
+    "check_host": True,
+    "button_style": "",
+    "max_request_history": 100,
+    "max_visible_requests": 10,
+    "path_prefix": "/_debugtoolbar",
 }
 
 
@@ -58,57 +64,73 @@ def setup(app, **kw):
     if middleware not in app.middlewares:
         app.middlewares.append(middleware)
 
-    templates_app = APP_ROOT / 'templates'
-    templates_panels = APP_ROOT / 'panels/templates'
-    extra_tpl_path = config.get('extra_templates', [])
+    templates_app = APP_ROOT / "templates"
+    templates_panels = APP_ROOT / "panels/templates"
+    extra_tpl_path = config.get("extra_templates", [])
     if isinstance(extra_tpl_path, str):
         extra_tpl_path = [extra_tpl_path]
 
-    app[APP_KEY]['settings'] = config
+    app[APP_KEY]["settings"] = config
     loader = jinja2.FileSystemLoader(
-        [str(templates_app), str(templates_panels)] + list(extra_tpl_path))
+        [str(templates_app), str(templates_panels)] + list(extra_tpl_path)
+    )
     aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
-    static_location = APP_ROOT / 'static'
+    static_location = APP_ROOT / "static"
 
     exc_handlers = ExceptionDebugView()
 
-    path_prefix = config['path_prefix']
-    app.router.add_static(path_prefix + '/static', static_location,
-                          name=STATIC_ROUTE_NAME)
+    path_prefix = config["path_prefix"]
+    app.router.add_static(
+        path_prefix + "/static", static_location, name=STATIC_ROUTE_NAME
+    )
 
-    app.router.add_route('GET', path_prefix + '/source', exc_handlers.source,
-                         name='debugtoolbar.source')
-    app.router.add_route('GET', path_prefix + '/execute', exc_handlers.execute,
-                         name='debugtoolbar.execute')
+    app.router.add_route(
+        "GET", path_prefix + "/source", exc_handlers.source, name="debugtoolbar.source"
+    )
+    app.router.add_route(
+        "GET",
+        path_prefix + "/execute",
+        exc_handlers.execute,
+        name="debugtoolbar.execute",
+    )
     # app.router.add_route('GET', path_prefix + '/console',
     # exc_handlers.console,
     #                      name='debugtoolbar.console')
-    app.router.add_route('GET', path_prefix + '/exception',
-                         exc_handlers.exception,
-                         name='debugtoolbar.exception')
+    app.router.add_route(
+        "GET",
+        path_prefix + "/exception",
+        exc_handlers.exception,
+        name="debugtoolbar.exception",
+    )
     # TODO: fix when sql will be ported
     # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_select',
     #                      name='debugtoolbar.sql_select')
     # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_explain',
     #                      name='debugtoolbar.sql_explain')
 
-    app.router.add_route('GET', path_prefix + '/sse', views.sse,
-                         name='debugtoolbar.sse')
+    app.router.add_route(
+        "GET", path_prefix + "/sse", views.sse, name="debugtoolbar.sse"
+    )
 
-    app.router.add_route('GET', path_prefix + '/{request_id}',
-                         views.request_view, name='debugtoolbar.request')
-    app.router.add_route('GET', path_prefix, views.request_view,
-                         name='debugtoolbar.main')
+    app.router.add_route(
+        "GET",
+        path_prefix + "/{request_id}",
+        views.request_view,
+        name="debugtoolbar.request",
+    )
+    app.router.add_route(
+        "GET", path_prefix, views.request_view, name="debugtoolbar.main"
+    )
 
     def settings_opt(name):
-        return app[APP_KEY]['settings'][name]
+        return app[APP_KEY]["settings"][name]
 
-    max_request_history = settings_opt('max_request_history')
+    max_request_history = settings_opt("max_request_history")
 
-    app[APP_KEY]['request_history'] = ToolbarStorage(max_request_history)
-    app[APP_KEY]['exc_history'] = ExceptionHistory()
-    app[APP_KEY]['pdtb_token'] = hexlify(os.urandom(10))
-    intercept_exc = settings_opt('intercept_exc')
+    app[APP_KEY]["request_history"] = ToolbarStorage(max_request_history)
+    app[APP_KEY]["exc_history"] = ExceptionHistory()
+    app[APP_KEY]["pdtb_token"] = hexlify(os.urandom(10))
+    intercept_exc = settings_opt("intercept_exc")
     if intercept_exc:
-        app[APP_KEY]['exc_history'].eval_exc = intercept_exc == 'debug'
+        app[APP_KEY]["exc_history"].eval_exc = intercept_exc == "debug"

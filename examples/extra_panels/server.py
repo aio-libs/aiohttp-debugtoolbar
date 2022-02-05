@@ -23,11 +23,11 @@ except ImportError:
 PATH_PARENT = pathlib.Path(__file__).parent
 
 
-@aiohttp_jinja2.template('index.html')
+@aiohttp_jinja2.template("index.html")
 async def basic_handler(request):
     # testing for PgSQL
-    if 'db' in request.app:
-        conn = await request.app['db'].acquire()
+    if "db" in request.app:
+        conn = await request.app["db"].acquire()
         cur = await conn.cursor()
 
         await cur.execute("SELECT 1")
@@ -36,17 +36,19 @@ async def basic_handler(request):
             ret.append(row)
         assert ret == [(1,)]
 
-        await request.app['db'].release(conn)
+        await request.app["db"].release(conn)
 
     # testing for Redis
-    if 'redis' in request.app:
-        with (await request.app['redis']) as redis:
-            await redis.set('TEST', 'VAR', expire=5)
-            assert b'VAR' == (yield from redis.get('TEST'))
+    if "redis" in request.app:
+        with (await request.app["redis"]) as redis:
+            await redis.set("TEST", "VAR", expire=5)
+            assert b"VAR" == (yield from redis.get("TEST"))
 
-    return {'title': 'example aiohttp_debugtoolbar!',
-            'text': 'Hello aiohttp_debugtoolbar!',
-            'app': request.app}
+    return {
+        "title": "example aiohttp_debugtoolbar!",
+        "text": "Hello aiohttp_debugtoolbar!",
+        "app": request.app,
+    }
 
 
 async def exception_handler(request):
@@ -54,13 +56,13 @@ async def exception_handler(request):
 
 
 async def close_pg(app):
-    app['db'].close()
-    await app['db'].wait_closed()
+    app["db"].close()
+    await app["db"].wait_closed()
 
 
 async def close_redis(app):
-    app['redis'].close()
-    await app['redis'].wait_closed()
+    app["redis"].close()
+    await app["redis"].wait_closed()
 
 
 async def init():
@@ -68,16 +70,15 @@ async def init():
     app = web.Application()
 
     extra_panels = []
-    if 'aiopg' in sys.modules:
+    if "aiopg" in sys.modules:
         extra_panels.append(RequestPgDebugPanel)
-    if 'aioredis' in sys.modules:
+    if "aioredis" in sys.modules:
         extra_panels.append(RequestRedisDebugPanel)
 
     # install aiohttp_debugtoolbar
     aiohttp_debugtoolbar.setup(
-        app,
-        extra_panels=extra_panels,
-        extra_templates=str(PATH_PARENT / 'extra_tpl'))
+        app, extra_panels=extra_panels, extra_templates=str(PATH_PARENT / "extra_tpl")
+    )
 
     template = """
     <html>
@@ -94,29 +95,29 @@ async def init():
     </html>
     """
     # install jinja2 templates
-    loader = jinja2.DictLoader({'index.html': template})
+    loader = jinja2.DictLoader({"index.html": template})
     aiohttp_jinja2.setup(app, loader=loader)
 
     # init routes for index page, and page with error
-    app.router.add_route('GET', '/', basic_handler, name='index')
-    app.router.add_route('GET', '/exc', exception_handler, name='exc_example')
+    app.router.add_route("GET", "/", basic_handler, name="index")
+    app.router.add_route("GET", "/exc", exception_handler, name="exc_example")
 
-    if 'aiopg' in sys.modules:
+    if "aiopg" in sys.modules:
         # create connection to the database
-        dsn = 'host={host} dbname={db} user={user} password={passw} '.format(
-            db='postgres', user='developer', passw='1', host='localhost')
-        app['db'] = yield from aiopg.create_pool(
-            dsn, minsize=1, maxsize=2)
+        dsn = "host={host} dbname={db} user={user} password={passw} ".format(
+            db="postgres", user="developer", passw="1", host="localhost"
+        )
+        app["db"] = yield from aiopg.create_pool(dsn, minsize=1, maxsize=2)
         # Correct PostgreSQL shutdown
         app.on_cleanup.append(close_pg)
 
-    if 'aioredis' in sys.modules:
+    if "aioredis" in sys.modules:
         # create redis pool
-        app['redis'] = yield from create_pool(('127.0.0.1', '6379'))
+        app["redis"] = yield from create_pool(("127.0.0.1", "6379"))
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 
     return app
 
 
-web.run_app(init(), host='127.0.0.1', port=9000)
+web.run_app(init(), host="127.0.0.1", port=9000)

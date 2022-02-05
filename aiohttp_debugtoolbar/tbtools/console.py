@@ -41,26 +41,26 @@ class HTMLStringO:
 
     def readline(self):
         if len(self._buffer) == 0:
-            return ''
+            return ""
         ret = self._buffer[0]
         del self._buffer[0]
         return ret
 
     def reset(self):
-        val = ''.join(self._buffer)
+        val = "".join(self._buffer)
         del self._buffer[:]
         return val
 
     def _write(self, x):
         if isinstance(x, bytes):
-            x = str(x, encoding='utf-8', errors='replace')
+            x = str(x, encoding="utf-8", errors="replace")
         self._buffer.append(x)
 
     def write(self, x):
         self._write(escape(x))
 
     def writelines(self, x):
-        self._write(escape(''.join(x)))
+        self._write(escape("".join(x)))
 
 
 class ThreadedStream(object):
@@ -70,14 +70,16 @@ class ThreadedStream(object):
         if not isinstance(sys.stdout, ThreadedStream):
             sys.stdout = ThreadedStream()
         _local.stream = HTMLStringO()
+
     push = staticmethod(push)
 
     def fetch():
         try:
             stream = _local.stream
         except AttributeError:
-            return ''
+            return ""
         return stream.reset()
+
     fetch = staticmethod(fetch)
 
     def displayhook(obj):
@@ -88,18 +90,19 @@ class ThreadedStream(object):
         # stream._write bypasses escaping as debug_repr is
         # already generating HTML for us.
         if obj is not None:
-            _local._current_ipy.locals['_'] = obj
+            _local._current_ipy.locals["_"] = obj
             stream._write(debug_repr(obj))
+
     displayhook = staticmethod(displayhook)
 
     def __setattr__(self, name, value):
-        raise AttributeError('read only attribute %s' % name)
+        raise AttributeError("read only attribute %s" % name)
 
     def __dir__(self):
         return dir(sys.__stdout__)
 
     def __getattribute__(self, name):
-        if name == '__members__':
+        if name == "__members__":
             return dir(sys.__stdout__)
         try:
             stream = _local.stream
@@ -117,7 +120,6 @@ sys.displayhook = ThreadedStream.displayhook
 
 
 class _ConsoleLoader(object):
-
     def __init__(self):
         self._storage = {}
 
@@ -142,30 +144,31 @@ def _wrap_compiler(console):
         code = compile(source, filename, symbol)
         console.loader.register(code, source)
         return code
+
     console.compile = func
 
 
 class _InteractiveConsole(code.InteractiveInterpreter):
-
     def __init__(self, app, globals, locals):
         self._app = app
         code.InteractiveInterpreter.__init__(self, locals)
         self.globals = dict(globals)
-        self.globals['dump'] = dump
-        self.globals['help'] = helper
-        self.globals['__loader__'] = self.loader = _ConsoleLoader()
+        self.globals["dump"] = dump
+        self.globals["help"] = helper
+        self.globals["__loader__"] = self.loader = _ConsoleLoader()
         self.more = False
         self.buffer = []
         _wrap_compiler(self)
 
     def runsource(self, source):
-        source = source.rstrip() + '\n'
+        source = source.rstrip() + "\n"
         ThreadedStream.push()
-        prompt = self.more and '... ' or '>>> '
+        prompt = self.more and "... " or ">>> "
         try:
-            source_to_eval = ''.join(self.buffer + [source])
-            if code.InteractiveInterpreter.runsource(self,
-               source_to_eval, '<debugger>', 'single'):
+            source_to_eval = "".join(self.buffer + [source])
+            if code.InteractiveInterpreter.runsource(
+                self, source_to_eval, "<debugger>", "single"
+            ):
                 self.more = True
                 self.buffer.append(source)
             else:
@@ -183,11 +186,13 @@ class _InteractiveConsole(code.InteractiveInterpreter):
 
     def showtraceback(self, exc):
         from .tbtools import get_current_traceback
+
         tb = get_current_traceback(skip=1, exc=exc, app=self._app)
         sys.stdout._write(tb.render_summary(self._app))
 
     def showsyntaxerror(self, filename=None):
         from .tbtools import get_current_traceback
+
         exc = SyntaxError(filename)
         tb = get_current_traceback(skip=6, exc=exc, app=self._app)
         sys.stdout._write(tb.render_summary(self._app))
@@ -220,6 +225,7 @@ class _ConsoleFrame:
     """Helper class so that we can reuse the frame console code for the
     standalone console.
     """
+
     def __init__(self, namespace, app):
         self.console = Console(namespace, app)
         self.id = 0

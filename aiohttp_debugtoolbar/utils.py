@@ -6,21 +6,21 @@ import sys
 from collections import deque
 from itertools import islice
 
-APP_KEY = 'aiohttp_debugtoolbar'
-TEMPLATE_KEY = 'aiohttp_debugtoolbar_jinja2'
+APP_KEY = "aiohttp_debugtoolbar"
+TEMPLATE_KEY = "aiohttp_debugtoolbar_jinja2"
 
 REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
-STATIC_PATH = 'static/'
-ROOT_ROUTE_NAME = 'debugtoolbar.main'
-STATIC_ROUTE_NAME = 'debugtoolbar.static'
-EXC_ROUTE_NAME = 'debugtoolbar.exception'
+STATIC_PATH = "static/"
+ROOT_ROUTE_NAME = "debugtoolbar.main"
+STATIC_ROUTE_NAME = "debugtoolbar.static"
+EXC_ROUTE_NAME = "debugtoolbar.exception"
 
 
 def hexlify(value):
     # value must be int or bytes
     if isinstance(value, int):
-        value = bytes(str(value), encoding='utf-8')
-    return str(binascii.hexlify(value), encoding='utf-8')
+        value = bytes(str(value), encoding="utf-8")
+    return str(binascii.hexlify(value), encoding="utf-8")
 
 
 # TODO: refactor to simpler container or change to ordered dict
@@ -43,11 +43,10 @@ class ToolbarStorage(deque):
 
 
 class ExceptionHistory:
-
     def __init__(self):
         self.frames = {}
         self.tracebacks = {}
-        self.eval_exc = 'show'
+        self.eval_exc = "show"
 
 
 def addr_in(addr, hosts):
@@ -65,7 +64,7 @@ def replace_insensitive(string, target, replacement):
     no_case = string.lower()
     index = no_case.rfind(target.lower())
     if index >= 0:
-        return string[:index] + replacement + string[index + len(target):]
+        return string[:index] + replacement + string[index + len(target) :]
     else:  # no results so return the original string
         return string
 
@@ -98,11 +97,11 @@ def format_fname(value, _sys_path=None):
     # If the value is not an absolute path, the it is a builtin or
     # a relative file (thus a project file).
     if not os.path.isabs(value):
-        if value.startswith(('{', '<')):
+        if value.startswith(("{", "<")):
             return value
-        if value.startswith('.' + os.path.sep):
+        if value.startswith("." + os.path.sep):
             return value
-        return '.' + os.path.sep + value
+        return "." + os.path.sep + value
 
     # Loop through sys.path to find the longest match and return
     # the relative path from there.
@@ -112,7 +111,7 @@ def format_fname(value, _sys_path=None):
         count = common_segment_count(path.split(os.path.sep), value_segs)
         if count > prefix_len:
             prefix_len = count
-    return '<%s>' % os.path.sep.join(value_segs[prefix_len:])
+    return "<%s>" % os.path.sep.join(value_segs[prefix_len:])
 
 
 def escape(s, quote=False):
@@ -126,16 +125,16 @@ def escape(s, quote=False):
     :param quote: set to true to also escape double quotes.
     """
     if s is None:
-        return ''
+        return ""
 
     if not isinstance(s, (str, bytes)):
         s = str(s)
     if isinstance(s, bytes):
         try:
-            s.decode('ascii')
+            s.decode("ascii")
         except UnicodeDecodeError:
-            s = s.decode('utf-8', 'replace')
-    s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            s = s.decode("utf-8", "replace")
+    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     if quote:
         s = s.replace('"', "&quot;")
     return s
@@ -147,16 +146,17 @@ class ContextSwitcher:
 
     see: https://www.python.org/dev/peps/pep-0380/#formal-semantics
     """
+
     def __init__(self):
         self._on_context_switch_out = []
         self._on_context_switch_in = []
 
     def add_context_in(self, callback):
-        assert callable(callback), 'callback should be callable'
+        assert callable(callback), "callback should be callable"
         self._on_context_switch_in.append(callback)
 
     def add_context_out(self, callback):
-        assert callable(callback), 'callback should be callable'
+        assert callable(callback), "callback should be callable"
         self._on_context_switch_out.append(callback)
 
     def __call__(self, expr):
@@ -215,7 +215,7 @@ class ContextSwitcher:
 
 
 class _Coro:
-    __slots__ = ('_it')
+    __slots__ = "_it"
 
     def __init__(self, it):
         self._it = it
