@@ -6,7 +6,7 @@ from typing import Iterable, Sequence, Type, Union
 if sys.version_info >= (3, 8):
     from typing import Literal, TypedDict
 else:
-    from typing_extensions import Literal, TypedDict
+    from typing_extensions import Literal, TypedDict  # noqa: I900
 
 import aiohttp_jinja2
 import jinja2
