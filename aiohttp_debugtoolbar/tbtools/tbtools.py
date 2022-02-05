@@ -11,10 +11,12 @@ import os
 import re
 import sys
 import traceback
+from contextlib import suppress
 from tokenize import TokenError
 
 from aiohttp.helpers import reify
 
+from .console import Console
 from ..tbtools import text_
 from ..utils import (
     APP_KEY,
@@ -24,7 +26,6 @@ from ..utils import (
     escape,
     render,
 )
-from .console import Console
 
 _coding_re = re.compile(r"coding[:=]\s*([-\w.]+)")
 _line_re = re.compile(r"^(.*?)$", re.M)
@@ -74,7 +75,7 @@ def get_traceback(
     exc_type, exc_value, tb = info
     if ignore_system_exceptions and exc_type in system_exceptions:
         raise exc
-    for x in range(skip):
+    for _i in range(skip):
         if tb.tb_next is None:
             break
         tb = tb.tb_next
@@ -320,8 +321,8 @@ class Frame:
                 code = UTF8_COOKIE + code.encode("utf-8")
             code = compile(code, "<interactive>", mode)
         if mode != "exec":
-            return eval(code, self.globals, self.locals)
-        exec(code, self.globals, self.locals)
+            return eval(code, self.globals, self.locals)  # noqa: S307
+        exec(code, self.globals, self.locals)  # noqa: S102
 
     @reify
     def sourcelines(self):
@@ -329,15 +330,12 @@ class Frame:
         # get sourcecode from loader or file
         source = None
         if self.loader is not None:
-            try:
+            # Suppress exception so that we don't cause trouble if the loader is broken.
+            with suppress(Exception):
                 if hasattr(self.loader, "get_source"):
                     source = self.loader.get_source(self.module)
                 elif hasattr(self.loader, "get_source_by_code"):
                     source = self.loader.get_source_by_code(self.code)
-            except Exception:
-                # we munch the exception so that we don't cause troubles
-                # if the loader is broken.
-                pass
 
         if source is None:
             try:

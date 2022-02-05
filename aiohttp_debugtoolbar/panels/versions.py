@@ -2,7 +2,7 @@ import platform
 import sys
 from operator import itemgetter
 
-import pkg_resources
+import pkg_resources  # noqa: I900
 
 from .base import DebugPanel
 
@@ -18,9 +18,9 @@ for distribution in pkg_resources.working_set:
     metadata_file = distribution.PKG_INFO
     lines = distribution.get_metadata_lines(metadata_file)
     url = "#"
-    for l in lines:
-        if l.startswith("Home-page:"):
-            url = l[10:].strip()
+    for line in lines:
+        if line.startswith("Home-page:"):
+            url = line[10:].strip()
             break
 
     packages.append(

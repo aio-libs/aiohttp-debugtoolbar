@@ -63,7 +63,7 @@ def replace_insensitive(string, target, replacement):
     no_case = string.lower()
     index = no_case.rfind(target.lower())
     if index >= 0:
-        return string[:index] + replacement + string[index + len(target) :]
+        return string[:index] + replacement + string[index + len(target):]
     else:  # no results so return the original string
         return string
 
@@ -151,11 +151,13 @@ class ContextSwitcher:
         self._on_context_switch_in = []
 
     def add_context_in(self, callback):
-        assert callable(callback), "callback should be callable"
+        if not callable(callback):
+            raise ValueError("callback should be callable")
         self._on_context_switch_in.append(callback)
 
     def add_context_out(self, callback):
-        assert callable(callback), "callback should be callable"
+        if not callable(callback):
+            raise ValueError("callback should be callable")
         self._on_context_switch_out.append(callback)
 
     def __call__(self, expr):

@@ -10,8 +10,8 @@ import sys
 import threading
 from types import CodeType
 
-from ..utils import escape
 from .repr import debug_repr, dump, helper
+from ..utils import escape
 
 _local = threading.local()
 
@@ -61,13 +61,13 @@ class HTMLStringO:
 class ThreadedStream:
     """Thread-local wrapper for sys.stdout for the interactive console."""
 
+    @staticmethod
     def push():
         if not isinstance(sys.stdout, ThreadedStream):
             sys.stdout = ThreadedStream()
         _local.stream = HTMLStringO()
 
-    push = staticmethod(push)
-
+    @staticmethod
     def fetch():
         try:
             stream = _local.stream
@@ -75,8 +75,7 @@ class ThreadedStream:
             return ""
         return stream.reset()
 
-    fetch = staticmethod(fetch)
-
+    @staticmethod
     def displayhook(obj):
         try:
             stream = _local.stream
@@ -87,8 +86,6 @@ class ThreadedStream:
         if obj is not None:
             _local._current_ipy.locals["_"] = obj
             stream._write(debug_repr(obj))
-
-    displayhook = staticmethod(displayhook)
 
     def __setattr__(self, name, value):
         raise AttributeError("read only attribute %s" % name)
@@ -175,7 +172,7 @@ class _InteractiveConsole(code.InteractiveInterpreter):
 
     def runcode(self, code):
         try:
-            exec(code, self.globals, self.locals)
+            exec(code, self.globals, self.locals)  # noqa: S102
         except Exception as exc:
             self.showtraceback(exc)
 

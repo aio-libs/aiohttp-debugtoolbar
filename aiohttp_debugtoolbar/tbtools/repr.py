@@ -13,6 +13,7 @@ a colorful and more compact output.
 import re
 import sys
 from collections import deque
+from contextlib import suppress
 from traceback import format_exception_only
 
 from ..tbtools import text_
@@ -102,7 +103,7 @@ class DebugReprGenerator:
     def __init__(self):
         self._stack = []
 
-    def _sequence_repr_maker(left, right, base=object()):
+    def _sequence_repr_maker(left, right, base=object()):  # noqa: B902,B008
         def proxy(self, obj, recursive):
             if recursive:
                 return _add_subclass_info(left + "..." + right, obj, base)
@@ -207,10 +208,9 @@ class DebugReprGenerator:
             info = "".join(format_exception_only(*sys.exc_info()[:2]))
         except Exception:  # pragma: no cover
             info = "?"
-        return text_(
-            '<span class="brokenrepr">&lt;broken repr (%s)&gt;'
-            "</span>" % escape(text_(info, "utf-8", "ignore").strip())
-        )
+        r = escape(text_(info, "utf-8", "ignore").strip())
+        msg = f'<span class="brokenrepr">&lt;broken repr ({r})&gt;</span>'
+        return text_(msg)
 
     def repr(self, obj):
         recursive = False
@@ -220,10 +220,9 @@ class DebugReprGenerator:
                 break
         self._stack.append(obj)
         try:
-            try:
-                return self.dispatch_repr(obj, recursive)
-            except Exception:
-                return self.fallback_repr()
+            return self.dispatch_repr(obj, recursive)
+        except Exception:
+            return self.fallback_repr()
         finally:
             self._stack.pop()
 
@@ -241,10 +240,8 @@ class DebugReprGenerator:
             items = []
             repr = self.repr(obj)
             for key in dir(obj):
-                try:
+                with suppress(AttributeError):
                     items.append((key, self.repr(getattr(obj, key))))
-                except Exception:
-                    pass
             title = "Details for"
         title += " " + object.__repr__(obj)[1:-1]
         return self.render_object_dump(items, title, repr)

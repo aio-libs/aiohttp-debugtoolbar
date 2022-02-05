@@ -7,9 +7,9 @@ from .tbtools.tbtools import get_traceback
 from .toolbar import DebugToolbar
 from .utils import (
     APP_KEY,
+    ContextSwitcher,
     REDIRECT_CODES,
     TEMPLATE_KEY,
-    ContextSwitcher,
     addr_in,
     hexlify,
 )

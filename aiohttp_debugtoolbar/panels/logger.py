@@ -2,8 +2,8 @@ import datetime
 import logging
 from collections import deque
 
-from ..utils import format_fname
 from .base import DebugPanel
+from ..utils import format_fname
 
 
 class RequestTrackingHandler(logging.Handler):

@@ -8,9 +8,9 @@ from . import panels, views
 from .middlewares import middleware
 from .utils import (
     APP_KEY,
+    ExceptionHistory,
     STATIC_ROUTE_NAME,
     TEMPLATE_KEY,
-    ExceptionHistory,
     ToolbarStorage,
     hexlify,
 )

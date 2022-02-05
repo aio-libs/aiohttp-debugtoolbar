@@ -33,7 +33,7 @@ async def basic_handler(request):
         ret = []
         for row in cur:
             ret.append(row)
-        assert ret == [(1,)]
+        assert ret == [(1,)]  # noqa: S101
 
         await request.app["db"].release(conn)
 
@@ -41,7 +41,7 @@ async def basic_handler(request):
     if "redis" in request.app:
         with (await request.app["redis"]) as redis:
             await redis.set("TEST", "VAR", expire=5)
-            assert b"VAR" == (yield from redis.get("TEST"))
+            assert b"VAR" == (await redis.get("TEST"))  # noqa: S101
 
     return {
         "title": "example aiohttp_debugtoolbar!",
@@ -106,7 +106,7 @@ async def init():
         dsn = "host={host} dbname={db} user={user} password={passw} ".format(
             db="postgres", user="developer", passw="1", host="localhost"
         )
-        app["db"] = yield from aiopg.create_pool(dsn, minsize=1, maxsize=2)
+        app["db"] = await aiopg.create_pool(dsn, minsize=1, maxsize=2)
         # Correct PostgreSQL shutdown
         app.on_cleanup.append(close_pg)
 

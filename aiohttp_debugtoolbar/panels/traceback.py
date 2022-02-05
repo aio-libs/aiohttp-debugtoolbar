@@ -1,8 +1,8 @@
 import re
 
+from .base import DebugPanel
 from ..tbtools.tbtools import Traceback
 from ..utils import APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME, escape
-from .base import DebugPanel
 
 __all__ = ["TracebackPanel"]
 
