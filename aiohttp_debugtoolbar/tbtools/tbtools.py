@@ -16,14 +16,8 @@ from tokenize import TokenError
 from aiohttp.helpers import reify
 
 from ..tbtools import text_
-from ..utils import (
-    APP_KEY,
-    EXC_ROUTE_NAME,
-    ROOT_ROUTE_NAME,
-    STATIC_ROUTE_NAME,
-    escape,
-    render,
-)
+from ..utils import (APP_KEY, EXC_ROUTE_NAME, ROOT_ROUTE_NAME,
+                     STATIC_ROUTE_NAME, escape, render)
 from .console import Console
 
 _coding_re = re.compile(r"coding[:=]\s*([-\w.]+)")

@@ -6,14 +6,8 @@ import jinja2
 
 from . import panels, views
 from .middlewares import middleware
-from .utils import (
-    APP_KEY,
-    STATIC_ROUTE_NAME,
-    TEMPLATE_KEY,
-    ExceptionHistory,
-    ToolbarStorage,
-    hexlify,
-)
+from .utils import (APP_KEY, STATIC_ROUTE_NAME, TEMPLATE_KEY, ExceptionHistory,
+                    ToolbarStorage, hexlify)
 from .views import ExceptionDebugView
 
 default_panel_names = [

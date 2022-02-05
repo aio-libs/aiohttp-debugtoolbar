@@ -24,12 +24,8 @@ repos:
   rev: v1.3.0
   hooks:
   - id: yesqa
-- repo: https://github.com/PyCQA/isort
-  rev: '5.9.3'
-  hooks:
-  - id: isort
 - repo: https://github.com/psf/black
-  rev: '21.10b0'
+  rev: '22.0.2'
   hooks:
     - id: black
       language_version: python3

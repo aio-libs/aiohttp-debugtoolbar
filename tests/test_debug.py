@@ -11,12 +11,8 @@ import aiohttp_jinja2
 
 from aiohttp_debugtoolbar.tbtools import text_
 from aiohttp_debugtoolbar.tbtools.console import HTMLStringO
-from aiohttp_debugtoolbar.tbtools.repr import (
-    DebugReprGenerator,
-    debug_repr,
-    dump,
-    helper,
-)
+from aiohttp_debugtoolbar.tbtools.repr import (DebugReprGenerator, debug_repr,
+                                               dump, helper)
 
 
 def test_debug_repr():

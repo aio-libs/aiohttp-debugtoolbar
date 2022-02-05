@@ -5,14 +5,8 @@ from aiohttp import web
 
 from .tbtools.tbtools import get_traceback
 from .toolbar import DebugToolbar
-from .utils import (
-    APP_KEY,
-    REDIRECT_CODES,
-    TEMPLATE_KEY,
-    ContextSwitcher,
-    addr_in,
-    hexlify,
-)
+from .utils import (APP_KEY, REDIRECT_CODES, TEMPLATE_KEY, ContextSwitcher,
+                    addr_in, hexlify)
 
 __all__ = ["toolbar_middleware_factory", "middleware"]
 HTML_TYPES = ("text/html", "application/xhtml+xml")
