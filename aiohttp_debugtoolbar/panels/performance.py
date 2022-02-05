@@ -1,6 +1,6 @@
 import cProfile as profile
-import resource
 import pstats
+import resource
 import time
 
 from .base import DebugPanel

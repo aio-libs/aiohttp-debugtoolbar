@@ -2,11 +2,11 @@ import logging
 from pathlib import Path
 
 import aiohttp_jinja2
+import aiohttp_mako
 import jinja2
 from aiohttp import web
 
 import aiohttp_debugtoolbar
-import aiohttp_mako
 
 PROJECT_ROOT = Path(__file__).parent
 TEMPLATE_DIR = PROJECT_ROOT / "templates"

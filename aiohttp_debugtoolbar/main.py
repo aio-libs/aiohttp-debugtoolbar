@@ -1,7 +1,6 @@
-import os
 import secrets
 from pathlib import Path
-from typing import Any, Iterable, Literal, Sequence, Type, TypedDict, Union
+from typing import Iterable, Literal, Sequence, Type, TypedDict, Union
 
 import aiohttp_jinja2
 import jinja2

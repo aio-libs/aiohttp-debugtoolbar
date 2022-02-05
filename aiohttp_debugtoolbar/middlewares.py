@@ -16,7 +16,7 @@ from .utils import (
     hexlify,
 )
 
-__all__ = ["toolbar_middleware_factory", "middleware"]
+__all__ = ("middleware",)
 HTML_TYPES = ("text/html", "application/xhtml+xml")
 
 

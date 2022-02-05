@@ -7,3 +7,15 @@ from .routes import RoutesDebugPanel as RoutesDebugPanel
 from .settings import SettingsDebugPanel as SettingsDebugPanel
 from .traceback import TracebackPanel as TracebackPanel
 from .versions import VersionDebugPanel as VersionDebugPanel
+
+__all__ = (
+    "HeaderDebugPanel",
+    "LoggingPanel",
+    "MiddlewaresDebugPanel",
+    "PerformanceDebugPanel",
+    "RequestVarsDebugPanel",
+    "RoutesDebugPanel",
+    "SettingsDebugPanel",
+    "TracebackPanel",
+    "VersionDebugPanel",
+)
