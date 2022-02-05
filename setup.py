@@ -9,7 +9,7 @@ contents = (ROOT_DIR / "aiohttp_debugtoolbar" / "__init__.py").read_text()
 version_match = re.search(r'^__version__ = "([^"]+)"$', contents, re.M)
 if version_match is None:
     raise RuntimeError("Unable to determine version.")
-version = version.group(1)
+version = version_match.group(1)
 
 
 def read(fname):
