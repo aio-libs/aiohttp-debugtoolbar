@@ -2,7 +2,7 @@ import functools
 import inspect
 import time
 
-from aioredis import RedisConnection
+from aioredis import Redis
 
 from aiohttp_debugtoolbar.panels.base import DebugPanel
 
@@ -14,7 +14,7 @@ class RequestHandler:
         self._queries = []
         self._total_time = 0
         # save original
-        self._tmp_execute = RedisConnection.execute
+        self._tmp_execute = Redis.execute_command
 
     @property
     def queries(self):
@@ -60,10 +60,10 @@ class RequestHandler:
         return wrapped
 
     def on(self):
-        RedisConnection.execute = self._wrapper(RedisConnection.execute)
+        Redis.execute_command = self._wrapper(Redis.execute_command)
 
     def off(self):
-        RedisConnection.execute = self._tmp_execute
+        Redis.execute_command = self._tmp_execute
 
 
 class RequestRedisDebugPanel(DebugPanel):

@@ -6,11 +6,7 @@ import jinja2
 from aiohttp import web
 
 import aiohttp_debugtoolbar
-
-try:
-    import aiohttp_mako
-except ImportError:
-    aiohttp_mako = None
+import aiohttp_mako
 
 PROJECT_ROOT = Path(__file__).parent
 TEMPLATE_DIR = PROJECT_ROOT / "templates"
@@ -18,9 +14,9 @@ TEMPLATE_DIR = PROJECT_ROOT / "templates"
 
 @aiohttp_jinja2.template("index.jinja2")
 async def index(request):
-    log.info("Info logger fon index page")
-    log.debug("Debug logger fon index page")
-    log.critical("Critical logger fon index page")
+    log.info("Info logger for index page")
+    log.debug("Debug logger for index page")
+    log.critical("Critical logger for index page")
 
     return {"title": "Aiohttp Debugtoolbar", "aiohttp_mako": aiohttp_mako}
 
@@ -71,16 +67,15 @@ async def init():
         web.static("/static", PROJECT_ROOT / "static"),
     ]
 
-    if aiohttp_mako:
-        mako_cfg = {
-            "input_encoding": "utf-8",
-            "output_encoding": "utf-8",
-            "default_filters": ["decode.utf8"],
-            "directories": [str(TEMPLATE_DIR)],
-        }
-        aiohttp_mako.setup(app, **mako_cfg)
-        route = web.get("/mako_exc", mako_exception, name="mako_exception")
-        routes.append(route)
+    mako_cfg = {
+        "input_encoding": "utf-8",
+        "output_encoding": "utf-8",
+        "default_filters": ["decode.utf8"],
+        "directories": [str(TEMPLATE_DIR)],
+    }
+    aiohttp_mako.setup(app, **mako_cfg)
+    route = web.get("/mako_exc", mako_exception, name="mako_exception")
+    routes.append(route)
 
     app.add_routes(routes)
     return app

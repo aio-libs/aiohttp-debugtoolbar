@@ -25,13 +25,13 @@ def test_format_fname():
 
 
 def test_module_file_path():
-    sys_path = [
+    sys_path_l = (
         "/foo/",
         "/foo/bar",
         "/usr/local/python/site-packages/",
-    ]
+    )
 
-    sys_path = map(lambda path: path.replace("/", os.path.sep), sys_path)
+    sys_path = map(lambda path: path.replace("/", os.path.sep), sys_path_l)
     modpath = format_fname(
         "/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py".replace("/", os.path.sep),
         sys_path,

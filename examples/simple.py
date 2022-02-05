@@ -18,9 +18,9 @@ async def exception_handler(request):
     raise NotImplementedError
 
 
-async def init(loop):
+async def init():
     # add aiohttp_debugtoolbar middleware to you application
-    app = web.Application(loop=loop)
+    app = web.Application()
     # install aiohttp_debugtoolbar
     aiohttp_debugtoolbar.setup(app)
 

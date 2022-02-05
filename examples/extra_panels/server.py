@@ -14,7 +14,7 @@ except ImportError:
     print("Module aiopg not installed")
 
 try:
-    from aioredis import create_pool
+    import aioredis
     from extra_redis import RequestRedisDebugPanel
 except ImportError:
     print("Module aioredis not installed")
@@ -112,7 +112,7 @@ async def init():
 
     if "aioredis" in sys.modules:
         # create redis pool
-        app["redis"] = yield from create_pool(("127.0.0.1", "6379"))
+        app["redis"] = await aioredis.Redis("127.0.0.1", 6379)
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 

@@ -2,6 +2,8 @@ import sys
 
 import aiohttp_jinja2
 from aiohttp import web
+from aiohttp.typedefs import Handler
+from aiohttp.web_exceptions import _HTTPMove as HTTPMove
 
 from .tbtools.tbtools import get_traceback
 from .toolbar import DebugToolbar
@@ -19,7 +21,7 @@ HTML_TYPES = ("text/html", "application/xhtml+xml")
 
 
 @web.middleware
-async def middleware(request, handler):
+async def middleware(request: web.Request, handler: Handler) -> web.StreamResponse:
     app = request.app
 
     if APP_KEY not in app:
@@ -37,8 +39,7 @@ async def middleware(request, handler):
         return await handler(request)
 
     # request['exc_history'] = exc_history
-    history = settings.get("panels", []) + settings.get("extra_panels", [])
-    panel_classes = history
+    panel_classes = settings.get("panels", []) + settings.get("extra_panels", [])
     global_panel_classes = settings.get("global_panels", [])
     hosts = settings.get("hosts", [])
 
@@ -53,10 +54,11 @@ async def middleware(request, handler):
     starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
     # FIXME: error when run trough unixsocket
-    peername = request.transport.get_extra_info("peername")
-    remote_host, remote_port = peername[:2]
-
-    last_proxy_addr = remote_host
+    if request.transport:
+        peername = request.transport.get_extra_info("peername")
+        last_proxy_addr = peername[0]
+    else:
+        last_proxy_addr = ""
 
     # TODO: rethink access policy by host
     if settings.get("check_host"):
@@ -72,7 +74,7 @@ async def middleware(request, handler):
 
     try:
         response = await context_switcher(_handler(request))
-    except web.HTTPRedirection as exc:
+    except HTTPMove as exc:
         if not intercept_redirects:
             raise
         # Intercept http redirect codes and display an html page with a
@@ -170,9 +172,6 @@ async def middleware(request, handler):
 
     return response
 
-
-# Deprecated, will drop it in 0.3+
-toolbar_middleware_factory = middleware
 
 toolbar_html_template = """\
 <script type="text/javascript">

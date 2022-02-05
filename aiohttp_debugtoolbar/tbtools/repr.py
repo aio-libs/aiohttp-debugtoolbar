@@ -14,6 +14,7 @@ import re
 import sys
 from collections import deque
 from contextlib import suppress
+from functools import partial
 from traceback import format_exception_only
 
 from ..tbtools import text_
@@ -103,29 +104,24 @@ class DebugReprGenerator:
     def __init__(self):
         self._stack = []
 
-    def _sequence_repr_maker(left, right, base=object()):  # noqa: B008, B902
-        def proxy(self, obj, recursive):
-            if recursive:
-                return _add_subclass_info(left + "..." + right, obj, base)
-            buf = [left]
-            for idx, item in enumerate(obj):
-                if idx:
-                    buf.append(", ")
-                buf.append(self.repr(item))
-            buf.append(right)
-            return _add_subclass_info(text_("".join(buf)), obj, base)
+    def _proxy(self, left, right, base, obj, recursive):
+        if recursive:
+            return _add_subclass_info(left + "..." + right, obj, base)
+        buf = [left]
+        for idx, item in enumerate(obj):
+            if idx:
+                buf.append(", ")
+            buf.append(self.repr(item))
+        buf.append(right)
+        return _add_subclass_info(text_("".join(buf)), obj, base)
 
-        return proxy
-
-    list_repr = _sequence_repr_maker("[", "]", list)
-    tuple_repr = _sequence_repr_maker("(", ")", tuple)
-    set_repr = _sequence_repr_maker("set([", "])", set)
-    frozenset_repr = _sequence_repr_maker("frozenset([", "])", frozenset)
-    if deque is not None:
-        deque_repr = _sequence_repr_maker(
-            '<span class="module">collections.' "</span>deque([", "])", deque
-        )
-    del _sequence_repr_maker
+    list_repr = partial(_proxy, "[", "]", list)
+    tuple_repr = partial(_proxy, "(", ")", tuple)
+    set_repr = partial(_proxy, "set([", "])", set)
+    frozenset_repr = partial(_proxy, "frozenset([", "])", frozenset)
+    deque_repr = partial(
+        _proxy, '<span class="module">collections.' "</span>deque([", "])", deque
+    )
 
     def regex_repr(self, obj):
         pattern = text_("'%s'" % str(obj.pattern), "string-escape", "ignore")

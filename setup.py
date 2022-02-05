@@ -38,6 +38,6 @@ setup(
     url="https://github.com/aio-libs/aiohttp_debugtoolbar",
     license="Apache 2",
     packages=find_packages(),
-    install_requires=["aiohttp>=3.3.0", "aiohttp_jinja2"],
+    install_requires=["aiohttp>=3.8", "aiohttp_jinja2"],
     include_package_data=True,
 )

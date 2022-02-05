@@ -1,12 +1,14 @@
+from abc import ABC
+
 from ..utils import render
 
 
-class DebugPanel:
-    """
-    Base class for debug panels. A new instance of this class is created
-    for every request.
+class DebugPanel(ABC):
+    """Base class for debug panels.
 
-    A panel is given notified of events throughout the request lifecycle. It
+    A new instance of this class is created for every request.
+
+    A panel is notified of events throughout the request lifecycle. It
     is then persisted and used later by the toolbar to render its results
     as a tab on the interface. The lifecycle hooks are available in the
     following order:
@@ -28,7 +30,7 @@ class DebugPanel:
 
     #: A unique identifier for the name of the panel. This **must** be
     #: defined by a subclass.
-    name = NotImplemented
+    name: str
 
     #: If ``False`` then the panel's tab will be disabled and
     #: :meth:`.render_content` will not be invoked. Most subclasses will
@@ -49,16 +51,16 @@ class DebugPanel:
     #: :term:`asset specification` pointing at the template to be rendered
     #: for the panel. Usually of the format
     #: ``'mylib:templates/panel.jinja2'``.
-    template = NotImplemented
+    template: str
 
     #: Title showing in toolbar. Must be overridden.
-    nav_title = NotImplemented
+    nav_title: str
 
     #: Subtitle showing until title in toolbar.
     nav_subtitle = ""
 
     #: Title showing in panel. Must be overridden.
-    title = NotImplemented
+    title: str
 
     #: The URL invoked when the panel's tab is cliked. May be overridden to
     #: define an arbitrary URL for the panel or do some other custom action

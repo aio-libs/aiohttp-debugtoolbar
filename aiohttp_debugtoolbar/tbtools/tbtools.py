@@ -13,6 +13,7 @@ import sys
 import traceback
 from contextlib import suppress
 from tokenize import TokenError
+from typing import Tuple, Type
 
 from aiohttp.helpers import reify
 
@@ -34,7 +35,7 @@ _funcdef_re = re.compile(
 )
 UTF8_COOKIE = "\xef\xbb\xbf"
 
-system_exceptions = (SystemExit, KeyboardInterrupt)
+system_exceptions: Tuple[Type[BaseException], ...] = (SystemExit, KeyboardInterrupt)
 try:
     system_exceptions += (GeneratorExit,)
 except NameError:
@@ -143,18 +144,16 @@ class Traceback:
         elif self.frames[-1] in new_frames:
             self.frames[:] = new_frames
 
+    @property
     def is_syntax_error(self):
         """Is it a syntax error?"""
         return isinstance(self.exc_value, SyntaxError)
 
-    is_syntax_error = property(is_syntax_error)
-
+    @property
     def exception(self):
         """String representation of the exception."""
         buf = traceback.format_exception_only(self.exc_type, self.exc_value)
         return "".join(buf).strip()
-
-    exception = property(exception)
 
     def log(self, logfile=None):
         """Log the ASCII traceback into a file object."""
