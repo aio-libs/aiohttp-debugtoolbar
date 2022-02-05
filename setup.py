@@ -41,7 +41,7 @@ setup(
     install_requires=(
         "aiohttp>=3.8",
         "aiohttp_jinja2",
-        'typing_extensions>=3.8; python_version<"3.8"'
+        'typing_extensions>=3.8; python_version<"3.8"',
     ),
     include_package_data=True,
 )
