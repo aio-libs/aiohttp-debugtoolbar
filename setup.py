@@ -1,20 +1,19 @@
-import pathlib
 import re
+from pathlib import Path
 
 from setuptools import find_packages, setup
 
-with (
-    pathlib.Path(__file__).parent / "aiohttp_debugtoolbar" / "__init__.py"
-).open() as fp:
-    try:
-        version = re.findall(r"^__version__ = '([^']+)'$", fp.read(), re.M)[0]
-    except IndexError:
-        raise RuntimeError("Unable to determine version.")
+ROOT_DIR = Path(__file__).parent
+
+contents = ROOT_DIR / "aiohttp_debugtoolbar" / "__init__.py").read_text()
+version_match = re.search(r'^__version__ = "([^"]+)"$', contents, re.M)
+if version_match is None:
+    raise RuntimeError("Unable to determine version.")
+version = version.group(1)
 
 
 def read(fname):
-    with (pathlib.Path(__file__).parent / fname).open() as f:
-        return f.read().strip()
+    return (ROOT_DIR / fname).read_text().strip()
 
 
 setup(
@@ -27,10 +26,10 @@ setup(
         "Intended Audience :: Developers",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Internet :: WWW/HTTP",
         "Framework :: AsyncIO",
     ],
