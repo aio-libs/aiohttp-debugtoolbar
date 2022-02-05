@@ -1,7 +1,7 @@
 import pathlib
 import re
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with (
     pathlib.Path(__file__).parent / "aiohttp_debugtoolbar" / "__init__.py"

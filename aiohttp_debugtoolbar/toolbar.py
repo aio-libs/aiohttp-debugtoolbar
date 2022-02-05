@@ -4,7 +4,6 @@ from aiohttp.web import Response
 
 from .utils import APP_KEY, STATIC_ROUTE_NAME, replace_insensitive
 
-
 __all__ = ["DebugToolbar"]
 
 

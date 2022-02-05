@@ -8,7 +8,6 @@ Interactive console support.
 import code
 import sys
 import threading
-
 from types import CodeType
 
 from ..utils import escape
