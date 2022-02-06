@@ -5,7 +5,7 @@ import pytest
 
 
 @pytest.mark.skipif(
-    not sys.platform.startswith("linux") and platform.python_implementation() != "PyPy",
+    not sys.platform.startswith("linux") or platform.python_implementation() == "PyPy",
     reason="Unreliable",
 )
 def test_import_time(pytester: pytest.Pytester) -> None:
