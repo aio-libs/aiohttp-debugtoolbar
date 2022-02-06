@@ -53,6 +53,7 @@ class _Config(TypedDict):
     check_host: bool
     button_style: str
     max_visible_requests: int
+    path_prefix: str
 
 
 class _AppDetails(TypedDict):
@@ -92,6 +93,7 @@ def setup(
         check_host=check_host,
         button_style=button_style,
         max_visible_requests=max_visible_requests,
+        path_prefix=path_prefix,
     )
 
     app[APP_KEY] = {"settings": config}
