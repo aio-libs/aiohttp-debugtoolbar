@@ -45,7 +45,7 @@ class VersionDebugPanel(DebugPanel):
             return VersionDebugPanel.packages
 
         if Distribution is None:
-            return ()
+            return ()  # type: ignore[unreachable]
 
         packages = []
         for distribution in Distribution.discover():
