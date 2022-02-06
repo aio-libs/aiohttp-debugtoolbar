@@ -220,3 +220,5 @@ async def test_request_history(create_server, aiohttp_client):
     request_history = tuple(app[aiohttp_debugtoolbar.APP_KEY]["request_history"])
     assert len(request_history) == 1
     assert request_history[0][1].request.path == "/"
+
+    await asyncio.sleep(0)  # Workaround, maybe fixed in aiohttp 4.
