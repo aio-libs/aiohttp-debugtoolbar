@@ -1,3 +1,5 @@
+import asyncio
+
 import aiohttp_jinja2
 import pytest
 from aiohttp import web
@@ -209,14 +211,16 @@ async def test_request_history(create_server, aiohttp_client):
     client = await aiohttp_client(app)
 
     # Should be logged
-    r = await client.get("/")
-    assert r.status == 200
+    async with client.get("/") as r:
+        assert r.status == 200
     # Should not be logged
-    r = await client.get("/favicon.ico")
-    assert r.status == 200
-    r = await client.get("/_debugtoolbar/static/img/aiohttp.svg")
-    assert r.status == 200
+    async with client.get("/favicon.ico") as r:
+        assert r.status == 200
+    async with client.get("/_debugtoolbar/static/img/aiohttp.svg") as r:
+        assert r.status == 200
 
     request_history = tuple(app[aiohttp_debugtoolbar.APP_KEY]["request_history"])
     assert len(request_history) == 1
     assert request_history[0][1].request.path == "/"
+
+    await asyncio.sleep(0)  # Workaround, maybe fixed in aiohttp 4.

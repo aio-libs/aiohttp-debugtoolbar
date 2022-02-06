@@ -5,6 +5,8 @@ from aiohttp import web
 
 from aiohttp_debugtoolbar import setup
 
+pytest_plugins = ("pytester",)
+
 
 @pytest.fixture
 def create_server(unused_tcp_port_factory):
