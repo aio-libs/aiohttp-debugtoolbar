@@ -7,7 +7,7 @@ from aiohttp_debugtoolbar import setup
 
 
 @pytest.fixture
-def create_server(aiohttp_unused_port):
+def create_server(unused_tcp_port_factory):
     async def create(*, debug=False, ssl_ctx=None, **kw):
         app = web.Application()
         setup(app, **kw)

@@ -14,7 +14,7 @@ import re
 import sys
 from collections import deque
 from contextlib import suppress
-from functools import partial
+from functools import partialmethod
 from traceback import format_exception_only
 
 from ..tbtools import text_
@@ -115,11 +115,11 @@ class DebugReprGenerator:
         buf.append(right)
         return _add_subclass_info(text_("".join(buf)), obj, base)
 
-    list_repr = partial(_proxy, "[", "]", list)
-    tuple_repr = partial(_proxy, "(", ")", tuple)
-    set_repr = partial(_proxy, "set([", "])", set)
-    frozenset_repr = partial(_proxy, "frozenset([", "])", frozenset)
-    deque_repr = partial(
+    list_repr = partialmethod(_proxy, "[", "]", list)
+    tuple_repr = partialmethod(_proxy, "(", ")", tuple)
+    set_repr = partialmethod(_proxy, "set([", "])", set)
+    frozenset_repr = partialmethod(_proxy, "frozenset([", "])", frozenset)
+    deque_repr = partialmethod(
         _proxy, '<span class="module">collections.' "</span>deque([", "])", deque
     )
 

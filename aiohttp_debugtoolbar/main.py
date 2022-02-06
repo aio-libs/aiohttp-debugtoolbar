@@ -1,7 +1,7 @@
 import secrets
 import sys
 from pathlib import Path
-from typing import Iterable, Sequence, Type, Union
+from typing import Iterable, Sequence, Tuple, Type, Union
 
 if sys.version_info >= (3, 8):
     from typing import Literal, TypedDict
@@ -45,11 +45,11 @@ class _Config(TypedDict):
     enabled: bool
     intercept_exc: Literal["debug", "display", False]
     intercept_redirects: bool
-    panels: Iterable[Type[DebugPanel]]
-    extra_panels: Iterable[Type[DebugPanel]]
-    global_panels: Iterable[Type[DebugPanel]]
+    panels: Tuple[Type[DebugPanel], ...]
+    extra_panels: Tuple[Type[DebugPanel], ...]
+    global_panels: Tuple[Type[DebugPanel], ...]
     hosts: Sequence[str]
-    exclude_prefixes: Sequence[str]
+    exclude_prefixes: Tuple[str, ...]
     check_host: bool
     button_style: str
     max_visible_requests: int
@@ -73,7 +73,7 @@ def setup(
     extra_templates: Union[str, Path, Iterable[Union[str, Path]]] = (),
     global_panels: Iterable[Type[DebugPanel]] = default_global_panel_names,
     hosts: Sequence[str] = ("127.0.0.1", "::1"),
-    exclude_prefixes: Sequence[str] = (),
+    exclude_prefixes: Iterable[str] = (),
     check_host: bool = True,  # disable host check
     button_style: str = "",
     max_request_history: int = 100,
@@ -84,11 +84,11 @@ def setup(
         enabled=enabled,
         intercept_exc=intercept_exc,
         intercept_redirects=intercept_redirects,
-        panels=panels,
-        extra_panels=extra_panels,
-        global_panels=global_panels,
+        panels=tuple(panels),
+        extra_panels=tuple(extra_panels),
+        global_panels=tuple(global_panels),
         hosts=hosts,
-        exclude_prefixes=exclude_prefixes,
+        exclude_prefixes=tuple(exclude_prefixes),
         check_host=check_host,
         button_style=button_style,
         max_visible_requests=max_visible_requests,
