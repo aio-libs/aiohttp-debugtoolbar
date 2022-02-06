@@ -1,10 +1,11 @@
 import cProfile as profile
 import pstats
 import time
+
 try:
     import resource
 except ImportError:  # Fails on Windows
-    resource = None
+    resource = None  # type: ignore[assignment]
 
 from .base import DebugPanel
 from ..utils import format_fname
@@ -36,6 +37,7 @@ class PerformanceDebugPanel(DebugPanel):
 
     def _wrap_timer_handler(self, handler):
         if self.has_resource:
+
             async def resource_timer_handler(request):
                 _start_time = time.time()
                 self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
