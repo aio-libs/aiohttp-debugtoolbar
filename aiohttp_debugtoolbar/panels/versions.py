@@ -1,12 +1,18 @@
 import platform
 import sys
-from importlib.metadata import Distribution, version
 from operator import itemgetter
 from typing import ClassVar, Dict, List, Optional
 
 from .base import DebugPanel
 
-__all__ = ["VersionDebugPanel"]
+if sys.version_info >= (3, 8):
+    from importlib.metadata import Distribution, version
+else:
+    Distribution = None
+    def version(_v):
+        return ""
+
+__all__ = ("VersionDebugPanel",)
 aiohttp_version = version("aiohttp")
 
 
@@ -21,7 +27,7 @@ class VersionDebugPanel(DebugPanel):
     template = "versions.jinja2"
     title = "Versions"
     nav_title = title
-    packages: ClassVar[Optional[List[Dict[str ,str]]]] = None
+    packages: ClassVar[Optional[List[Dict[str, str]]]] = None
 
     def __init__(self, request):
         super().__init__(request)
@@ -35,6 +41,9 @@ class VersionDebugPanel(DebugPanel):
     def get_packages(self) -> List[Dict[str, str]]:
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
+
+        if Distribution is None:
+            return ()
 
         packages = []
         for distribution in Distribution.discover():
