@@ -4,9 +4,7 @@ import sys
 import pytest
 
 
-@pytest.mark.skipif(
-    platform.python_implementation() in ("PyPy", "Windows"), reason="Too slow"
-)
+@pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Unreliable")
 def test_import_time(pytester: pytest.Pytester) -> None:
     """Check that importing aiohttp-debugtoolbar doesn't take too long.
     Obviously, the time may vary on different machines and may need to be adjusted
