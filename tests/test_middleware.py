@@ -209,13 +209,13 @@ async def test_request_history(create_server, aiohttp_client):
     client = await aiohttp_client(app)
 
     # Should be logged
-    r = await client.get("/")
-    assert r.status == 200
+    async with client.get("/") as r:
+        assert r.status == 200
     # Should not be logged
-    r = await client.get("/favicon.ico")
-    assert r.status == 200
-    r = await client.get("/_debugtoolbar/static/img/aiohttp.svg")
-    assert r.status == 200
+    async with client.get("/favicon.ico") as r:
+        assert r.status == 200
+    async with client.get("/_debugtoolbar/static/img/aiohttp.svg") as r:
+        assert r.status == 200
 
     request_history = tuple(app[aiohttp_debugtoolbar.APP_KEY]["request_history"])
     assert len(request_history) == 1
