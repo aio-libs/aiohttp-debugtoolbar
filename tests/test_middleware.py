@@ -1,3 +1,5 @@
+import asyncio
+
 import aiohttp_jinja2
 import pytest
 from aiohttp import web
