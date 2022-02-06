@@ -9,8 +9,10 @@ if sys.version_info >= (3, 8):
     from importlib.metadata import Distribution, version
 else:
     Distribution = None
+
     def version(_v):
         return ""
+
 
 __all__ = ("VersionDebugPanel",)
 aiohttp_version = version("aiohttp")

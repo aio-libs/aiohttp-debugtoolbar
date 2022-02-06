@@ -12,7 +12,7 @@ async def test_packages():
     panel = VersionDebugPanel(request_mock)
 
     jinja2_metadata = {
-        "version": "3.0.2",
+        "version": "3.0.3",
         "lowername": "jinja2",
         "name": "Jinja2",
         "dependencies": ["MarkupSafe (>=2.0)", "Babel (>=2.7) ; extra == 'i18n'"],
