@@ -8252,7 +8252,7 @@ function (file,           pragma,   parse) {
             if (require._isSupportedBuildUrl(url)) {
                 //Adjust the URL if it was not transformed to use baseUrl.
                 url = normalizeUrlWithBase(context, moduleName, url);
-                
+
                 //Save the module name to path  and path to module name mappings.
                 layer.buildPathMap[moduleName] = url;
                 layer.buildFileToModule[url] = moduleName;

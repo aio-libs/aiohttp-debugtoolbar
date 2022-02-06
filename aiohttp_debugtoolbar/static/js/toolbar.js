@@ -69,4 +69,3 @@ for (var i = 0; i < bootstrap_panels.length; i++) {
 }
 
 });
-

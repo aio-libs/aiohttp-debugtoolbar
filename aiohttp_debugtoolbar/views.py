@@ -1,16 +1,16 @@
 import json
-import aiohttp_jinja2
 
+import aiohttp_jinja2
 from aiohttp import web
 
 # from .tbtools.console import _ConsoleFrame
-from .utils import TEMPLATE_KEY, APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME
+from .utils import APP_KEY, ROOT_ROUTE_NAME, STATIC_ROUTE_NAME, TEMPLATE_KEY
 
 
-@aiohttp_jinja2.template('toolbar.jinja2', app_key=TEMPLATE_KEY)
+@aiohttp_jinja2.template("toolbar.jinja2", app_key=TEMPLATE_KEY)
 async def request_view(request):
-    settings = request.app[APP_KEY]['settings']
-    history = request.app[APP_KEY]['request_history']
+    settings = request.app[APP_KEY]["settings"]
+    history = request.app[APP_KEY]["request_history"]
 
     try:
         last_request_pair = history.last(1)[0]
@@ -19,76 +19,77 @@ async def request_view(request):
     else:
         last_request_id = last_request_pair[0]
 
-    request_id = request.match_info.get('request_id', last_request_id)
+    request_id = request.match_info.get("request_id", last_request_id)
 
     toolbar = history.get(request_id, None)
 
     panels = toolbar.panels if toolbar else []
     global_panels = toolbar.global_panels if toolbar else []
 
-    static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename='')
+    static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename="")
     root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
 
-    button_style = settings.get('button_style', '')
-    max_visible_requests = settings['max_visible_requests']
+    button_style = settings.get("button_style", "")
+    max_visible_requests = settings["max_visible_requests"]
 
     hist_toolbars = history.last(max_visible_requests)
 
-    return {'panels': panels,
-            'static_path': static_path,
-            'root_path': root_path,
-            'button_style': button_style,
-            'history': hist_toolbars,
-            'global_panels': global_panels,
-            'request_id': request_id,
-            'request': toolbar.request if toolbar else None}
+    return {
+        "panels": panels,
+        "static_path": static_path,
+        "root_path": root_path,
+        "button_style": button_style,
+        "history": hist_toolbars,
+        "global_panels": global_panels,
+        "request_id": request_id,
+        "request": toolbar.request if toolbar else None,
+    }
 
 
 class ExceptionDebugView:
-
     def _validate_token(self, request):
         exc_history = self._exception_history(request)
-        token = request.query.get('token')
+        token = request.query.get("token")
 
         if exc_history is None:
-            raise web.HTTPBadRequest(text='No exception history')
+            raise web.HTTPBadRequest(text="No exception history")
         if not token:
-            raise web.HTTPBadRequest(text='No token in request')
-        if not (token == request.app[APP_KEY]['pdtb_token']):
-            raise web.HTTPBadRequest(text='Bad token in request')
+            raise web.HTTPBadRequest(text="No token in request")
+        if not (token == request.app[APP_KEY]["pdtb_token"]):
+            raise web.HTTPBadRequest(text="Bad token in request")
 
     def _exception_history(self, request):
-        return request.app[APP_KEY]['exc_history']
+        return request.app[APP_KEY]["exc_history"]
 
     def _get_frame(self, request):
-        frm = request.query.get('frm')
+        frm = request.query.get("frm")
         if frm is not None:
             frm = int(frm)
         return frm
 
     async def _get_tb(self, request):
         await request.read()
-        tb = request.query.get('tb')
+        tb = request.query.get("tb")
         if not tb:
             await request.post()
-            tb = request.POST.get('tb')
+            tb = request.POST.get("tb")
         if tb is not None:
             tb = int(tb)
         return tb
 
     async def _get_cmd(self, request):
         await request.read()
-        cmd = request.query.get('cmd')
+        cmd = request.query.get("cmd")
         if not cmd:
             await request.post()
-            cmd = request.POST.get('cmd')
+            cmd = request.POST.get("cmd")
         return cmd
 
     async def exception(self, request):
         self._validate_token(request)
         tb_id = await self._get_tb(request)
         tb = self._exception_history(request).tracebacks[tb_id]
-        body = tb.render_full(request).encode('utf-8', 'replace')
+        body = tb.render_full(request).encode("utf-8", "replace")
         response = web.Response(status=200)
         response.body = body
         return response
@@ -102,13 +103,14 @@ class ExceptionDebugView:
             if frame is not None:
                 # text = frame.render_source()
                 in_frame = frame.get_in_frame_range()
-                text = json.dumps({
-                    'line': frame.lineno,
-                    'inFrame': in_frame,
-                    'source': '\n'.join(frame.sourcelines)
-                })
-                return web.Response(text=text,
-                                    content_type='application/json')
+                text = json.dumps(
+                    {
+                        "line": frame.lineno,
+                        "inFrame": in_frame,
+                        "source": "\n".join(frame.sourcelines),
+                    }
+                )
+                return web.Response(text=text, content_type="application/json")
         raise web.HTTPBadRequest()
 
     async def execute(self, request):
@@ -123,7 +125,7 @@ class ExceptionDebugView:
                 frame = exc_history.frames.get(frame)
                 if frame is not None:
                     result = frame.console.eval(cmd)
-                    return web.Response(text=result, content_type='text/html')
+                    return web.Response(text=result, content_type="text/html")
         raise web.HTTPBadRequest()
 
     # TODO: figure out how to enable console mode on frontend
@@ -155,15 +157,15 @@ U_SSE_PAYLOAD = "id: {0}\nevent: new_request\ndata: {1}\n\n"
 
 async def sse(request):
     response = web.Response(status=200)
-    response.content_type = 'text/event-stream'
-    history = request.app[APP_KEY]['request_history']
-    response.text = ''
+    response.content_type = "text/event-stream"
+    history = request.app[APP_KEY]["request_history"]
+    response.text = ""
 
-    active_request_id = str(request.match_info.get('request_id'))
-    client_last_request_id = str(request.headers.get('Last-Event-Id', 0))
+    active_request_id = str(request.match_info.get("request_id"))
+    client_last_request_id = str(request.headers.get("Last-Event-Id", 0))
 
-    settings = request.app[APP_KEY]['settings']
-    max_visible_requests = settings['max_visible_requests']
+    settings = request.app[APP_KEY]["settings"]
+    max_visible_requests = settings["max_visible_requests"]
 
     if history:
         last_request_pair = history.last(1)[0]
@@ -171,10 +173,9 @@ async def sse(request):
         if not last_request_id == client_last_request_id:
             data = []
             for _id, toolbar in history.last(max_visible_requests):
-                req_type = 'active' if active_request_id == _id else ''
+                req_type = "active" if active_request_id == _id else ""
                 data.append([_id, toolbar.json, req_type])
 
             if data:
-                response.text = U_SSE_PAYLOAD.format(last_request_id,
-                                                     json.dumps(data))
+                response.text = U_SSE_PAYLOAD.format(last_request_id, json.dumps(data))
     return response

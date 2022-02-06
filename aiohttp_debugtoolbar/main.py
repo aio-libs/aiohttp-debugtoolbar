@@ -1,114 +1,162 @@
-import os
+import secrets
+import sys
 from pathlib import Path
-import jinja2
-import aiohttp_jinja2
+from typing import Iterable, Sequence, Tuple, Type, Union
 
-from . import views
-from . import panels
+if sys.version_info >= (3, 8):
+    from typing import Literal, TypedDict
+else:
+    from typing_extensions import Literal, TypedDict  # noqa: I900
+
+import aiohttp_jinja2
+import jinja2
+from aiohttp import web
+
+from . import panels, views
 from .middlewares import middleware
-from .utils import APP_KEY, TEMPLATE_KEY, STATIC_ROUTE_NAME, hexlify, \
-    ToolbarStorage, ExceptionHistory
+from .panels.base import DebugPanel
+from .utils import (
+    APP_KEY,
+    ExceptionHistory,
+    STATIC_ROUTE_NAME,
+    TEMPLATE_KEY,
+    ToolbarStorage,
+)
 from .views import ExceptionDebugView
 
-
-default_panel_names = [
+default_panel_names = (
     panels.HeaderDebugPanel,
     panels.PerformanceDebugPanel,
     panels.RequestVarsDebugPanel,
     panels.TracebackPanel,
     panels.LoggingPanel,
-]
+)
 
 
-default_global_panel_names = [
+default_global_panel_names = (
     panels.RoutesDebugPanel,
     panels.SettingsDebugPanel,
     panels.MiddlewaresDebugPanel,
     panels.VersionDebugPanel,
-]
+)
 
 
-default_settings = {
-    'enabled': True,
-    'intercept_exc': 'debug',  # display or debug or False
-    'intercept_redirects': True,
-    'panels': default_panel_names,
-    'extra_panels': [],
-    'extra_templates': [],
-    'global_panels': default_global_panel_names,
-    'extra_global_panels': [],
-    'hosts': ['127.0.0.1', '::1'],
-    'exclude_prefixes': [],
-    # disable host check
-    'check_host': True,
-    'button_style': '',
-    'max_request_history': 100,
-    'max_visible_requests': 10,
-    'path_prefix': '/_debugtoolbar',
-}
+class _Config(TypedDict):
+    enabled: bool
+    intercept_exc: Literal["debug", "display", False]
+    intercept_redirects: bool
+    panels: Tuple[Type[DebugPanel], ...]
+    extra_panels: Tuple[Type[DebugPanel], ...]
+    global_panels: Tuple[Type[DebugPanel], ...]
+    hosts: Sequence[str]
+    exclude_prefixes: Tuple[str, ...]
+    check_host: bool
+    button_style: str
+    max_visible_requests: int
 
 
-def setup(app, **kw):
-    config = {}
-    config.update(default_settings)
-    config.update(kw)
+class _AppDetails(TypedDict):
+    exc_history: ExceptionHistory
+    pdtb_token: str
+    request_history: ToolbarStorage
+    settings: _Config
 
-    APP_ROOT = Path(__file__).parent
-    app[APP_KEY] = {}
+
+def setup(
+    app: web.Application,
+    *,
+    enabled: bool = True,
+    intercept_exc: Literal["debug", "display", False] = "debug",
+    intercept_redirects: bool = True,
+    panels: Iterable[Type[DebugPanel]] = default_panel_names,
+    extra_panels: Iterable[Type[DebugPanel]] = (),
+    extra_templates: Union[str, Path, Iterable[Union[str, Path]]] = (),
+    global_panels: Iterable[Type[DebugPanel]] = default_global_panel_names,
+    hosts: Sequence[str] = ("127.0.0.1", "::1"),
+    exclude_prefixes: Iterable[str] = (),
+    check_host: bool = True,  # disable host check
+    button_style: str = "",
+    max_request_history: int = 100,
+    max_visible_requests: int = 10,
+    path_prefix: str = "/_debugtoolbar",
+) -> None:
+    config = _Config(
+        enabled=enabled,
+        intercept_exc=intercept_exc,
+        intercept_redirects=intercept_redirects,
+        panels=tuple(panels),
+        extra_panels=tuple(extra_panels),
+        global_panels=tuple(global_panels),
+        hosts=hosts,
+        exclude_prefixes=tuple(exclude_prefixes),
+        check_host=check_host,
+        button_style=button_style,
+        max_visible_requests=max_visible_requests,
+    )
+
+    app[APP_KEY] = {"settings": config}
     if middleware not in app.middlewares:
         app.middlewares.append(middleware)
 
-    templates_app = APP_ROOT / 'templates'
-    templates_panels = APP_ROOT / 'panels/templates'
-    extra_tpl_path = config.get('extra_templates', [])
-    if isinstance(extra_tpl_path, str):
-        extra_tpl_path = [extra_tpl_path]
+    APP_ROOT = Path(__file__).parent
+    templates_app = APP_ROOT / "templates"
+    templates_panels = APP_ROOT / "panels/templates"
 
-    app[APP_KEY]['settings'] = config
-    loader = jinja2.FileSystemLoader(
-        [str(templates_app), str(templates_panels)] + list(extra_tpl_path))
+    if isinstance(extra_templates, (str, Path)):
+        templ: Iterable[Union[str, Path]] = (extra_templates,)
+    else:
+        templ = extra_templates
+    loader = jinja2.FileSystemLoader((templates_app, templates_panels, *templ))
     aiohttp_jinja2.setup(app, loader=loader, app_key=TEMPLATE_KEY)
 
-    static_location = APP_ROOT / 'static'
+    static_location = APP_ROOT / "static"
 
     exc_handlers = ExceptionDebugView()
 
-    path_prefix = config['path_prefix']
-    app.router.add_static(path_prefix + '/static', static_location,
-                          name=STATIC_ROUTE_NAME)
+    app.router.add_static(
+        path_prefix + "/static", static_location, name=STATIC_ROUTE_NAME
+    )
 
-    app.router.add_route('GET', path_prefix + '/source', exc_handlers.source,
-                         name='debugtoolbar.source')
-    app.router.add_route('GET', path_prefix + '/execute', exc_handlers.execute,
-                         name='debugtoolbar.execute')
+    app.router.add_route(
+        "GET", path_prefix + "/source", exc_handlers.source, name="debugtoolbar.source"
+    )
+    app.router.add_route(
+        "GET",
+        path_prefix + "/execute",
+        exc_handlers.execute,
+        name="debugtoolbar.execute",
+    )
     # app.router.add_route('GET', path_prefix + '/console',
     # exc_handlers.console,
     #                      name='debugtoolbar.console')
-    app.router.add_route('GET', path_prefix + '/exception',
-                         exc_handlers.exception,
-                         name='debugtoolbar.exception')
+    app.router.add_route(
+        "GET",
+        path_prefix + "/exception",
+        exc_handlers.exception,
+        name="debugtoolbar.exception",
+    )
     # TODO: fix when sql will be ported
     # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_select',
     #                      name='debugtoolbar.sql_select')
     # app.router.add_route('GET', path_prefix + '/sqlalchemy/sql_explain',
     #                      name='debugtoolbar.sql_explain')
 
-    app.router.add_route('GET', path_prefix + '/sse', views.sse,
-                         name='debugtoolbar.sse')
+    app.router.add_route(
+        "GET", path_prefix + "/sse", views.sse, name="debugtoolbar.sse"
+    )
 
-    app.router.add_route('GET', path_prefix + '/{request_id}',
-                         views.request_view, name='debugtoolbar.request')
-    app.router.add_route('GET', path_prefix, views.request_view,
-                         name='debugtoolbar.main')
+    app.router.add_route(
+        "GET",
+        path_prefix + "/{request_id}",
+        views.request_view,
+        name="debugtoolbar.request",
+    )
+    app.router.add_route(
+        "GET", path_prefix, views.request_view, name="debugtoolbar.main"
+    )
 
-    def settings_opt(name):
-        return app[APP_KEY]['settings'][name]
-
-    max_request_history = settings_opt('max_request_history')
-
-    app[APP_KEY]['request_history'] = ToolbarStorage(max_request_history)
-    app[APP_KEY]['exc_history'] = ExceptionHistory()
-    app[APP_KEY]['pdtb_token'] = hexlify(os.urandom(10))
-    intercept_exc = settings_opt('intercept_exc')
+    app[APP_KEY]["request_history"] = ToolbarStorage(max_request_history)
+    app[APP_KEY]["exc_history"] = ExceptionHistory()
+    app[APP_KEY]["pdtb_token"] = secrets.token_hex(10)
     if intercept_exc:
-        app[APP_KEY]['exc_history'].eval_exc = intercept_exc == 'debug'
+        app[APP_KEY]["exc_history"].eval_exc = intercept_exc == "debug"
