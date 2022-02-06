@@ -84,11 +84,10 @@ jobs:
       with:
         path: requirements-dev.txt
     - name: Run unittests
+      run: pytest --cov=aiohttp_debugtoolbar --cov-report xml --cov-report html --cov-report term
       env:
         COLOR: 'yes'
-      run: |
-        pytest tests
-        python -m coverage xml
+    - run: python -m coverage xml
     - name: Upload coverage
       uses: codecov/codecov-action@v1
       with:
