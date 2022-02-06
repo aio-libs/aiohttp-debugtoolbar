@@ -197,3 +197,26 @@ async def test_performance_panel_with_cbv(create_server, aiohttp_client):
 
     resp = await client.get("/")
     assert 200 == resp.status
+
+
+async def test_request_history(create_server, aiohttp_client):
+    async def handler(request: web.Request) -> web.Response:
+        return web.Response()
+
+    app = await create_server(check_host=False)
+    app.router.add_route("GET", "/", handler)
+    app.router.add_route("GET", "/favicon.ico", handler)
+    client = await aiohttp_client(app)
+
+    # Should be logged
+    r = await client.get("/")
+    assert r.status == 200
+    # Should not be logged
+    r = await client.get("/favicon.ico")
+    assert r.status == 200
+    r = await client.get("/_debugtoolbar/static/img/aiohttp.svg")
+    assert r.status == 200
+
+    request_history = tuple(app[aiohttp_debugtoolbar.APP_KEY]["request_history"])
+    assert len(request_history) == 1
+    assert request_history[0][1].request.path == "/"
