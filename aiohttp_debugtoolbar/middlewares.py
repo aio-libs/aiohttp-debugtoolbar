@@ -165,7 +165,8 @@ async def middleware(request: web.Request, handler: Handler) -> web.StreamRespon
     # Don't store the favicon.ico request
     # it's requested by the browser automatically
     # Also ignore requests for debugtoolbar itself.
-    if request.path != "/favicon.ico" and not request.path.startswith(settings["path_prefix"]):
+    tb_request = request.path.startswith(settings["path_prefix"])
+    if not tb_request and request.path != "/favicon.ico":
         request_history.put(request["id"], toolbar)
 
     if not show_on_exc_only and response.content_type in HTML_TYPES:
