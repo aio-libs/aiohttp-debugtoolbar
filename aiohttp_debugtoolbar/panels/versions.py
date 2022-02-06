@@ -40,7 +40,7 @@ class VersionDebugPanel(DebugPanel):
         }
 
     @classmethod
-    def get_packages(self) -> List[Dict[str, str]]:
+    def get_packages(cls) -> List[Dict[str, str]]:
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
 
