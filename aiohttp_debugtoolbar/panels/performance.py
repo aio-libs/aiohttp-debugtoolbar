@@ -1,7 +1,10 @@
 import cProfile as profile
 import pstats
-import resource
 import time
+try:
+    import resource
+except ImportError:  # Fails on Windows
+    resource = None
 
 from .base import DebugPanel
 from ..utils import format_fname
@@ -22,6 +25,7 @@ class PerformanceDebugPanel(DebugPanel):
     stats = None
     function_calls = None
     has_content = True
+    has_resource = bool(resource)
     template = "performance.jinja2"
     title = "Performance"
     nav_title = title
@@ -31,20 +35,33 @@ class PerformanceDebugPanel(DebugPanel):
         self.profiler = profile.Profile()
 
     def _wrap_timer_handler(self, handler):
-        async def resource_timer_handler(request):
+        if self.has_resource:
+            async def resource_timer_handler(request):
+                _start_time = time.time()
+                self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
+                try:
+                    result = await handler(request)
+                except BaseException:
+                    raise
+                finally:
+                    self._end_rusage = resource.getrusage(resource.RUSAGE_SELF)
+                    self.total_time = (time.time() - _start_time) * 1000
+
+                return result
+
+            return resource_timer_handler
+
+        async def noresource_timer_handler(request):
             _start_time = time.time()
-            self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
             try:
                 result = await handler(request)
             except BaseException:
                 raise
             finally:
-                self._end_rusage = resource.getrusage(resource.RUSAGE_SELF)
                 self.total_time = (time.time() - _start_time) * 1000
-
             return result
 
-        return resource_timer_handler
+        return noresource_timer_handler
 
     def _wrap_profile_handler(self, handler):
         if not self.is_active:
@@ -119,41 +136,42 @@ class PerformanceDebugPanel(DebugPanel):
 
     async def process_response(self, response):
         vars = {"timing_rows": None, "stats": None, "function_calls": []}
-        utime = 1000 * self._elapsed_ru("ru_utime")
-        stime = 1000 * self._elapsed_ru("ru_stime")
-        vcsw = self._elapsed_ru("ru_nvcsw")
-        ivcsw = self._elapsed_ru("ru_nivcsw")
-        # minflt = self._elapsed_ru('ru_minflt')
-        # majflt = self._elapsed_ru('ru_majflt')
+        if self.has_resource:
+            utime = 1000 * self._elapsed_ru("ru_utime")
+            stime = 1000 * self._elapsed_ru("ru_stime")
+            vcsw = self._elapsed_ru("ru_nvcsw")
+            ivcsw = self._elapsed_ru("ru_nivcsw")
+            # minflt = self._elapsed_ru('ru_minflt')
+            # majflt = self._elapsed_ru('ru_majflt')
 
-        # these are documented as not meaningful under Linux.  If you're
-        # running BSD # feel free to enable them, and add any others that
-        # I hadn't gotten to before I noticed that I was getting nothing
-        # but zeroes and that the docs agreed. :-(
-        #
-        #            blkin = self._elapsed_ru('ru_inblock')
-        #            blkout = self._elapsed_ru('ru_oublock')
-        #            swap = self._elapsed_ru('ru_nswap')
-        #            rss = self._end_rusage.ru_maxrss
-        #            srss = self._end_rusage.ru_ixrss
-        #            urss = self._end_rusage.ru_idrss
-        #            usrss = self._end_rusage.ru_isrss
+            # these are documented as not meaningful under Linux.  If you're
+            # running BSD # feel free to enable them, and add any others that
+            # I hadn't gotten to before I noticed that I was getting nothing
+            # but zeroes and that the docs agreed. :-(
+            #
+            #            blkin = self._elapsed_ru('ru_inblock')
+            #            blkout = self._elapsed_ru('ru_oublock')
+            #            swap = self._elapsed_ru('ru_nswap')
+            #            rss = self._end_rusage.ru_maxrss
+            #            srss = self._end_rusage.ru_ixrss
+            #            urss = self._end_rusage.ru_idrss
+            #            usrss = self._end_rusage.ru_isrss
 
-        # TODO l10n on values
-        rows = (
-            ("User CPU time", "%0.3f msec" % utime),
-            ("System CPU time", "%0.3f msec" % stime),
-            ("Total CPU time", "%0.3f msec" % (utime + stime)),
-            ("Elapsed time", "%0.3f msec" % self.total_time),
-            ("Context switches", "%d voluntary, %d involuntary" % (vcsw, ivcsw)),
-            # (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
-            # rss, srss, urss + usrss)),
-            # (_('Page faults'), '%d no i/o, %d requiring i/o' % (
-            # minflt, majflt)),
-            # (_('Disk operations'), '%d in, %d out, %d swapout' % (
-            # blkin, blkout, swap)),
-        )
-        vars["timing_rows"] = rows
+            # TODO l10n on values
+            rows = (
+                ("User CPU time", "%0.3f msec" % utime),
+                ("System CPU time", "%0.3f msec" % stime),
+                ("Total CPU time", "%0.3f msec" % (utime + stime)),
+                ("Elapsed time", "%0.3f msec" % self.total_time),
+                ("Context switches", "%d voluntary, %d involuntary" % (vcsw, ivcsw)),
+                # (_('Memory use'), '%d max RSS, %d shared, %d unshared' % (
+                # rss, srss, urss + usrss)),
+                # (_('Page faults'), '%d no i/o, %d requiring i/o' % (
+                # minflt, majflt)),
+                # (_('Disk operations'), '%d in, %d out, %d swapout' % (
+                # blkin, blkout, swap)),
+            )
+            vars["timing_rows"] = rows
         if self.is_active:
             vars["stats"] = self.stats
             vars["function_calls"] = self.function_calls
