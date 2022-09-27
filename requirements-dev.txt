@@ -7,7 +7,7 @@ coverage==6.3.2
 docutils==0.18.1
 jinja2==3.0.3
 multidict==6.0.2
-mypy==0.941
+mypy==0.981
 pygments==2.11.2
 pytest==7.1.1
 pytest-aiohttp==1.0.4
