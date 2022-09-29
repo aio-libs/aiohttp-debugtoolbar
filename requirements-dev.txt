@@ -11,7 +11,7 @@ mypy==0.941
 pygments==2.11.2
 pytest==7.1.1
 pytest-aiohttp==1.0.4
-pytest-cov==3.0.0
+pytest-cov==4.0.0
 pytest-sugar==0.9.4
 pytest-timeout==2.1.0
 yarl==1.7.2
