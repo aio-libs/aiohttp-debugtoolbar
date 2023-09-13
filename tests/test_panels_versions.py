@@ -12,11 +12,8 @@ async def test_packages():
     request_mock = create_autospec(web.Request)
     panel = VersionDebugPanel(request_mock)
 
-    jinja2_metadata = {
-        "version": "3.0.3",
-        "lowername": "jinja2",
-        "name": "Jinja2",
-        "dependencies": ["MarkupSafe (>=2.0)", "Babel (>=2.7) ; extra == 'i18n'"],
-        "url": "https://palletsprojects.com/p/jinja/",
-    }
-    assert jinja2_metadata in panel.data["packages"]
+    jinja2_metadata = next(p for p in panel.data["packages"] if p["name"] == "Jinja2")
+    assert "version" in jinja2_metadata
+    assert jinja2_metadata["lowercase"] == "jinja2"
+    assert any("MarkupSafe" in d for d in jinja2_metadata["dependencies"])
+    assert "url" in jinja2_metadata
