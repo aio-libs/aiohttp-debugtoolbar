@@ -26,7 +26,7 @@ async def request_view(request):
     panels = toolbar.panels if toolbar else []
     global_panels = toolbar.global_panels if toolbar else []
 
-    static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename="")
+    static_path = request.app.router[STATIC_ROUTE_NAME].canonical
     root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
 
     button_style = settings.get("button_style", "")
@@ -132,7 +132,7 @@ class ExceptionDebugView:
     # @aiohttp_jinja2.template('console.jinja2',  app_key=TEMPLATE_KEY)
     # async def console(self, request):
     #     self._validate_token(request)
-    #     static_path = request.app.router[STATIC_ROUTE_NAME].url(filename='')
+    #     static_path = request.app.router[STATIC_ROUTE_NAME].canonical
     #     root_path = request.app.router[ROOT_ROUTE_NAME].url()
     #     token = request.query.get('token')
     #     tb = await self._get_tb(request)
