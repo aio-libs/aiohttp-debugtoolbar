@@ -148,7 +148,6 @@ async def middleware(request: web.Request, handler: Handler) -> web.StreamRespon
         # Intercept http redirect codes and display an html page with a
         # link to the target.
         if response.status in REDIRECT_CODES and getattr(response, "location", None):
-
             context = {
                 "redirect_to": response.location,
                 "redirect_code": response.status,

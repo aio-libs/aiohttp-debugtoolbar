@@ -39,7 +39,7 @@ async def basic_handler(request):
 
     # testing for Redis
     if "redis" in request.app:
-        with (await request.app["redis"]) as redis:
+        with await request.app["redis"] as redis:
             await redis.set("TEST", "VAR", expire=5)
             assert b"VAR" == (await redis.get("TEST"))  # noqa: S101
 
