@@ -1,3 +1,5 @@
+-e .
+
 aiohttp==3.8.1
 aiohttp-jinja2==1.5
 aiohttp-mako==0.4.0
