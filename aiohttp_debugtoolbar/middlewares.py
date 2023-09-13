@@ -9,9 +9,9 @@ from .tbtools.tbtools import get_traceback
 from .toolbar import DebugToolbar
 from .utils import (
     APP_KEY,
-    ContextSwitcher,
     REDIRECT_CODES,
     TEMPLATE_KEY,
+    ContextSwitcher,
     addr_in,
     hexlify,
 )
@@ -148,7 +148,6 @@ async def middleware(request: web.Request, handler: Handler) -> web.StreamRespon
         # Intercept http redirect codes and display an html page with a
         # link to the target.
         if response.status in REDIRECT_CODES and getattr(response, "location", None):
-
             context = {
                 "redirect_to": response.location,
                 "redirect_code": response.status,
