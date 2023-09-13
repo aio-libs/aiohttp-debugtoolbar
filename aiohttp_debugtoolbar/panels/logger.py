@@ -20,7 +20,6 @@ class RequestTrackingHandler(logging.Handler):
 
 
 class LoggingPanel(DebugPanel):
-
     name = "logging"
     template = "logger.jinja2"
     title = "Log Messages"
