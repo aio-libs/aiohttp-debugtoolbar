@@ -4,7 +4,7 @@ aiohttp-jinja2==1.5
 aiohttp-mako==0.4.0
 aioredis==2.0.1
 coverage==6.3.2
-docutils==0.18.1
+docutils==0.20.1
 jinja2==3.0.3
 multidict==6.0.2
 mypy==0.941
