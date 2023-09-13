@@ -207,7 +207,7 @@ class Traceback:
 
     def render_full(self, request, lodgeit_url=None):
         """Render the Full HTML page with the traceback info."""
-        static_path = request.app.router[STATIC_ROUTE_NAME].url_for(filename="")
+        static_path = request.app.router[STATIC_ROUTE_NAME].canonical
         root_path = request.app.router[ROOT_ROUTE_NAME].url_for()
         exc = escape(self.exception)
         summary = self.render_summary(request.app, include_title=False)
