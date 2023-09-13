@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <title>Aiohttp Debug Toolbar</title>
 
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/toolbar.css">
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/dashboard.css">
-    <link rel="stylesheet" href="{{ static_path }}css/debugger.css" type="text/css">
-{#    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/highlightjs_default.min.css">#}
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/prism.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/toolbar.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/dashboard.css">
+    <link rel="stylesheet" href="{{ static_path }}/css/debugger.css" type="text/css">
+{#    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/highlightjs_default.min.css">#}
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/prism.css">
 
 
     {# include scripts here that should be included before pageload #}
@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var DEBUG_TOOLBAR_STATIC_PATH = '{{ static_path }}';
     </script>
-    <script src="{{ static_path }}js/jquery-1.10.2.min.js"></script>
+    <script src="{{ static_path }}/js/jquery-1.10.2.min.js"></script>
   </head>
   <body>
 
@@ -33,7 +33,7 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="{{ root_path }}">
-            <img src="{{ static_path }}img/aiohttp.svg"/>
+            <img src="{{ static_path }}/img/aiohttp.svg"/>
             Aiohttp DebugToolbar</a>
         </div>
         <div class="navbar-collapse collapse">
@@ -67,10 +67,10 @@
     </div>
 
     {# scripts that can be included after pageload #}
-    <script src="{{ static_path }}js/jquery.cookie.js"></script>
-    <script src="{{ static_path }}js/jquery.tablesorter.min.js"></script>
-    <script src="{{ static_path }}js/bootstrap.min.js"></script>
-    <script src="{{ static_path }}js/toolbar.js"></script>
+    <script src="{{ static_path }}/js/jquery.cookie.js"></script>
+    <script src="{{ static_path }}/js/jquery.tablesorter.min.js"></script>
+    <script src="{{ static_path }}/js/bootstrap.min.js"></script>
+    <script src="{{ static_path }}/js/toolbar.js"></script>
     <script>
       $(function () {
         $('#myTab a:first').tab('show');
@@ -128,9 +128,9 @@
 
       });
     </script>
-{#    <script type="text/javascript" src="{{ static_path }}js/highlight.min.js"></script>#}
+{#    <script type="text/javascript" src="{{ static_path }}/js/highlight.min.js"></script>#}
 {#    <script>hljs.initHighlightingOnLoad();</script>#}
-    <script type="text/javascript" src="{{ static_path }}js/prism.js"></script>
+    <script type="text/javascript" src="{{ static_path }}/js/prism.js"></script>
 
       </body>
     </html>

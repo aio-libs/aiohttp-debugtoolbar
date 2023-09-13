@@ -5,12 +5,12 @@
   <head>
     <title>{{ title }} // Werkzeug Debugger</title>
     <!--bootstrap version 2.3.2-->
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/toolbar.css">
-    <link rel="stylesheet" href="{{ static_path }}css/debugger.css"
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/toolbar.css">
+    <link rel="stylesheet" href="{{ static_path }}/css/debugger.css"
           type="text/css">
-{#    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/highlightjs_default.min.css">#}
-    <link rel="stylesheet" type="text/css" href="{{ static_path }}css/prism.css">
+{#    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/highlightjs_default.min.css">#}
+    <link rel="stylesheet" type="text/css" href="{{ static_path }}/css/prism.css">
     <script type="text/javascript">
       var TRACEBACK = {{ traceback_id }},
           DEBUGGER_TOKEN = "{{ token }}",
@@ -19,8 +19,8 @@
           DEBUG_TOOLBAR_STATIC_PATH = "{{ static_path }}",
           DEBUG_TOOLBAR_ROOT_PATH = "{{ root_path }}";
     </script>
-    <script data-main="{{ static_path }}js/debugger"
-            src="{{ static_path }}js/require.js"></script>
+    <script data-main="{{ static_path }}/js/debugger"
+            src="{{ static_path }}/js/require.js"></script>
   </head>
   <body>
     <div class="debugger">
@@ -100,8 +100,8 @@
 
       -->
 
-{#    <script type="text/javascript" src="{{ static_path }}js/highlight.min.js"></script>#}
-    <script type="text/javascript" src="{{ static_path }}js/prism.js"></script>
+{#    <script type="text/javascript" src="{{ static_path }}/js/highlight.min.js"></script>#}
+    <script type="text/javascript" src="{{ static_path }}/js/prism.js"></script>
   </body>
 
 </html>
