@@ -70,7 +70,6 @@ def replace_insensitive(string, target, replacement):
 
 
 def render(template_name, app, context, *, app_key=TEMPLATE_KEY, **kw):
-
     lookup = app[app_key]
     template = lookup.get_template(template_name)
     c = context.copy()
