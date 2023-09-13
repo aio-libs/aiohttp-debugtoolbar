@@ -34,5 +34,5 @@ class MiddlewaresDebugPanel(DebugPanel):
         self.data = {"middlewares": middleware_names}
 
     def render_vars(self, request):
-        static_path = self._request.app.router[STATIC_ROUTE_NAME].url_for(filename="")
+        static_path = self._request.app.router[STATIC_ROUTE_NAME].canonical
         return {"static_path": static_path}
