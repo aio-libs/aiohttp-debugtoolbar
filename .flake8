@@ -16,7 +16,7 @@ per-file-ignores =
 
 # flake8-import-order
 application-import-names = aiohttp_debugtoolbar
-import-order-style = ISort
+import-order-style = pycharm
 
 # flake8-requirements
 known-modules = :[aiohttp_debugtoolbar]
