@@ -17,9 +17,9 @@ from .middlewares import middleware
 from .panels.base import DebugPanel
 from .utils import (
     APP_KEY,
+    ExceptionHistory,
     STATIC_ROUTE_NAME,
     TEMPLATE_KEY,
-    ExceptionHistory,
     ToolbarStorage,
 )
 from .views import ExceptionDebugView
