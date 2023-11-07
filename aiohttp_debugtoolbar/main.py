@@ -22,7 +22,7 @@ from .utils import (
     STATIC_ROUTE_NAME,
     TEMPLATE_KEY,
     ToolbarStorage,
-    _Config
+    _Config,
 )
 from .views import ExceptionDebugView
 
@@ -144,7 +144,12 @@ def setup(
     )
 
     app[APP_KEY] = AppState(
-        {"exc_history": ExceptionHistory(), "pdtb_token": secrets.token_hex(10),
-         "request_history": ToolbarStorage(max_request_history), "settings": config})
+        {
+            "exc_history": ExceptionHistory(),
+            "pdtb_token": secrets.token_hex(10),
+            "request_history": ToolbarStorage(max_request_history),
+            "settings": config
+        }
+    )
     if intercept_exc:
         app[APP_KEY]["exc_history"].eval_exc = intercept_exc == "debug"
