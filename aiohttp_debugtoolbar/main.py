@@ -148,7 +148,7 @@ def setup(
             "exc_history": ExceptionHistory(),
             "pdtb_token": secrets.token_hex(10),
             "request_history": ToolbarStorage(max_request_history),
-            "settings": config
+            "settings": config,
         }
     )
     if intercept_exc:
