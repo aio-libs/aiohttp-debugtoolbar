@@ -4,7 +4,7 @@ import os
 import sys
 from collections import deque
 from itertools import islice
-from typing import TYPE_CHECKING, Literal, Sequence, Tuple, Type, TypedDict
+from typing import Literal, Sequence, TYPE_CHECKING, Tuple, Type, TypedDict
 
 import jinja2
 from aiohttp.web import AppKey
