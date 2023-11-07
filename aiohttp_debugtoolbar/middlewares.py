@@ -3,7 +3,7 @@ import sys
 import aiohttp_jinja2
 from aiohttp import web
 from aiohttp.typedefs import Handler
-from aiohttp.web_exceptions import _HTTPMove as HTTPMove
+from aiohttp.web_exceptions import HTTPMove
 
 from .tbtools.tbtools import get_traceback
 from .toolbar import DebugToolbar

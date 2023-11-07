@@ -1,5 +1,5 @@
 -e .
-aiohttp==3.8.1
+aiohttp==3.9.0b1
 aiohttp-jinja2==1.5
 aiohttp-mako==0.4.0
 aioredis==2.0.1
