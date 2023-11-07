@@ -145,7 +145,6 @@ async def test_do_not_intercept_exceptions(create_server, aiohttp_client):
 
 
 async def test_setup_not_called_exception():
-
     request = make_mocked_request("GET", "/path")
     with pytest.raises(RuntimeError):
         await aiohttp_debugtoolbar.middleware(request, lambda r: r)
