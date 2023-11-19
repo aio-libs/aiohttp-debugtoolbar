@@ -3,6 +3,7 @@ import pathlib
 import aiohttp_jinja2
 
 from aiohttp_debugtoolbar.panels.base import DebugPanel
+from aiohttp_debugtoolbar.utils import TEMPLATE_KEY
 
 
 async def test_request_vars_panel(create_server, aiohttp_client):
@@ -63,7 +64,7 @@ async def test_extra_panel(create_server, aiohttp_client):
     assert "pDebugToolbarHandle" in txt
 
     # check template from extra_templates
-    assert "test.jinja2" in app["aiohttp_debugtoolbar_jinja2"].list_templates()
+    assert "test.jinja2" in app[TEMPLATE_KEY].list_templates()
 
     # make sure that debug toolbar page working and extra panel exists
     resp = await client.get("/_debugtoolbar")

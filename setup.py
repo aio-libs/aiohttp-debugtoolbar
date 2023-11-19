@@ -38,7 +38,7 @@ setup(
     license="Apache 2",
     packages=find_packages(),
     install_requires=(
-        "aiohttp>=3.8",
+        "aiohttp>=3.9",
         "aiohttp_jinja2",
     ),
     include_package_data=True,

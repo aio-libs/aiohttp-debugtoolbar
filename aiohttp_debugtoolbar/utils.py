@@ -4,9 +4,15 @@ import os
 import sys
 from collections import deque
 from itertools import islice
+from typing import Literal, Sequence, TYPE_CHECKING, Tuple, Type, TypedDict
 
-APP_KEY = "aiohttp_debugtoolbar"
-TEMPLATE_KEY = "aiohttp_debugtoolbar_jinja2"
+import jinja2
+from aiohttp.web import AppKey
+
+if TYPE_CHECKING:  # pragma: no cover
+    from .panels.base import DebugPanel
+else:
+    DebugPanel = None
 
 REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
 STATIC_PATH = "static/"
@@ -46,6 +52,32 @@ class ExceptionHistory:
         self.frames = {}
         self.tracebacks = {}
         self.eval_exc = "show"
+
+
+class _Config(TypedDict):
+    enabled: bool
+    intercept_exc: Literal["debug", "display", False]
+    intercept_redirects: bool
+    panels: Tuple[Type[DebugPanel], ...]
+    extra_panels: Tuple[Type[DebugPanel], ...]
+    global_panels: Tuple[Type[DebugPanel], ...]
+    hosts: Sequence[str]
+    exclude_prefixes: Tuple[str, ...]
+    check_host: bool
+    button_style: str
+    max_visible_requests: int
+    path_prefix: str
+
+
+class AppState(TypedDict):
+    exc_history: ExceptionHistory
+    pdtb_token: str
+    request_history: ToolbarStorage
+    settings: _Config
+
+
+APP_KEY = AppKey("APP_KEY", AppState)
+TEMPLATE_KEY = AppKey("TEMPLATE_KEY", jinja2.Environment)
 
 
 def addr_in(addr, hosts):

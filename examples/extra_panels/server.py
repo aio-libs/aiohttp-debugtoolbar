@@ -21,12 +21,15 @@ except ImportError:
 
 PATH_PARENT = pathlib.Path(__file__).parent
 
+db_key = web.AppKey["aiopg.Pool"]("db_key")
+redis_key = web.AppKey["aioredis.Redis"]("redis_key")
+
 
 @aiohttp_jinja2.template("index.html")
 async def basic_handler(request):
     # testing for PgSQL
     if "db" in request.app:
-        conn = await request.app["db"].acquire()
+        conn = await request.app[db_key].acquire()
         cur = await conn.cursor()
 
         await cur.execute("SELECT 1")
@@ -35,11 +38,11 @@ async def basic_handler(request):
             ret.append(row)
         assert ret == [(1,)]  # noqa: S101
 
-        await request.app["db"].release(conn)
+        await request.app[db_key].release(conn)
 
     # testing for Redis
     if "redis" in request.app:
-        with await request.app["redis"] as redis:
+        with await request.app[redis_key] as redis:
             await redis.set("TEST", "VAR", expire=5)
             assert b"VAR" == (await redis.get("TEST"))  # noqa: S101
 
@@ -55,13 +58,13 @@ async def exception_handler(request):
 
 
 async def close_pg(app):
-    app["db"].close()
-    await app["db"].wait_closed()
+    app[db_key].close()
+    await app[db_key].wait_closed()
 
 
 async def close_redis(app):
-    app["redis"].close()
-    await app["redis"].wait_closed()
+    app[redis_key].close()
+    await app[redis_key].wait_closed()
 
 
 async def init():
@@ -106,13 +109,13 @@ async def init():
         dsn = "host={host} dbname={db} user={user} password={passw} ".format(
             db="postgres", user="developer", passw="1", host="localhost"
         )
-        app["db"] = await aiopg.create_pool(dsn, minsize=1, maxsize=2)
+        app[db_key] = await aiopg.create_pool(dsn, minsize=1, maxsize=2)
         # Correct PostgreSQL shutdown
         app.on_cleanup.append(close_pg)
 
     if "aioredis" in sys.modules:
         # create redis pool
-        app["redis"] = await aioredis.Redis("127.0.0.1", 6379)
+        app[redis_key] = await aioredis.Redis()
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 

@@ -1,6 +1,6 @@
 import secrets
 from pathlib import Path
-from typing import Iterable, Literal, Sequence, Tuple, Type, TypedDict, Union
+from typing import Iterable, Literal, Sequence, Type, TypedDict, Union
 
 import aiohttp_jinja2
 import jinja2
@@ -11,10 +11,12 @@ from .middlewares import middleware
 from .panels.base import DebugPanel
 from .utils import (
     APP_KEY,
+    AppState,
     ExceptionHistory,
     STATIC_ROUTE_NAME,
     TEMPLATE_KEY,
     ToolbarStorage,
+    _Config,
 )
 from .views import ExceptionDebugView
 
@@ -33,21 +35,6 @@ default_global_panel_names = (
     panels.MiddlewaresDebugPanel,
     panels.VersionDebugPanel,
 )
-
-
-class _Config(TypedDict):
-    enabled: bool
-    intercept_exc: Literal["debug", "display", False]
-    intercept_redirects: bool
-    panels: Tuple[Type[DebugPanel], ...]
-    extra_panels: Tuple[Type[DebugPanel], ...]
-    global_panels: Tuple[Type[DebugPanel], ...]
-    hosts: Sequence[str]
-    exclude_prefixes: Tuple[str, ...]
-    check_host: bool
-    button_style: str
-    max_visible_requests: int
-    path_prefix: str
 
 
 class _AppDetails(TypedDict):
@@ -90,7 +77,6 @@ def setup(
         path_prefix=path_prefix,
     )
 
-    app[APP_KEY] = {"settings": config}
     if middleware not in app.middlewares:
         app.middlewares.append(middleware)
 
@@ -151,8 +137,13 @@ def setup(
         "GET", path_prefix, views.request_view, name="debugtoolbar.main"
     )
 
-    app[APP_KEY]["request_history"] = ToolbarStorage(max_request_history)
-    app[APP_KEY]["exc_history"] = ExceptionHistory()
-    app[APP_KEY]["pdtb_token"] = secrets.token_hex(10)
+    app[APP_KEY] = AppState(
+        {
+            "exc_history": ExceptionHistory(),
+            "pdtb_token": secrets.token_hex(10),
+            "request_history": ToolbarStorage(max_request_history),
+            "settings": config,
+        }
+    )
     if intercept_exc:
         app[APP_KEY]["exc_history"].eval_exc = intercept_exc == "debug"
