@@ -1,17 +1,10 @@
 import platform
 import sys
+from importlib.metadata import Distribution, version
 from operator import itemgetter
 from typing import ClassVar, Dict, List, Optional
 
 from .base import DebugPanel
-
-if sys.version_info >= (3, 8):
-    from importlib.metadata import Distribution, version
-else:
-    Distribution = None
-
-    def version(_v):
-        return ""
 
 
 __all__ = ("VersionDebugPanel",)
@@ -43,9 +36,6 @@ class VersionDebugPanel(DebugPanel):
     def get_packages(cls) -> List[Dict[str, str]]:
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
-
-        if Distribution is None:
-            return ()  # type: ignore[unreachable]
 
         packages = []
         for distribution in Distribution.discover():
