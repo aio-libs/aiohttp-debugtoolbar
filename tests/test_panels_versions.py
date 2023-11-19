@@ -1,4 +1,3 @@
-import sys
 from unittest.mock import create_autospec
 
 import pytest
@@ -7,7 +6,6 @@ from aiohttp import web
 from aiohttp_debugtoolbar.panels import VersionDebugPanel
 
 
-@pytest.mark.skipif(sys.version_info < (3, 8), reason="Missing importlib.metadata")
 async def test_packages():
     request_mock = create_autospec(web.Request)
     panel = VersionDebugPanel(request_mock)
