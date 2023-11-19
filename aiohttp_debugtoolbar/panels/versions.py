@@ -37,9 +37,6 @@ class VersionDebugPanel(DebugPanel):
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
 
-        if Distribution is None:
-            return ()  # type: ignore[unreachable]
-
         packages = []
         for distribution in Distribution.discover():
             name = distribution.metadata["Name"]
