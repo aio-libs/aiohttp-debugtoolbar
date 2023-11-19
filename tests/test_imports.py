@@ -1,5 +1,6 @@
 import platform
 import sys
+import time
 
 import pytest
 
@@ -17,6 +18,7 @@ def test_import_time(pytester: pytest.Pytester) -> None:
     best_time_ms = 1000
     cmd = "import timeit; print(int(timeit.timeit('import aiohttp_debugtoolbar', number=1) * 1000))"
     for _ in range(3):
+        time.sleep(1)
         r = pytester.run(sys.executable, "-We", "-c", cmd)
 
         assert not r.stderr.str()
