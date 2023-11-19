@@ -115,7 +115,7 @@ async def init():
 
     if "aioredis" in sys.modules:
         # create redis pool
-        app[redis_key] = await aioredis.Redis("127.0.0.1", 6379)
+        app[redis_key] = await aioredis.Redis()
         # Correct Redis shutdown
         app.on_cleanup.append(close_redis)
 
