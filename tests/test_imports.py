@@ -19,8 +19,9 @@ def test_import_time(pytester: pytest.Pytester) -> None:
     cmd = "import time, timeit; time.sleep(1); print(int(timeit.timeit('import aiohttp_debugtoolbar', number=1) * 1000))"
     for _ in range(3):
         time.sleep(1)
-        r = pytester.run(sys.executable, "-We", "-c", cmd)
+        r = pytester.run(sys.executable, "-We", "-X", "importtime", "-c", cmd)
 
+        print(r.stderr.str())
         assert not r.stderr.str()
         runtime_ms = int(r.stdout.str())
         if runtime_ms < best_time_ms:
