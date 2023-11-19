@@ -9,7 +9,7 @@ from typing import Literal, Sequence, TYPE_CHECKING, Tuple, Type, TypedDict
 import jinja2
 from aiohttp.web import AppKey
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from .panels.base import DebugPanel
 else:
     DebugPanel = None
