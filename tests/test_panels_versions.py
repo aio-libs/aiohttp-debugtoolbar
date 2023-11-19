@@ -1,6 +1,5 @@
 from unittest.mock import create_autospec
 
-import pytest
 from aiohttp import web
 
 from aiohttp_debugtoolbar.panels import VersionDebugPanel
