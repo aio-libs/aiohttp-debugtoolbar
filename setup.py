@@ -26,7 +26,6 @@ setup(
         "Intended Audience :: Developers",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -39,9 +38,8 @@ setup(
     license="Apache 2",
     packages=find_packages(),
     install_requires=(
-        "aiohttp>=3.8",
+        "aiohttp>=3.9",
         "aiohttp_jinja2",
-        'typing_extensions>=3.8; python_version<"3.8"',
     ),
     include_package_data=True,
 )
