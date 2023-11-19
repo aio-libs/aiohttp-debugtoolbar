@@ -11,6 +11,8 @@ from aiohttp.web import AppKey
 
 if TYPE_CHECKING:
     from .panels.base import DebugPanel
+else:
+    DebugPanel = None
 
 REDIRECT_CODES = (300, 301, 302, 303, 305, 307, 308)
 STATIC_PATH = "static/"
