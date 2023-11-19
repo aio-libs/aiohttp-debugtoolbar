@@ -16,7 +16,7 @@ def test_import_time(pytester: pytest.Pytester) -> None:
     added that significantly increases import time.
     """
     best_time_ms = 1000
-    cmd = "import timeit; print(int(timeit.timeit('import aiohttp_debugtoolbar', number=1) * 1000))"
+    cmd = "import time, timeit; time.sleep(1); print(int(timeit.timeit('import aiohttp_debugtoolbar', number=1) * 1000))"
     for _ in range(3):
         time.sleep(1)
         r = pytester.run(sys.executable, "-We", "-c", cmd)
