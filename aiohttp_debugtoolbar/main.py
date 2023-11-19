@@ -1,5 +1,4 @@
 import secrets
-import sys
 from pathlib import Path
 from typing import Iterable, Literal, Sequence, Tuple, Type, TypedDict, Union
 
