@@ -32,6 +32,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Internet :: WWW/HTTP",
         "Framework :: AsyncIO",
+        "Framework :: aiohttp",
     ],
     author="Nikolay Novik",
     author_email="nickolainovik@gmail.com",
