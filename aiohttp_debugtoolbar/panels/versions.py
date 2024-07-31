@@ -15,8 +15,8 @@ class _Package(TypedDict):
     version: str
     lowername: str
     name: str
-    dependencies: list[str]
-    url: str
+    dependencies: List[str]
+    url: Optional[str]
 
 
 class VersionDebugPanel(DebugPanel):
@@ -45,7 +45,7 @@ class VersionDebugPanel(DebugPanel):
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
 
-        packages: list[_Package] = []
+        packages: List[_Package] = []
         for distribution in Distribution.discover():
             name = distribution.metadata["Name"]
             dependencies = [d for d in distribution.requires or ()]
