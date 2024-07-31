@@ -2,13 +2,21 @@ import platform
 import sys
 from importlib.metadata import Distribution, version
 from operator import itemgetter
-from typing import ClassVar, Dict, List, Optional
+from typing import ClassVar, Dict, List, Optional, TypedDict
 
 from .base import DebugPanel
 
 
 __all__ = ("VersionDebugPanel",)
 aiohttp_version = version("aiohttp")
+
+
+class _Package(TypedDict):
+    version: str
+    lowername: str
+    name: str
+    dependencies: list[str]
+    url: str
 
 
 class VersionDebugPanel(DebugPanel):
@@ -37,7 +45,7 @@ class VersionDebugPanel(DebugPanel):
         if VersionDebugPanel.packages:
             return VersionDebugPanel.packages
 
-        packages = []
+        packages: list[_Package] = []
         for distribution in Distribution.discover():
             name = distribution.metadata["Name"]
             dependencies = [d for d in distribution.requires or ()]
