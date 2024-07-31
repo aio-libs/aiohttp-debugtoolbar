@@ -61,7 +61,7 @@ class VersionDebugPanel(DebugPanel):
                 }
             )
 
-        VersionDebugPanel.packages = sorted(packages, key=itemgetter("lowername"))
+        VersionDebugPanel.packages = sorted(packages, key=itemgetter("lowername"))  # type: ignore[arg-type]
         return VersionDebugPanel.packages
 
     def _get_platform_name(self):
