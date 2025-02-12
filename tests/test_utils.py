@@ -45,7 +45,7 @@ def test_module_file_path():
 def test_no_matching_sys_path():
     val = "/foo/bar/aiohttp_debugtoolbar/foo.py"
     sys_path = [("c:" if sys.platform == "win32" else "") + "/bar/baz"]
-    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>".replace("/", os.path.sep)
+    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>"
     assert format_fname(val, sys_path) == expected
 
 
