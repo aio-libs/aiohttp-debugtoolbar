@@ -1,5 +1,4 @@
 import json
-import sys
 
 from aiohttp_debugtoolbar import APP_KEY
 
@@ -31,10 +30,7 @@ async def test_sse(create_server, aiohttp_client):
     assert event_id == f"id: {request_id}"
     assert event == "event: new_request"
 
-    if sys.version_info >= (3, 9):
-        payload_json = payload_raw.removeprefix("data: ")
-    else:
-        payload_json = payload_raw.strip("data: ")  # noqa: B005
+    payload_json = payload_raw.removeprefix("data: ")
     payload = json.loads(payload_json)
     expected = [
         [
