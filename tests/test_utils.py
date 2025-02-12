@@ -44,7 +44,7 @@ def test_module_file_path():
 def test_no_matching_sys_path():
     val = str(Path("/foo/bar/aiohttp_debugtoolbar/foo.py"))
     sys_path = [str(Path("/bar/baz"))]
-    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>"
+    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>".replace("/", os.path.sep)
     assert format_fname(val, sys_path) == expected
 
 
