@@ -1,5 +1,4 @@
 import json
-import sys
 
 from aiohttp_debugtoolbar import APP_KEY
 
