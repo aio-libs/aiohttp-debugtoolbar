@@ -47,7 +47,7 @@ def test_no_matching_sys_path():
     prefix = ("c:" if sys.platform == "win32" else "")
     val = prefix + "/foo/bar/aiohttp_debugtoolbar/foo.py".replace("/", os.path.sep)
     sys_path = [prefix + "/bar/baz".replace("/", os.path.sep)]
-    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>"
+    expected = f"<{prefix}/foo/bar/aiohttp_debugtoolbar/foo.py>".replace("/", os.path.sep)
     assert format_fname(val, sys_path) == expected
 
 
