@@ -21,7 +21,6 @@ def test_import_time(pytester: pytest.Pytester) -> None:
         time.sleep(1)
         r = pytester.run(sys.executable, "-We", "-X", "importtime", "-c", cmd)
 
-        print(r.stderr.str())
         assert not r.stderr.str()
         runtime_ms = int(r.stdout.str())
         if runtime_ms < best_time_ms:

@@ -1,4 +1,5 @@
 import os
+import sys
 
 from aiohttp_debugtoolbar.utils import addr_in, escape, format_fname
 
@@ -31,9 +32,11 @@ def test_module_file_path():
         "/usr/local/python/site-packages/",
     )
 
-    sys_path = map(lambda path: path.replace("/", os.path.sep), sys_path_l)
+    prefix = "c:" if sys.platform == "win32" else ""
+    sys_path = map(lambda p: prefix + p.replace("/", os.path.sep), sys_path_l)
     modpath = format_fname(
-        "/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py".replace("/", os.path.sep),
+        prefix
+        + "/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py".replace("/", os.path.sep),
         sys_path,
     )
     expected = "<aiohttp_debugtoolbar/tests/debugfoo.py>".replace("/", os.path.sep)
@@ -41,9 +44,12 @@ def test_module_file_path():
 
 
 def test_no_matching_sys_path():
-    val = "/foo/bar/aiohttp_debugtoolbar/foo.py"
-    sys_path = ["/bar/baz"]
-    expected = "</foo/bar/aiohttp_debugtoolbar/foo.py>"
+    prefix = "c:" if sys.platform == "win32" else ""
+    val = prefix + "/foo/bar/aiohttp_debugtoolbar/foo.py".replace("/", os.path.sep)
+    sys_path = [prefix + "/bar/baz".replace("/", os.path.sep)]
+    expected = f"<{prefix}/foo/bar/aiohttp_debugtoolbar/foo.py>".replace(
+        "/", os.path.sep
+    )
     assert format_fname(val, sys_path) == expected
 
 
