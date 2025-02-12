@@ -49,7 +49,7 @@ class VersionDebugPanel(DebugPanel):
         for distribution in Distribution.discover():
             name = distribution.metadata["Name"]
             dependencies = [d for d in distribution.requires or ()]
-            url = distribution.metadata.get("Home-page")
+            url = distribution.metadata["Home-page"]
 
             packages.append(
                 {
