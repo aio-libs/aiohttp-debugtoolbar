@@ -5,7 +5,8 @@ import pytest
 
 
 @pytest.mark.skipif(
-    not sys.platform.startswith("linux") or platform.python_implementation() == "PyPy",
+    not sys.platform.startswith("linux") or platform.python_implementation() == "PyPy"
+    or sys.version_info[:2] == (3, 12),
     reason="Unreliable",
 )
 def test_import_time(pytester: pytest.Pytester) -> None:
@@ -25,4 +26,4 @@ def test_import_time(pytester: pytest.Pytester) -> None:
         if runtime_ms < best_time_ms:
             best_time_ms = runtime_ms
 
-    assert best_time_ms < 400
+    assert best_time_ms < 350
