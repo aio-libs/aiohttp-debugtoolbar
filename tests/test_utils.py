@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from aiohttp_debugtoolbar.utils import addr_in, escape, format_fname
 
@@ -31,9 +32,9 @@ def test_module_file_path():
         "/usr/local/python/site-packages/",
     )
 
-    sys_path = map(lambda path: path.replace("/", os.path.sep), sys_path_l)
+    sys_path = map(lambda p: str(Path(p)), sys_path_l)
     modpath = format_fname(
-        "/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py".replace("/", os.path.sep),
+        str(Path("/foo/bar/aiohttp_debugtoolbar/tests/debugfoo.py")),
         sys_path,
     )
     expected = "<aiohttp_debugtoolbar/tests/debugfoo.py>".replace("/", os.path.sep)
