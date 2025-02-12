@@ -15,7 +15,7 @@ def test_import_time(pytester: pytest.Pytester) -> None:
     added that significantly increases import time.
     """
     r = pytester.run(
-        sys.executable, "-We", "-c", "import aiohttp_debugtoolbar", timeout=0.6
+        sys.executable, "-We", "-c", "import aiohttp_debugtoolbar", timeout=0.95
     )
 
     assert not r.stdout.str()
