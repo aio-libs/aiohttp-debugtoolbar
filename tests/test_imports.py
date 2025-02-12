@@ -5,7 +5,8 @@ import pytest
 
 
 @pytest.mark.skipif(
-    not sys.platform.startswith("linux") or platform.python_implementation() == "PyPy"
+    not sys.platform.startswith("linux")
+    or platform.python_implementation() == "PyPy"
     or sys.version_info[:2] == (3, 12),
     reason="Unreliable",
 )
