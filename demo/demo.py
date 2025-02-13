@@ -2,7 +2,6 @@ import logging
 from pathlib import Path
 
 import aiohttp_jinja2
-import aiohttp_mako
 import jinja2
 from aiohttp import web
 
@@ -18,7 +17,7 @@ async def index(request):
     log.debug("Debug logger for index page")
     log.critical("Critical logger for index page")
 
-    return {"title": "Aiohttp Debugtoolbar", "aiohttp_mako": aiohttp_mako}
+    return {"title": "Aiohttp Debugtoolbar"}
 
 
 async def exception(request):
@@ -43,11 +42,6 @@ async def jinja2_exception(request):
     return {"title": "Test jinja2 template exceptions"}
 
 
-@aiohttp_mako.template("error.mako")
-async def mako_exception(request):
-    return {"title": "Test Mako template exceptions"}
-
-
 async def init():
     PROJECT_ROOT = Path(__file__).parent
 
@@ -66,16 +60,6 @@ async def init():
         web.post("/ajax", ajax, name="ajax"),
         web.static("/static", PROJECT_ROOT / "static"),
     ]
-
-    mako_cfg = {
-        "input_encoding": "utf-8",
-        "output_encoding": "utf-8",
-        "default_filters": ["decode.utf8"],
-        "directories": [str(TEMPLATE_DIR)],
-    }
-    aiohttp_mako.setup(app, **mako_cfg)
-    route = web.get("/mako_exc", mako_exception, name="mako_exception")
-    routes.append(route)
 
     app.add_routes(routes)
     return app
