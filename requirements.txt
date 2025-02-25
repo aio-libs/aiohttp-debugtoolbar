@@ -1,6 +1,6 @@
 -e .
 
-aiohttp==3.11.12
+aiohttp==3.11.13
 aiohttp-jinja2==1.6
 aioredis==2.0.1
 coverage==7.6.12
