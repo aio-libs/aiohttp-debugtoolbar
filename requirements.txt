@@ -3,7 +3,7 @@
 aiohttp==3.12.13
 aiohttp-jinja2==1.6
 aioredis==2.0.1
-coverage==7.9.1
+coverage==7.9.2
 docutils==0.21.2
 jinja2==3.1.6
 multidict==6.6.3
