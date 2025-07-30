@@ -4,7 +4,7 @@ aiohttp==3.12.14
 aiohttp-jinja2==1.6
 aioredis==2.0.1
 coverage==7.10.1
-docutils==0.21.2
+docutils==0.22
 jinja2==3.1.6
 multidict==6.6.3
 pygments==2.19.2
